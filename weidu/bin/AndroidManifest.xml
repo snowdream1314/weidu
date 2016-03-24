@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.caibo.weidu.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,15 +23,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LikeActivity"
+            android:name="com.caibo.weidu.activity.LikeActivity"
             android:label="@string/title_activity_like" >
         </activity>
         <activity
-            android:name=".MoreActivity"
+            android:name="com.caibo.weidu.activity.MoreActivity"
             android:label="@string/title_activity_more" >
         </activity>
         <activity
-            android:name=".AccountActivity"
+            android:name="com.caibo.weidu.activity.AccountActivity"
             android:label="@string/title_activity_account" >
         </activity>
     </application>
