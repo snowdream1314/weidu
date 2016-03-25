@@ -1,11 +1,10 @@
 package com.caibo.weidu.activity;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import com.caibo.weidu.R;
-import com.caibo.weidu.modle.Account;
-import com.caibo.weidu.modle.AccountAdapter;
+import com.caibo.weidu.modle.ListViewAdapter;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,31 +15,59 @@ import android.widget.ListView;
 
 public class AccountActivity extends Activity {
 	
-	private List<Account> accountList = new ArrayList<Account>();
+	private ListView mListView;
+	private ListViewAdapter mListViewAdapter;
+	private ArrayList<ArrayList<HashMap<String, Object>>> mArrayList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_account);
-		
-		Account recommend = new Account("热门推荐", "account_1", R.drawable.account_image);
-		Account emotion = new Account("情感天地", "account_2", R.drawable.account_image);
-		Account message = new Account("资讯阅读", "account_3", R.drawable.account_image);
-		accountList.add(recommend);
-		accountList.add(emotion);
-		accountList.add(message);
-		AccountAdapter adapter = new AccountAdapter(AccountActivity.this, R.layout.modle_account, accountList);
-		ListView listView = (ListView) findViewById(R.id.account_listView);
-		listView.setAdapter(adapter);
+		init();
+//		
+//		Account recommend = new Account("热门推荐", "account_1", R.drawable.account_image);
+//		Account emotion = new Account("情感天地", "account_2", R.drawable.account_image);
+//		Account message = new Account("资讯阅读", "account_3", R.drawable.account_image);
+//		accountList.add(recommend);
+//		accountList.add(emotion);
+//		accountList.add(message);
+//		AccountAdapter adapter = new AccountAdapter(AccountActivity.this, R.layout.modle_account, accountList);
+//		ListView listView = (ListView) findViewById(R.id.account_listView);
+//		listView.setAdapter(adapter);
 	}
 	
-//	public void initAccounts() {
-//		for (int i=0; i<3; i++) {
-//			Account account = new Account("account".concat("_" + Integer.toString(i)), R.drawable.account_image);
-//			accountList.add(account);
-//		}
-//	}
+	private void init() {
+		mListView = (ListView) findViewById(R.id.account_listView);
+		initData();
+		mListViewAdapter = new ListViewAdapter(mArrayList, AccountActivity.this);
+		mListView.setAdapter(mListViewAdapter);
+	}
+	
+	private void initData() {
+		mArrayList = new ArrayList<ArrayList<HashMap<String, Object>>>();
+		HashMap<String, Object> hashMap = null;
+		ArrayList<HashMap<String, Object>> arrayListForEveryGridView;
+		
+		for (int i = 0; i < 3; i++) {
+			arrayListForEveryGridView = new ArrayList<HashMap<String, Object>>();
+			if (i == 0) {
+				for (int j = 0; j < 8; j++) {
+					hashMap = new HashMap<String, Object>();
+					hashMap.put("account_name", "i="+i+",j="+j);
+					arrayListForEveryGridView.add(hashMap);
+				}
+			}
+			else {
+				for (int j = 0; j < 4; j++) {
+					hashMap = new HashMap<String, Object>();
+					hashMap.put("account_name", "i="+i+",j="+j);
+					arrayListForEveryGridView.add(hashMap);
+				}
+			}
+			mArrayList.add(arrayListForEveryGridView);
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

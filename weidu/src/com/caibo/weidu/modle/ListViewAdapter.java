@@ -1,0 +1,105 @@
+package com.caibo.weidu.modle;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.caibo.weidu.R;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class ListViewAdapter extends BaseAdapter {
+	private ArrayList<ArrayList<HashMap<String, Object>>> mList;
+	private Context mContext;
+	
+	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, Context mContext) {
+		super();
+		this.mList = mList;
+		this.mContext = mContext;
+	}
+	
+	@Override
+	public int getCount() {
+		if (mList == null) {
+			return 0;
+		}
+		else {
+			return this.mList.size();
+		}
+	}
+	
+	@Override
+	public Object getItem(int position) {
+		if (mList == null) {
+			return null;
+		}
+		else {
+			return this.mList.get(position);
+		}
+	}
+	
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder holder = null;
+		
+		if (convertView == null) {
+			holder = new ViewHolder();
+			convertView = LayoutInflater.from(this.mContext).inflate(R.layout.account_listview, null, false);
+			holder.account_category = (TextView) convertView.findViewById(R.id.account_category);
+			holder.tab_image = (ImageView) convertView.findViewById(R.id.tab_image);
+			holder.tab_line = (View) convertView.findViewById(R.id.tab_line);
+			holder.gridView = (GridView) convertView.findViewById(R.id.account_gridView);
+			convertView.setTag(holder);
+		}
+		else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+		
+		if (this.mList != null) {
+			if (holder.account_category != null) {
+				if (position == 0) {
+					holder.account_category.setText("热门推荐");
+					holder.tab_image.setBackgroundColor(Color.parseColor("#ffffff"));;
+					holder.tab_line.setBackgroundColor(Color.parseColor("#ffffff"));
+				}
+				else if (position == 1) {
+//					holder.account_category.setVisibility(0);
+					holder.account_category.setText("情感天地");
+					convertView.setBackgroundColor(Color.parseColor("#f5f5f5"));
+				}
+				else if (position == 2) {
+					holder.account_category.setText("资讯阅读");
+					convertView.setBackgroundColor(Color.parseColor("#f5f5f5"));
+				}
+			}
+			if (holder.gridView != null) {
+				ArrayList<HashMap<String, Object>> arrayListForEveryGridView = this.mList.get(position);
+				GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arrayListForEveryGridView, holder.account_category.getText().toString());
+				holder.gridView.setAdapter(gridViewAdapter);
+			}
+		}
+		return convertView;
+	}
+	
+	private class ViewHolder {
+		TextView account_category;
+		GridView gridView;
+		ImageView tab_image;
+		View tab_line;
+	}
+	
+	
+	
+}

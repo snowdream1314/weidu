@@ -28,7 +28,6 @@ public class MainActivity extends ActivityGroup {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		tab_name = (TextView) findViewById(R.id.tab_name);
 		this.tabHost = (TabHost) findViewById(R.id.mytabhost);
 		tabHost.setup(this.getLocalActivityManager());
 		
