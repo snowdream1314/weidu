@@ -13,15 +13,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ListViewAdapter extends BaseAdapter {
 	private ArrayList<ArrayList<HashMap<String, Object>>> mList;
+	private ArrayList<HashMap<String, Object>> categoryList;
 	private Context mContext;
 	
-	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, Context mContext) {
+	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, ArrayList<HashMap<String, Object>> categoryList, Context mContext) {
 		super();
 		this.mList = mList;
+		this.categoryList = categoryList;
 		this.mContext = mContext;
 	}
 	
@@ -60,6 +63,7 @@ public class ListViewAdapter extends BaseAdapter {
 			holder.account_category = (TextView) convertView.findViewById(R.id.account_category);
 			holder.tab_image = (ImageView) convertView.findViewById(R.id.tab_image);
 			holder.tab_line = (View) convertView.findViewById(R.id.tab_line);
+			holder.wave_line = (View) convertView.findViewById(R.id.wave_line);
 			holder.gridView = (GridView) convertView.findViewById(R.id.account_gridView);
 			convertView.setTag(holder);
 		}
@@ -68,19 +72,19 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 		
 		if (this.mList != null) {
+			
 			if (holder.account_category != null) {
-				if (position == 0) {
-					holder.account_category.setText("热门推荐");
-					holder.tab_image.setBackgroundColor(Color.parseColor("#ffffff"));;
-					holder.tab_line.setBackgroundColor(Color.parseColor("#ffffff"));
+				HashMap<String, Object> hashMap = this.categoryList.get(position);
+				holder.account_category.setText(hashMap.get("category_name").toString());
+				
+				if (holder.account_category.getText().equals("热门推荐")) {
+					holder.wave_line.setVisibility(View.VISIBLE);
+					holder.tab_image.setVisibility(ImageView.GONE);
+					holder.tab_line.setVisibility(View.GONE);
+//					convertView.findViewById(R.id.listview_item).setBackgroundColor(Color.parseColor("#ffffff"));
 				}
-				else if (position == 1) {
-//					holder.account_category.setVisibility(0);
-					holder.account_category.setText("情感天地");
-					convertView.setBackgroundColor(Color.parseColor("#f5f5f5"));
-				}
-				else if (position == 2) {
-					holder.account_category.setText("资讯阅读");
+				else {
+					holder.wave_line.setVisibility(View.GONE);
 					convertView.setBackgroundColor(Color.parseColor("#f5f5f5"));
 				}
 			}
@@ -98,6 +102,7 @@ public class ListViewAdapter extends BaseAdapter {
 		GridView gridView;
 		ImageView tab_image;
 		View tab_line;
+		View wave_line;
 	}
 	
 	
