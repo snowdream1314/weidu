@@ -54,11 +54,11 @@
 	    </LinearLayout>
 		
 		<!-- android:listSelector="#00000000" // 去除选中时的底色-->
-		<!-- android:numColumns="4" 控制列数为4 -->
+		<!-- android:numColumns="4" //控制列数为4 -->
 		<!-- android:columnWidth="90dp" //每列的宽度，也就是Item的宽度 -->
 		<!-- android:stretchMode="columnWidth" //缩放与列宽大小同步 -->
-		<!-- android:verticalSpacing="2dp" 两行之间的边距-->
-		<!-- android:horizontalSpacing="2dp" 两列之间的边距-->
+		<!-- android:verticalSpacing="2dp" //两行之间的边距-->
+		<!-- android:horizontalSpacing="2dp" //两列之间的边距-->
 		     
 		<com.caibo.weidu.modle.NoScrollGridView
 		    android:id="@+id/account_gridView"

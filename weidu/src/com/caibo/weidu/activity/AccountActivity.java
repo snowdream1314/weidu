@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.ListViewAdapter;
-import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.okHttp;
+import com.caibo.weidu.util.onDataFinishedListener;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -29,8 +28,9 @@ public class AccountActivity extends Activity {
 	
 	private String appDatas;
 	private JSONArray appJsonDatas, recommendAccounts;
-	
-	private MyAsyncTask mTask, mTaskForImage;
+	private Bitmap bitmap;
+	private MyAsyncTask mTask;
+	private MyAsyncTaskForImage mTaskForImage;
 //	private List<appJsonData> appJsonDatas;
 	
 	@Override
@@ -101,6 +101,16 @@ public class AccountActivity extends Activity {
 					for (int j = 0; j < recommendAccounts.length(); j++) {
 						accountHashMap = new HashMap<String, Object>();
 						accountHashMap.put("account_name", recommendAccounts.getJSONObject(j).getString("a_name"));
+						
+						mTaskForImage = new MyAsyncTaskForImage(recommendAccounts.getJSONObject(j).getString("a_log"));
+						mTaskForImage.setOnDataFinishedListener(new onDataFinishedListener() {
+							@Override
+							public void onDataSuccessfully(Bitmap bitmap) {
+								accountHashMap.put("account_img", bitmap);
+							}
+						});
+							
+						
 						arrayListForEveryGridView.add(accountHashMap);
 					}
 					mArrayList.add(arrayListForEveryGridView);
@@ -112,6 +122,41 @@ public class AccountActivity extends Activity {
 			
 			mListViewAdapter = new ListViewAdapter(mArrayList, categoryList, AccountActivity.this);
 			mListView.setAdapter(mListViewAdapter);
+		}
+	}
+	
+	
+	private class MyAsyncTaskForImage extends AsyncTask<String, Integer, Bitmap> {
+		
+		onDataFinishedListener onDataFinishedListener;
+		
+		public void setOnDataFinishedListener(onDataFinishedListener onDataFinishedListener) {
+			this.onDataFinishedListener = onDataFinishedListener;
+		}
+		//onPreExecute方法用于在执行后台任务前做一些UI操作  
+		
+		//doInBackground方法内部执行后台任务,不可在此方法内修改UI
+		@Override 
+		protected Bitmap doInBackground(String... address) {
+//			Log.i("MyAsyncTask", "doInBackground(Params... params) called");  
+			try {
+				bitmap = okHttp.getBitmap(address[0]);
+//				Log.i("MyappDatas", appDatas);
+				return bitmap;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		 //onProgressUpdate方法用于更新进度信息
+		
+		//onPostExecute方法用于在执行完后台任务后更新UI,显示结果
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			if (bitmap != null) {
+				onDataFinishedListener.onDataSuccessfully(bitmap);
+			}
 		}
 	}
 	

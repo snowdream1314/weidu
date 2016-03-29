@@ -71,20 +71,6 @@ public class GridViewAdapter extends BaseAdapter {
 				holder.account_image.setImageDrawable(convertView.getResources().getDrawable(R.drawable.account_image));
 				holder.account_name.setText(hashMap.get("account_name").toString());
 			}
-//			if (account_category.equals("»»√≈Õ∆ºˆ") && position < 8) {
-//				HashMap<String, Object> hashMap = this.mList.get(position);
-//				if (holder.account_image != null) {
-//					holder.account_image.setImageDrawable(convertView.getResources().getDrawable(R.drawable.account_image));
-//					holder.account_name.setText(hashMap.get("account_name").toString());
-//				}
-//			}
-//			else if (position < 4) {
-//				HashMap<String, Object> hashMap = this.mList.get(position);
-//				if (holder.account_image != null) {
-//					holder.account_image.setImageDrawable(convertView.getResources().getDrawable(R.drawable.account_image));
-//					holder.account_name.setText(hashMap.get("account_name").toString());
-//				}
-//			}
 			
 		}
 		

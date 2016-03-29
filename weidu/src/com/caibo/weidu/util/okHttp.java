@@ -31,7 +31,6 @@ public class okHttp {
 	
 	public static Bitmap getBitmap(String address) {
 		OkHttpClient  client = new OkHttpClient();
-		
 		try {
 			Request request = new Request.Builder().url(address).build();
 			Response response = client.newCall(request).execute();
