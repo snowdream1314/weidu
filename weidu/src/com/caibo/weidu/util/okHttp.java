@@ -1,12 +1,10 @@
 package com.caibo.weidu.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.caibo.weidu.modle.appJsonData;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,6 +34,10 @@ public class okHttp {
 			Response response = client.newCall(request).execute();
 			InputStream is = response.body().byteStream();
 			Bitmap bm = BitmapFactory.decodeStream(is);
+			
+			//Í¼Æ¬Ñ¹Ëõ
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+			
 			return bm;
 		} catch (Exception e) {
 			e.printStackTrace();

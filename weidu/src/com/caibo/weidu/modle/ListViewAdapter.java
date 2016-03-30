@@ -18,12 +18,13 @@ import android.widget.TextView;
 
 public class ListViewAdapter extends BaseAdapter {
 	private ArrayList<ArrayList<HashMap<String, Object>>> mList;
-	private ArrayList<HashMap<String, Object>> categoryList;
+	private ArrayList<HashMap<String, Object>> categoryList, mListImg;
 	private Context mContext;
 	
-	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, ArrayList<HashMap<String, Object>> categoryList, Context mContext) {
+	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, ArrayList<HashMap<String, Object>> mListImg, ArrayList<HashMap<String, Object>> categoryList, Context mContext) {
 		super();
 		this.mList = mList;
+		this.mListImg = mListImg;
 		this.categoryList = categoryList;
 		this.mContext = mContext;
 	}
@@ -90,7 +91,9 @@ public class ListViewAdapter extends BaseAdapter {
 			}
 			if (holder.gridView != null) {
 				ArrayList<HashMap<String, Object>> arrayListForEveryGridView = this.mList.get(position);
-				GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arrayListForEveryGridView, holder.account_category.getText().toString());
+				ArrayList<HashMap<String, Object>> mListImg = this.mListImg;
+//				ArrayList<HashMap<String, Object>> arrayListForEveryGridViewImg = this.mListImg.get(position);
+				GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arrayListForEveryGridView, mListImg, holder.account_category.getText().toString());
 				holder.gridView.setAdapter(gridViewAdapter);
 			}
 		}

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.caibo.weidu.R;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,17 @@ import android.widget.TextView;
 
 public class GridViewAdapter extends BaseAdapter {
 	private Context mContext;
-	private ArrayList<HashMap<String, Object>> mList;
+	private ArrayList<HashMap<String, Object>> mList, mListImg;
 	private String account_category;
+//	private int LPosition;
 	
-	public GridViewAdapter(Context mConetxt, ArrayList<HashMap<String, Object>> mList, String account_category) {
+	public GridViewAdapter(Context mConetxt, ArrayList<HashMap<String, Object>> mList, ArrayList<HashMap<String, Object>> mListImg, String account_category) {
 		super();
 		this.mContext = mConetxt;
 		this.mList = mList;
+		this.mListImg = mListImg;
 		this.account_category = account_category;
+//		this.LPosition = LPosition;
 	}
 	
 	@Override
@@ -67,9 +71,25 @@ public class GridViewAdapter extends BaseAdapter {
 		
 		if (this.mList != null) {
 			HashMap<String, Object> hashMap = this.mList.get(position);
+			
+			HashMap<String, Object> hashMapImg = new HashMap<String, Object>();
+//			if (LPosition == 1) {
+//				hashMapImg = this.mListImg.get(position);
+//			}
+//			else {
+//				hashMapImg = this.mListImg.get(((LPosition-2) * 4 + 8)+ position);
+//			}
 			if (holder.account_image != null) {
-				holder.account_image.setImageDrawable(convertView.getResources().getDrawable(R.drawable.account_image));
-				holder.account_name.setText(hashMap.get("account_name").toString());
+				String account_name = hashMap.get("account_name").toString();
+				holder.account_name.setText(account_name);
+				for (int i = 0; i< this.mListImg.size(); i++) {
+					String a_name = this.mListImg.get(i).get("a_name").toString();
+					if (a_name == account_name) {
+						holder.account_image.setImageBitmap((Bitmap)this.mListImg.get(i).get("a_logo"));
+						break;
+					}
+				}
+//				holder.account_image.setImageBitmap((Bitmap)hashMapImg.get("a_logo"));
 			}
 			
 		}
