@@ -14,8 +14,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <!-- android:screenOrientation="portrait"禁止屏幕旋转 -->
+        <!-- android:configChanges="orientation" 监听屏幕旋转 -->
         <activity
             android:name="com.caibo.weidu.activity.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -73,12 +73,6 @@ public class GridViewAdapter extends BaseAdapter {
 			HashMap<String, Object> hashMap = this.mList.get(position);
 			
 			HashMap<String, Object> hashMapImg = new HashMap<String, Object>();
-//			if (LPosition == 1) {
-//				hashMapImg = this.mListImg.get(position);
-//			}
-//			else {
-//				hashMapImg = this.mListImg.get(((LPosition-2) * 4 + 8)+ position);
-//			}
 			if (holder.account_image != null) {
 				String account_name = hashMap.get("account_name").toString();
 				holder.account_name.setText(account_name);
