@@ -8,5 +8,6 @@
     <string name="title_activity_more">MoreActivity</string>
     <string name="title_activity_group">GroupActivity</string>
     <string name="title_activity_account">AccountActivity</string>
+    <string name="title_activity_account_detail">AccountDetailActivity</string>
 
 </resources>

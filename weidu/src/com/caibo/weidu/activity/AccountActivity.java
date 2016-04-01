@@ -5,8 +5,10 @@ import java.util.HashMap;
 
 import org.json.JSONArray;
 
+import com.caibo.weidu.AccountDetailActivity;
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.ListViewAdapter;
+import com.caibo.weidu.modle.NoScrollGridView;
 import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.okHttp;
 import com.caibo.weidu.util.onDataFinishedListener;
@@ -14,15 +16,23 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ListView;
 
 public class AccountActivity extends Activity {
 	
 	private ListView mListView;
+	private NoScrollGridView gridView;
 	private ListViewAdapter mListViewAdapter;
 	private ArrayList<ArrayList<HashMap<String, Object>>> mArrayList, mArrayListForImage;
 	private ArrayList<HashMap<String, Object>> categoryList;
@@ -38,12 +48,27 @@ public class AccountActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_account);
 		
-//		mListView = (ListView) findViewById(R.id.account_listView);
 		String url = "http://wx.xiyiyi.com/Mobile/AccountCategory/cats"; 
 		init(url);
 		
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(AccountActivity.this).build();
 		ImageLoader.getInstance().init(config);
+		
+		View convertView = LayoutInflater.from(this).inflate(R.layout.account_listview, null, false);
+		gridView = (NoScrollGridView) convertView.findViewById(R.id.account_gridView);
+//		gridView = (GridView) findViewById(R.id.account_listView).findViewById(R.id.account_gridView);
+		
+		try {
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+					Intent intent = new Intent(AccountActivity.this, AccountDetailActivity.class);
+					startActivity(intent);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e("gridView", e.toString());
+		}
 	}
 	
 	private void init(String url) {
@@ -85,40 +110,9 @@ public class AccountActivity extends Activity {
 				}
 				mListViewAdapter = new ListViewAdapter(mArrayList, arrayListImageForEveryGridView, categoryList, AccountActivity.this);
 				mListView.setAdapter(mListViewAdapter);
-//				Log.i("mArrayList", mArrayList.toString());
-				
-				//下载完所有图片后一次性加载，等待时间过长
-//				try {
-//					mArrayListForImage = new ArrayList<ArrayList<HashMap<String, Object>>>();
-//					for (int i = 0; i < mArrayList.size(); i++) {
-//						arrayListImageForEveryGridView = new ArrayList<HashMap<String, Object>>();
-//						for (int j = 0; j < mArrayList.get(i).size(); j++) {
-//							String a_logo_link = mArrayList.get(i).get(j).get("a_logo_link").toString();
-//							final String a_name = mArrayList.get(i).get(j).get("account_name").toString();
-//							MyAsyncTask mTaskForImage = new MyAsyncTask(a_logo_link);
-//							mTaskForImage.setOnDataFinishedListener(new onDataFinishedListener() {
-//								@Override
-//								public void onDataSuccessfully(Object bitmap) {
-//									imageHashMap = new HashMap<String, Object>();
-//									imageHashMap.put("a_logo", bitmap);
-//									imageHashMap.put("a_name", a_name);
-//									arrayListImageForEveryGridView.add(imageHashMap);
-//									if (arrayListImageForEveryGridView.size() == 44) {
-//										mListViewAdapter = new ListViewAdapter(mArrayList, arrayListImageForEveryGridView, categoryList, AccountActivity.this);
-//										mListView.setAdapter(mListViewAdapter);
-//									}
-//								}
-//							});
-//							mTaskForImage.execute("bitmap");
-//						}
-//					}
-//				} catch (Exception e) {
-//					Log.e("error", e.toString());
-//				}
 			}
 		});
 		mTask.execute("string");
-		
 	}
 	
 	//屏幕旋转
