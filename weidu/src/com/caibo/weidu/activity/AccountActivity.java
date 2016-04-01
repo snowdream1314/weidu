@@ -10,13 +10,11 @@ import com.caibo.weidu.modle.ListViewAdapter;
 import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.okHttp;
 import com.caibo.weidu.util.onDataFinishedListener;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import android.app.Activity;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -43,6 +41,9 @@ public class AccountActivity extends Activity {
 //		mListView = (ListView) findViewById(R.id.account_listView);
 		String url = "http://wx.xiyiyi.com/Mobile/AccountCategory/cats"; 
 		init(url);
+		
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(AccountActivity.this).build();
+		ImageLoader.getInstance().init(config);
 	}
 	
 	private void init(String url) {
@@ -82,37 +83,42 @@ public class AccountActivity extends Activity {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				mListViewAdapter = new ListViewAdapter(mArrayList, arrayListImageForEveryGridView, categoryList, AccountActivity.this);
+				mListView.setAdapter(mListViewAdapter);
 //				Log.i("mArrayList", mArrayList.toString());
-				try {
-					mArrayListForImage = new ArrayList<ArrayList<HashMap<String, Object>>>();
-					for (int i = 0; i < mArrayList.size(); i++) {
-						arrayListImageForEveryGridView = new ArrayList<HashMap<String, Object>>();
-						for (int j = 0; j < mArrayList.get(i).size(); j++) {
-							String a_logo_link = mArrayList.get(i).get(j).get("a_logo_link").toString();
-							final String a_name = mArrayList.get(i).get(j).get("account_name").toString();
-							MyAsyncTask mTaskForImage = new MyAsyncTask(a_logo_link);
-							mTaskForImage.setOnDataFinishedListener(new onDataFinishedListener() {
-								@Override
-								public void onDataSuccessfully(Object bitmap) {
-									imageHashMap = new HashMap<String, Object>();
-									imageHashMap.put("a_logo", bitmap);
-									imageHashMap.put("a_name", a_name);
-									arrayListImageForEveryGridView.add(imageHashMap);
-									if (arrayListImageForEveryGridView.size() == 44) {
-										mListViewAdapter = new ListViewAdapter(mArrayList, arrayListImageForEveryGridView, categoryList, AccountActivity.this);
-										mListView.setAdapter(mListViewAdapter);
-									}
-								}
-							});
-							mTaskForImage.execute("bitmap");
-						}
-					}
-				} catch (Exception e) {
-					Log.e("error", e.toString());
-				}
+				
+				//下载完所有图片后一次性加载，等待时间过长
+//				try {
+//					mArrayListForImage = new ArrayList<ArrayList<HashMap<String, Object>>>();
+//					for (int i = 0; i < mArrayList.size(); i++) {
+//						arrayListImageForEveryGridView = new ArrayList<HashMap<String, Object>>();
+//						for (int j = 0; j < mArrayList.get(i).size(); j++) {
+//							String a_logo_link = mArrayList.get(i).get(j).get("a_logo_link").toString();
+//							final String a_name = mArrayList.get(i).get(j).get("account_name").toString();
+//							MyAsyncTask mTaskForImage = new MyAsyncTask(a_logo_link);
+//							mTaskForImage.setOnDataFinishedListener(new onDataFinishedListener() {
+//								@Override
+//								public void onDataSuccessfully(Object bitmap) {
+//									imageHashMap = new HashMap<String, Object>();
+//									imageHashMap.put("a_logo", bitmap);
+//									imageHashMap.put("a_name", a_name);
+//									arrayListImageForEveryGridView.add(imageHashMap);
+//									if (arrayListImageForEveryGridView.size() == 44) {
+//										mListViewAdapter = new ListViewAdapter(mArrayList, arrayListImageForEveryGridView, categoryList, AccountActivity.this);
+//										mListView.setAdapter(mListViewAdapter);
+//									}
+//								}
+//							});
+//							mTaskForImage.execute("bitmap");
+//						}
+//					}
+//				} catch (Exception e) {
+//					Log.e("error", e.toString());
+//				}
 			}
 		});
 		mTask.execute("string");
+		
 	}
 	
 	//屏幕旋转

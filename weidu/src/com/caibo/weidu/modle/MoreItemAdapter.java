@@ -19,8 +19,6 @@ public class MoreItemAdapter extends BaseAdapter {
 	
 	private LayoutInflater mInflater;
 	private ArrayList<Message> moreItemList;
-//	private HashMap<String, Object> map;
-//	private ArrayList<HashMap<String, Object>> mapList;
 	
 	private static final int text = 0;
 	private static final int img_text = 1;

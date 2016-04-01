@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.caibo.weidu.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +18,29 @@ import android.widget.TextView;
 
 public class GridViewAdapter extends BaseAdapter {
 	private Context mContext;
-	private ArrayList<HashMap<String, Object>> mList, mListImg;
-	private String account_category;
-//	private int LPosition;
+	private ArrayList<HashMap<String, Object>> mList;
+//	private String account_category;
+	
+	//使用image-loader包加载图片
+	DisplayImageOptions options; //DisplayImageOptions是用于设置图片显示的类
 	
 	public GridViewAdapter(Context mConetxt, ArrayList<HashMap<String, Object>> mList, ArrayList<HashMap<String, Object>> mListImg, String account_category) {
 		super();
 		this.mContext = mConetxt;
 		this.mList = mList;
-		this.mListImg = mListImg;
-		this.account_category = account_category;
-//		this.LPosition = LPosition;
+//		this.mListImg = mListImg;
+//		this.account_category = account_category;
+		
+		// 使用DisplayImageOptions.Builder()创建DisplayImageOptions
+		options = new DisplayImageOptions.Builder()
+				.showStubImage(R.drawable.account_image)	// 设置图片下载期间显示的图片
+				.showImageForEmptyUri(R.drawable.account_image)		// 设置图片Uri为空或是错误的时候显示的图片  
+				.showImageOnFail(R.drawable.account_image)		// 设置图片加载或解码过程中发生错误显示的图片
+				.cacheInMemory(true)		 // 设置下载的图片是否缓存在内存中
+				.cacheOnDisc(true)		// 设置下载的图片是否缓存在SD卡中
+				.displayer(new RoundedBitmapDisplayer(60))	// 设置成圆角图片
+				.build();	// 创建配置过得DisplayImageOption对象  
+		
 	}
 	
 	@Override
@@ -71,20 +85,26 @@ public class GridViewAdapter extends BaseAdapter {
 		
 		if (this.mList != null) {
 			HashMap<String, Object> hashMap = this.mList.get(position);
+			holder.account_name.setText(hashMap.get("account_name").toString());
+			ImageLoader imageLoader = ImageLoader.getInstance();
+			imageLoader.displayImage(hashMap.get("a_logo_link").toString(), holder.account_image, options);
 			
-			HashMap<String, Object> hashMapImg = new HashMap<String, Object>();
-			if (holder.account_image != null) {
-				String account_name = hashMap.get("account_name").toString();
-				holder.account_name.setText(account_name);
-				for (int i = 0; i< this.mListImg.size(); i++) {
-					String a_name = this.mListImg.get(i).get("a_name").toString();
-					if (a_name == account_name) {
-						holder.account_image.setImageBitmap((Bitmap)this.mListImg.get(i).get("a_logo"));
-						break;
-					}
-				}
+//			holder.account_image.setImageDrawable(convertView.getResources().getDrawable(R.drawable.account_image));//使用默认图片
+			
+			//加载方案一：全部下载完以后一次性加载
+//			HashMap<String, Object> hashMapImg = new HashMap<String, Object>();
+//			if (holder.account_image != null) {
+//				String account_name = hashMap.get("account_name").toString();
+//				holder.account_name.setText(account_name);
+//				for (int i = 0; i< this.mListImg.size(); i++) {
+//					String a_name = this.mListImg.get(i).get("a_name").toString();
+//					if (a_name == account_name) {
+//						holder.account_image.setImageBitmap((Bitmap)this.mListImg.get(i).get("a_logo"));
+//						break;
+//					}
+//				}
 //				holder.account_image.setImageBitmap((Bitmap)hashMapImg.get("a_logo"));
-			}
+//			}
 			
 		}
 		

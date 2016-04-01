@@ -82,6 +82,7 @@ public class ListViewAdapter extends BaseAdapter {
 					holder.wave_line.setVisibility(View.VISIBLE);
 					holder.tab_image.setVisibility(ImageView.GONE);
 					holder.tab_line.setVisibility(View.GONE);
+					convertView.setBackgroundColor(Color.parseColor("#ffffff"));
 //					convertView.findViewById(R.id.listview_item).setBackgroundColor(Color.parseColor("#ffffff"));
 				}
 				else {
