@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.caibo.weidu.R;
+import com.caibo.weidu.activity.AccountDetailActivity;
+import com.caibo.weidu.activity.MainActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +22,12 @@ import android.widget.TextView;
 public class GridViewAdapter extends BaseAdapter {
 	private Context mContext;
 	private ArrayList<HashMap<String, Object>> mList;
+	private int selectedPosition = -1 ;
 	
 	//使用image-loader包加载图片
 	DisplayImageOptions options; //DisplayImageOptions是用于设置图片显示的类
 	
-	public GridViewAdapter(Context mConetxt, ArrayList<HashMap<String, Object>> mList, ArrayList<HashMap<String, Object>> mListImg, String account_category) {
+	public GridViewAdapter(Context mConetxt, ArrayList<HashMap<String, Object>> mList, String account_category) {
 		super();
 		this.mContext = mConetxt;
 		this.mList = mList;
@@ -65,6 +69,10 @@ public class GridViewAdapter extends BaseAdapter {
 		return position;
 	}
 	
+	public void clearSelection(int position) {
+		selectedPosition = position;
+	}
+	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
@@ -83,9 +91,20 @@ public class GridViewAdapter extends BaseAdapter {
 		if (this.mList != null) {
 			HashMap<String, Object> hashMap = this.mList.get(position);
 			holder.account_name.setText(hashMap.get("account_name").toString());
+			//图片加载
 			ImageLoader imageLoader = ImageLoader.getInstance();
 			imageLoader.displayImage(hashMap.get("a_logo_link").toString(), holder.account_image, options);
 			
+			//响应点击事件
+			if (selectedPosition == position) {
+//				holder.account_name.setTextColor(Color.parseColor("#000000"));
+				Intent intent = new Intent(this.mContext, AccountDetailActivity.class);
+				holder.account_image.setDrawingCacheEnabled(true);
+				intent.putExtra("account_name", holder.account_name.getText());
+				intent.putExtra("account_img", holder.account_image.getDrawingCache());
+				intent.putExtra("a_wx_no", hashMap.get("a_wx_no").toString());
+				this.mContext.startActivity(intent);
+			}
 		}
 		
 		return convertView;

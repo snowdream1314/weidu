@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.json.JSONArray;
 
-import com.caibo.weidu.AccountDetailActivity;
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.ListViewAdapter;
 import com.caibo.weidu.modle.NoScrollGridView;
@@ -32,15 +31,13 @@ import android.widget.ListView;
 public class AccountActivity extends Activity {
 	
 	private ListView mListView;
-	private NoScrollGridView gridView;
 	private ListViewAdapter mListViewAdapter;
-	private ArrayList<ArrayList<HashMap<String, Object>>> mArrayList, mArrayListForImage;
+	private ArrayList<ArrayList<HashMap<String, Object>>> mArrayList, mArrayListForChildCats;
 	private ArrayList<HashMap<String, Object>> categoryList;
 	
-	private JSONArray appJsonDatas, recommendAccounts;
+	private JSONArray appJsonDatas, recommendAccounts, childCats;
 //	private MyAsyncTaskForImage mTaskForImage;
 	private HashMap<String, Object> accountHashMap,imageHashMap;
-	private ArrayList<HashMap<String, Object>> arrayListImageForEveryGridView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,27 +51,12 @@ public class AccountActivity extends Activity {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(AccountActivity.this).build();
 		ImageLoader.getInstance().init(config);
 		
-		View convertView = LayoutInflater.from(this).inflate(R.layout.account_listview, null, false);
-		gridView = (NoScrollGridView) convertView.findViewById(R.id.account_gridView);
-//		gridView = (GridView) findViewById(R.id.account_listView).findViewById(R.id.account_gridView);
-		
-		try {
-			gridView.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-					Intent intent = new Intent(AccountActivity.this, AccountDetailActivity.class);
-					startActivity(intent);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e("gridView", e.toString());
-		}
 	}
 	
 	private void init(String url) {
 		mListView = (ListView) findViewById(R.id.account_listView);
 		mArrayList = new ArrayList<ArrayList<HashMap<String, Object>>>();
-		arrayListImageForEveryGridView = new ArrayList<HashMap<String, Object>>();
+		mArrayListForChildCats = new ArrayList<ArrayList<HashMap<String, Object>>>();
 		categoryList = new ArrayList<HashMap<String, Object>>();
 		accountHashMap = null;
 		imageHashMap = null;
@@ -82,13 +64,14 @@ public class AccountActivity extends Activity {
 		MyAsyncTask mTask = new MyAsyncTask(url);
 		mTask.setOnDataFinishedListener(new onDataFinishedListener() {
 			HashMap<String, Object> categoryHashMap = null;
-			ArrayList<HashMap<String, Object>> arrayListForEveryGridView;
+			ArrayList<HashMap<String, Object>> arrayListForEveryGridView, arrayListForChildCats;
 			@Override
 			public void onDataSuccessfully(Object data) {
 				try {
 					appJsonDatas = okHttp.parseDataWithGson(data.toString());
 					for (int i = 0; i < appJsonDatas.length(); i++) {
 						arrayListForEveryGridView = new ArrayList<HashMap<String, Object>>();
+						arrayListForChildCats = new ArrayList<HashMap<String, Object>>();
 						
 						//分类
 						categoryHashMap = new HashMap<String, Object>();
@@ -97,18 +80,29 @@ public class AccountActivity extends Activity {
 						
 						//分类下的公众号
 						recommendAccounts = appJsonDatas.getJSONObject(i).getJSONArray("recommendAccount");
+						//子类
+						childCats = appJsonDatas.getJSONObject(i).getJSONArray("childCats");
+						
 						for (int j = 0; j < recommendAccounts.length(); j++) {
 							accountHashMap = new HashMap<String, Object>();
 							accountHashMap.put("account_name", recommendAccounts.getJSONObject(j).getString("a_name"));
 							accountHashMap.put("a_logo_link", recommendAccounts.getJSONObject(j).getString("a_logo"));
+							accountHashMap.put("a_wx_no", recommendAccounts.getJSONObject(j).getString("a_name"));
 							arrayListForEveryGridView.add(accountHashMap);
 						}
+						
+						for (int j = 0; j < childCats.length(); j++) {
+							accountHashMap = new HashMap<String, Object>();
+							accountHashMap.put("childCat_name", childCats.getJSONObject(j).getString("ac_name"));
+							arrayListForChildCats.add(accountHashMap);
+						}
+						mArrayListForChildCats.add(arrayListForChildCats);
 						mArrayList.add(arrayListForEveryGridView);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				mListViewAdapter = new ListViewAdapter(mArrayList, arrayListImageForEveryGridView, categoryList, AccountActivity.this);
+				mListViewAdapter = new ListViewAdapter(mArrayList, mArrayListForChildCats, categoryList, AccountActivity.this);
 				mListView.setAdapter(mListViewAdapter);
 			}
 		});

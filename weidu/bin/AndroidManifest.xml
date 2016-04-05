@@ -41,8 +41,12 @@
             android:label="@string/title_activity_account" >
         </activity>
         <activity
-            android:name=".AccountDetailActivity"
+            android:name=".activity.AccountDetailActivity"
             android:label="@string/title_activity_account_detail" >
+        </activity>
+        <activity
+            android:name="com.caibo.weidu.activity.ChildCatsActivity"
+            android:label="@string/title_activity_child_cats" >
         </activity>
     </application>
 

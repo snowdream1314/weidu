@@ -1,17 +1,19 @@
 package com.caibo.weidu.modle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.caibo.weidu.AccountDetailActivity;
 import com.caibo.weidu.R;
-import com.caibo.weidu.activity.AccountActivity;
+import com.caibo.weidu.activity.ChildCatsActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -21,16 +23,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ListViewAdapter extends BaseAdapter {
-	private ArrayList<ArrayList<HashMap<String, Object>>> mList;
-	private ArrayList<HashMap<String, Object>> categoryList, mListImg;
+	private ArrayList<ArrayList<HashMap<String, Object>>> mList, mListForChildCats;
+	private ArrayList<HashMap<String, Object>> categoryList;
 	private Context mContext;
 	
-	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, ArrayList<HashMap<String, Object>> mListImg, ArrayList<HashMap<String, Object>> categoryList, Context mContext) {
+	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, ArrayList<ArrayList<HashMap<String, Object>>> mListForChildCats, ArrayList<HashMap<String, Object>> categoryList, Context context) {
 		super();
 		this.mList = mList;
-		this.mListImg = mListImg;
+		this.mListForChildCats = mListForChildCats;
 		this.categoryList = categoryList;
-		this.mContext = mContext;
+		this.mContext = context;
 	}
 	
 	@Override
@@ -79,7 +81,7 @@ public class ListViewAdapter extends BaseAdapter {
 		if (this.mList != null) {
 			
 			if (holder.account_category != null) {
-				HashMap<String, Object> hashMap = this.categoryList.get(position);
+				final HashMap<String, Object> hashMap = this.categoryList.get(position);
 				holder.account_category.setText(hashMap.get("category_name").toString());
 				
 				if (holder.account_category.getText().equals("热门推荐")) {
@@ -94,14 +96,40 @@ public class ListViewAdapter extends BaseAdapter {
 					holder.tab_image.setVisibility(ImageView.VISIBLE);
 					holder.tab_line.setVisibility(View.VISIBLE);
 					convertView.setBackgroundColor(Color.parseColor("#f5f5f5"));
+					
+					final ArrayList<HashMap<String, Object>> arrayListForChildcats = this.mListForChildCats.get(position);
+					//设置点击事件
+					holder.account_category.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent(mContext, ChildCatsActivity.class);
+							intent.putExtra("category_name", hashMap.get("category_name").toString());
+							intent.putExtra("childCats", (Serializable) arrayListForChildcats);
+//							Log.i("arrayListForChildcats", arrayListForChildcats.toString());
+							mContext.startActivity(intent);
+						}
+					});
 				}
 			}
 			if (holder.gridView != null) {
 				ArrayList<HashMap<String, Object>> arrayListForEveryGridView = this.mList.get(position);
-				ArrayList<HashMap<String, Object>> mListImg = this.mListImg;
+//				ArrayList<HashMap<String, Object>> mListImg = this.mListImg;
 //				ArrayList<HashMap<String, Object>> arrayListForEveryGridViewImg = this.mListImg.get(position);
-				GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arrayListForEveryGridView, mListImg, holder.account_category.getText().toString());
+				final GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arrayListForEveryGridView, holder.account_category.getText().toString());
 				holder.gridView.setAdapter(gridViewAdapter);
+				
+				//设置点击事件
+				try {
+					holder.gridView.setOnItemClickListener(new OnItemClickListener() {
+						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+							gridViewAdapter.clearSelection(position);
+							gridViewAdapter.notifyDataSetChanged();
+						}
+					});
+				} catch (Exception e) {
+					e.printStackTrace();
+					Log.e("gridView", e.toString());
+				}
 			}
 		}
 		return convertView;
