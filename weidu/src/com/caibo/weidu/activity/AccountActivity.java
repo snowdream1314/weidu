@@ -94,6 +94,7 @@ public class AccountActivity extends Activity {
 						for (int j = 0; j < childCats.length(); j++) {
 							accountHashMap = new HashMap<String, Object>();
 							accountHashMap.put("childCat_name", childCats.getJSONObject(j).getString("ac_name"));
+							accountHashMap.put("childCat_id", childCats.getJSONObject(j).getString("ac_id"));
 							arrayListForChildCats.add(accountHashMap);
 						}
 						mArrayListForChildCats.add(arrayListForChildCats);

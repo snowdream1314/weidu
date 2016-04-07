@@ -19,6 +19,7 @@ public class AccountDetailActivity extends Activity {
 	
 	private ImageView accountImg, like, subscribe, tagBack;
 	private TextView tabName, accountName, accountWxNo, subscribeText;
+	private boolean from_childCatsActivity = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +34,21 @@ public class AccountDetailActivity extends Activity {
 		accountName = (TextView) findViewById(R.id.account_name);
 		accountWxNo = (TextView) findViewById(R.id.account_wx_no);
 		subscribeText = (TextView) findViewById(R.id.subscribe_text);
+		Intent intent = getIntent();
+		from_childCatsActivity = intent.getBooleanExtra("from_childCatsActivity", false);
 		
 		tagBack.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
-				Intent intent = new Intent(AccountDetailActivity.this, MainActivity.class);
-				startActivity(intent);
+//				if (from_childCatsActivity) {
+//					Intent intent_childcats = new Intent(AccountDetailActivity.this, ChildCatsActivity.class);
+//					startActivity(intent_childcats);
+//				}
+//				else {
+					Intent intent_main = new Intent(AccountDetailActivity.this, MainActivity.class);
+					startActivity(intent_main);
+//				}
 			}
 		});
 		
@@ -58,8 +67,13 @@ public class AccountDetailActivity extends Activity {
 			}
 		});
 		
-		Intent intent = getIntent();
+//		if (intent != null && from_childCatsActivity) {
+//			tabName.setText(getIntent().getStringExtra("account_name"));
+//			accountName.setText(getIntent().getStringExtra("account_name"));
+//			accountWxNo.setText(getIntent().getStringExtra("a_wx_no"));
+//		}
 		if (intent != null && intent.getParcelableExtra("account_img") != null) {
+//			if (from_childCatsActivity)
 			Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("account_img");
 			Matrix matrix = new Matrix();//·Å´óÍ¼Æ¬
 			matrix.postScale(1.2f, 1.2f);
@@ -69,7 +83,6 @@ public class AccountDetailActivity extends Activity {
 			tabName.setText(getIntent().getStringExtra("account_name"));
 			accountName.setText(getIntent().getStringExtra("account_name"));
 			accountWxNo.setText(getIntent().getStringExtra("a_wx_no"));
-			
 		}
 	}
 	

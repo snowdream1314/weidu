@@ -1,21 +1,20 @@
 package com.caibo.weidu.activity;
 
 import com.caibo.weidu.R;
-import com.caibo.weidu.R.drawable;
-import com.caibo.weidu.R.id;
-import com.caibo.weidu.R.layout;
-import com.caibo.weidu.R.menu;
+import com.caibo.weidu.util.MyAsyncTask;
+import com.caibo.weidu.util.onDataFinishedListener;
 
 import android.app.ActivityGroup;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 public class MainActivity extends ActivityGroup {
@@ -23,11 +22,15 @@ public class MainActivity extends ActivityGroup {
 	private TabHost tabHost;
 	
 	private TextView tab_name;
+	private int tabTag = 0;
+	private String imei, registUrl;
+	private String session;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		final SharedPreferences.Editor editor = getSharedPreferences("registerData", MODE_PRIVATE).edit();
 		
 		this.tabHost = (TabHost) findViewById(R.id.mytabhost);
 		tabHost.setup(this.getLocalActivityManager());
@@ -35,7 +38,35 @@ public class MainActivity extends ActivityGroup {
 		tabHost.addTab(tabHost.newTabSpec("公众号").setIndicator(initView("公众号", R.drawable.account_selector)).setContent(new Intent(this, AccountActivity.class)));
 		tabHost.addTab(tabHost.newTabSpec("喜欢").setIndicator(initView("喜欢", R.drawable.like_selector)).setContent(new Intent(this, LikeActivity.class)));
 		tabHost.addTab(tabHost.newTabSpec("更多").setIndicator(initView("更多", R.drawable.more_selector)).setContent(new Intent(this, MoreActivity.class)));
-		tabHost.setCurrentTab(0);
+		
+		Intent intent = getIntent();
+		tabTag = intent.getIntExtra("tabTag", 0);
+		tabHost.setCurrentTab(tabTag);
+		
+		//注册
+		TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+		imei = tm.getDeviceId();
+		Log.i("imei", imei);
+		editor.putString("imei", imei);
+		editor.commit();
+		
+		try {
+			registUrl = "http://wx.xiyiyi.com/Mobile//UserAuth/registerUser?appcode=wxh&v=1.0&devicetype=android&deviceid=" + imei;
+			Log.i("registUrl", registUrl);
+			MyAsyncTask mTask = new MyAsyncTask(registUrl);
+			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
+				@Override
+				public void onDataSuccessfully(Object data) {
+					editor.putString("userData", data.toString());
+					editor.commit();
+					session = data.toString();
+					Log.i("session", session);
+				}
+			});
+			mTask.execute("string");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

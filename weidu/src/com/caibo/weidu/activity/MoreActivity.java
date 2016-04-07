@@ -1,27 +1,28 @@
 package com.caibo.weidu.activity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.MoreItem;
 import com.caibo.weidu.modle.MoreItemAdapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class MoreActivity extends Activity {
 	
 	private ListView moreListView;
 	private ArrayList<Message> moreItemList;
-//	private HashMap<String, Object> map;
-//	private ArrayList<HashMap<String, Object>> mapList;
+	private String itemName;
 	private final int text = 0;
 	private final int img_text = 1;
 	
@@ -36,6 +37,44 @@ public class MoreActivity extends Activity {
 			moreListView = (ListView) findViewById(R.id.more_listView);
 			MoreItemAdapter adapter = new MoreItemAdapter(MoreActivity.this, moreItemList);
 			moreListView.setAdapter(adapter);
+			
+			moreListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					if (moreItemList.get(arg2).what == img_text) {
+						Message msg = moreItemList.get(arg2);
+						itemName = ((MoreItem) (msg.obj)).getItemName();
+						if (itemName.equals("免费收录")) {
+							Intent intent = new Intent(MoreActivity.this, FreeCollectActivity.class);
+							startActivity(intent);
+						}
+						else if (itemName.equals("关于我们")) {
+							Intent intent = new Intent(MoreActivity.this, AboutUsActivity.class);
+							startActivity(intent);
+						}
+						else if (itemName.equals("商务合作")) {
+							Intent intent = new Intent(MoreActivity.this, BusinessCooperationActivity.class);
+							startActivity(intent);
+						}
+						else if (itemName.equals("给我点爱")) {
+							Intent intent = new Intent(MoreActivity.this, DonationActivity.class);
+							startActivity(intent);
+						}
+						else if (itemName.equals("意见反馈")) {
+							Intent intent = new Intent(MoreActivity.this, FeedBackActivity.class);
+							startActivity(intent);
+						}
+					}
+					else {
+						if (moreItemList.get(arg2).obj.toString().equals("关于")) {
+							Intent intent = new Intent(MoreActivity.this, AboutActivity.class);
+							startActivity(intent);
+						}
+					}
+				}
+			});
+			
+			
 		
 		} catch (Exception e) {
 			e.printStackTrace();

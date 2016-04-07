@@ -20,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -72,6 +73,7 @@ public class ListViewAdapter extends BaseAdapter {
 			holder.tab_line = (View) convertView.findViewById(R.id.tab_line);
 			holder.wave_line = (View) convertView.findViewById(R.id.wave_line);
 			holder.gridView = (GridView) convertView.findViewById(R.id.account_gridView);
+			holder.category = (LinearLayout) convertView.findViewById(R.id.category);
 			convertView.setTag(holder);
 		}
 		else {
@@ -85,6 +87,7 @@ public class ListViewAdapter extends BaseAdapter {
 				holder.account_category.setText(hashMap.get("category_name").toString());
 				
 				if (holder.account_category.getText().equals("热门推荐")) {
+					holder.category.setClickable(false);//使不能点击
 					holder.wave_line.setVisibility(View.VISIBLE);
 					holder.tab_image.setVisibility(ImageView.GONE);
 					holder.tab_line.setVisibility(View.GONE);
@@ -99,13 +102,12 @@ public class ListViewAdapter extends BaseAdapter {
 					
 					final ArrayList<HashMap<String, Object>> arrayListForChildcats = this.mListForChildCats.get(position);
 					//设置点击事件
-					holder.account_category.setOnClickListener(new OnClickListener() {
+					holder.category.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							Intent intent = new Intent(mContext, ChildCatsActivity.class);
 							intent.putExtra("category_name", hashMap.get("category_name").toString());
 							intent.putExtra("childCats", (Serializable) arrayListForChildcats);
-//							Log.i("arrayListForChildcats", arrayListForChildcats.toString());
 							mContext.startActivity(intent);
 						}
 					});
@@ -113,8 +115,6 @@ public class ListViewAdapter extends BaseAdapter {
 			}
 			if (holder.gridView != null) {
 				ArrayList<HashMap<String, Object>> arrayListForEveryGridView = this.mList.get(position);
-//				ArrayList<HashMap<String, Object>> mListImg = this.mListImg;
-//				ArrayList<HashMap<String, Object>> arrayListForEveryGridViewImg = this.mListImg.get(position);
 				final GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arrayListForEveryGridView, holder.account_category.getText().toString());
 				holder.gridView.setAdapter(gridViewAdapter);
 				
@@ -141,6 +141,7 @@ public class ListViewAdapter extends BaseAdapter {
 		ImageView tab_image;
 		View tab_line;
 		View wave_line;
+		LinearLayout category;
 	}
 	
 	

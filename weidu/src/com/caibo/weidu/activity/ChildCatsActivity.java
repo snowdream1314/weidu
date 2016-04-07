@@ -4,78 +4,98 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.caibo.weidu.R;
+import com.caibo.weidu.modle.Account;
+import com.caibo.weidu.modle.AccountFragment;
+import com.caibo.weidu.modle.PagerSlidingTabStrip;
+import com.caibo.weidu.modle.myPagerAdapter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ChildCatsActivity extends Activity {
+public class ChildCatsActivity extends FragmentActivity {
 	
 	private TextView childCatsTabName;
-	private RadioGroup radioGroup;
-	private LayoutInflater mInflater;
-	private int indecatorWidth;
-	private LinearLayout hsvTab;
+	private ImageView childCatsTagBack;
+	private Fragment fragment;
+	private PagerSlidingTabStrip tabs;
 	
 	private ArrayList<HashMap<String, Object>> arrayListForChildcats;
+	private ArrayList<Fragment> fragments;
+	private ArrayList<String> titles;
+	private ArrayList<Account> accounts;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_child_cats);
 		
-		childCatsTabName = (TextView) findViewById(R.id.childCats_tab_name);
-//		hsvTab = (LinearLayout) findViewById(R.id.hsv_tab);
-		
-		
-		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-//		LayoutInflater mInflater = LayoutInflater.from(this);
-		mInflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE); 
-		
-		Intent intent = getIntent();
-		childCatsTabName.setText(intent.getStringExtra("category_name"));
-		arrayListForChildcats = (ArrayList<HashMap<String, Object>>) intent.getSerializableExtra("childCats");
-		
-//		try {
-//			for (int i = 0; i < arrayListForChildcats.size(); i++) {
-//				View view = mInflater.inflate(R.layout.radio_group, hsvTab, false);
-//				TextView text = (TextView) view.findViewById(R.id.radioGroup_title);
-//				text.setText(arrayListForChildcats.get(i).get("childCat_name").toString());
-//				hsvTab.addView(view);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		
-		DisplayMetrics dm = new DisplayMetrics(); 
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		indecatorWidth = dm.widthPixels / 4;
-		
 		try {
+			childCatsTabName = (TextView) findViewById(R.id.childCats_tab_name);
+			childCatsTagBack = (ImageView) findViewById(R.id.childCats_tag_back);
+			ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
 			
-			radioGroup.removeAllViews();
+			Intent intent = getIntent();
+			childCatsTabName.setText(intent.getStringExtra("category_name"));
+			arrayListForChildcats = (ArrayList<HashMap<String, Object>>) intent.getSerializableExtra("childCats");
+			
+			childCatsTagBack.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(ChildCatsActivity.this, MainActivity.class);
+					startActivity(intent);
+					finish();
+				}
+			});
+			
+			initAccounts();
+		
+			fragments = new ArrayList<Fragment>();
+			titles = new ArrayList<String>();
 			for (int i = 0; i < arrayListForChildcats.size(); i++) {
-				RadioButton rb = (RadioButton) mInflater.inflate(R.layout.radio_group, null);
-				rb.setId(i);
-				rb.setText(arrayListForChildcats.get(i).get("childCat_name").toString());
-				rb.setLayoutParams(new LayoutParams(indecatorWidth, LayoutParams.MATCH_PARENT));
-				radioGroup.addView(rb);
+//				Log.i("title", arrayListForChildcats.get(i).get("childCat_name").toString());
+				titles.add(arrayListForChildcats.get(i).get("childCat_name").toString());
+				fragment = new AccountFragment(accounts, ChildCatsActivity.this);
+				fragments.add(fragment);
 			}
+			
+			pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
+			pager.setCurrentItem(0);
+			tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+			tabs.setViewPager(pager);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
-
+	
+	private void initAccounts() {
+		accounts = new ArrayList<Account>();
+//		Account apple = new Account("苹果", "apple", "这是一个苹果", R.drawable.account_default, R.drawable.three_stars);
+//		accounts.add(apple);
+//		
+//		Account bn = new Account("香蕉", "apple", "这是一个香蕉", R.drawable.wx_icon, R.drawable.three_stars);
+//		accounts.add(bn);
+//		
+//		Account bn2 = new Account("菠萝", "apple", "这是一个菠萝", R.drawable.account_default, R.drawable.three_stars);
+//		accounts.add(bn2);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		finish();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

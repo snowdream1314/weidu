@@ -22,7 +22,7 @@ import android.widget.TextView;
 public class GridViewAdapter extends BaseAdapter {
 	private Context mContext;
 	private ArrayList<HashMap<String, Object>> mList;
-	private int selectedPosition = -1 ;
+	private int selectedPosition = -10;
 	
 	//使用image-loader包加载图片
 	DisplayImageOptions options; //DisplayImageOptions是用于设置图片显示的类

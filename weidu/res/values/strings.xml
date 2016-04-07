@@ -10,5 +10,11 @@
     <string name="title_activity_account">AccountActivity</string>
     <string name="title_activity_account_detail">AccountDetailActivity</string>
     <string name="title_activity_child_cats">ChildCatsActivity</string>
+    <string name="title_activity_free_collect">FreeCollectActivity</string>
+    <string name="title_activity_about_us">AboutUsActivity</string>
+    <string name="title_activity_business_cooperation">BusinessCooperationActivity</string>
+    <string name="title_activity_donation">DonationActivity</string>
+    <string name="title_activity_feed_back">FeedBackActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 </resources>

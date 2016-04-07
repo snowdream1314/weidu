@@ -970,6 +970,44 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int multiChoiceItemLayout=0x7f0100cc;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int mySelectedTabTextColor=0x7f0100df;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int mySelectedTabTextSize=0x7f0100de;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int myTabTextColor=0x7f0100dd;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int myTabTextSize=0x7f0100dc;
         /**  Text to set as the content description for the navigation button
              located at the start of the toolbar. 
          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
@@ -1092,6 +1130,103 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int progressBarStyle=0x7f01007e;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsDividerColor=0x7f0100d3;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsDividerPadding=0x7f0100d6;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsIndicatorColor=0x7f0100d1;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsIndicatorHeight=0x7f0100d4;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsScrollOffset=0x7f0100d8;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsShouldExpand=0x7f0100da;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int pstsTabBackground=0x7f0100d9;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsTabPaddingLeftRight=0x7f0100d7;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsTextAllCaps=0x7f0100db;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsUnderlineColor=0x7f0100d2;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pstsUnderlineHeight=0x7f0100d5;
         /**  Background for the section containing the search query 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -1661,26 +1796,27 @@ containing a value of this type.
         public static final int abc_config_showMenuShortcutsWhenKeyboardPresent=0x7f050003;
     }
     public static final class color {
-        public static final int abc_background_cache_hint_selector_material_dark=0x7f06003a;
-        public static final int abc_background_cache_hint_selector_material_light=0x7f06003b;
-        public static final int abc_color_highlight_material=0x7f06003c;
+        public static final int abc_background_cache_hint_selector_material_dark=0x7f06003b;
+        public static final int abc_background_cache_hint_selector_material_light=0x7f06003c;
+        public static final int abc_color_highlight_material=0x7f06003d;
         public static final int abc_input_method_navigation_guard=0x7f060003;
-        public static final int abc_primary_text_disable_only_material_dark=0x7f06003d;
-        public static final int abc_primary_text_disable_only_material_light=0x7f06003e;
-        public static final int abc_primary_text_material_dark=0x7f06003f;
-        public static final int abc_primary_text_material_light=0x7f060040;
-        public static final int abc_search_url_text=0x7f060041;
+        public static final int abc_primary_text_disable_only_material_dark=0x7f06003e;
+        public static final int abc_primary_text_disable_only_material_light=0x7f06003f;
+        public static final int abc_primary_text_material_dark=0x7f060040;
+        public static final int abc_primary_text_material_light=0x7f060041;
+        public static final int abc_search_url_text=0x7f060042;
         public static final int abc_search_url_text_normal=0x7f060000;
         public static final int abc_search_url_text_pressed=0x7f060002;
         public static final int abc_search_url_text_selected=0x7f060001;
-        public static final int abc_secondary_text_material_dark=0x7f060042;
-        public static final int abc_secondary_text_material_light=0x7f060043;
+        public static final int abc_secondary_text_material_dark=0x7f060043;
+        public static final int abc_secondary_text_material_light=0x7f060044;
         public static final int accent_material_dark=0x7f060011;
         public static final int accent_material_light=0x7f060010;
         public static final int background_floating_material_dark=0x7f060008;
         public static final int background_floating_material_light=0x7f060009;
         public static final int background_material_dark=0x7f060006;
         public static final int background_material_light=0x7f060007;
+        public static final int background_tab_pressed=0x7f06003a;
         /**  White 50% 
          */
         public static final int bright_foreground_disabled_material_dark=0x7f06001a;
@@ -1751,8 +1887,8 @@ containing a value of this type.
         public static final int secondary_text_disabled_material_light=0x7f06002b;
         public static final int switch_thumb_disabled_material_dark=0x7f060016;
         public static final int switch_thumb_disabled_material_light=0x7f060017;
-        public static final int switch_thumb_material_dark=0x7f060044;
-        public static final int switch_thumb_material_light=0x7f060045;
+        public static final int switch_thumb_material_dark=0x7f060045;
+        public static final int switch_thumb_material_light=0x7f060046;
         public static final int switch_thumb_normal_material_dark=0x7f060014;
         public static final int switch_thumb_normal_material_light=0x7f060015;
     }
@@ -2028,39 +2164,47 @@ containing a value of this type.
         public static final int account_normal=0x7f02004e;
         public static final int account_select=0x7f02004f;
         public static final int account_selector=0x7f020050;
-        public static final int business_cooperation=0x7f020051;
-        public static final int donation=0x7f020052;
-        public static final int feed_back=0x7f020053;
-        public static final int free_collect=0x7f020054;
-        public static final int ic_launcher=0x7f020055;
-        public static final int like_none=0x7f020056;
-        public static final int like_normal=0x7f020057;
-        public static final int like_select=0x7f020058;
-        public static final int like_selector=0x7f020059;
-        public static final int line=0x7f02005a;
-        public static final int more_normal=0x7f02005b;
-        public static final int more_select=0x7f02005c;
-        public static final int more_selector=0x7f02005d;
-        public static final int notification_template_icon_bg=0x7f020067;
-        public static final int subscribe_normal=0x7f02005e;
-        public static final int subscribe_select=0x7f02005f;
-        public static final int tab=0x7f020060;
-        public static final int tag_back=0x7f020061;
-        public static final int tag_more=0x7f020062;
-        public static final int text_selector=0x7f020063;
-        public static final int three_stars=0x7f020064;
-        public static final int wave_line=0x7f020065;
-        public static final int waveline=0x7f020066;
+        public static final int background_tab=0x7f020051;
+        public static final int business_cooperation=0x7f020052;
+        public static final int donation=0x7f020053;
+        public static final int feed_back=0x7f020054;
+        public static final int free_collect=0x7f020055;
+        public static final int ic_launcher=0x7f020056;
+        public static final int like_none=0x7f020057;
+        public static final int like_normal=0x7f020058;
+        public static final int like_select=0x7f020059;
+        public static final int like_selector=0x7f02005a;
+        public static final int line=0x7f02005b;
+        public static final int more_normal=0x7f02005c;
+        public static final int more_select=0x7f02005d;
+        public static final int more_selector=0x7f02005e;
+        public static final int notification_template_icon_bg=0x7f02006b;
+        public static final int rectangle=0x7f02005f;
+        public static final int rectangle_button=0x7f020060;
+        public static final int subscribe_normal=0x7f020061;
+        public static final int subscribe_select=0x7f020062;
+        public static final int tab=0x7f020063;
+        public static final int tag_back=0x7f020064;
+        public static final int tag_more=0x7f020065;
+        public static final int text_selector=0x7f020066;
+        public static final int three_stars=0x7f020067;
+        public static final int wave_line=0x7f020068;
+        public static final int waveline=0x7f020069;
+        public static final int wx_icon=0x7f02006a;
     }
     public static final class id {
-        public static final int account_category=0x7f090051;
-        public static final int account_gridView=0x7f090055;
-        public static final int account_image=0x7f09006d;
-        public static final int account_img=0x7f09005a;
-        public static final int account_listView=0x7f090058;
-        public static final int account_name=0x7f09005b;
-        public static final int account_wx_no=0x7f09005d;
-        public static final int action0=0x7f090071;
+        public static final int aboutUs_tab_name=0x7f09005c;
+        public static final int aboutUs_tag_back=0x7f09005b;
+        public static final int about_tab_name=0x7f09005a;
+        public static final int about_tag_back=0x7f090059;
+        public static final int account_category=0x7f090053;
+        public static final int account_gridView=0x7f090057;
+        public static final int account_image=0x7f090080;
+        public static final int account_img=0x7f090060;
+        public static final int account_listView=0x7f09005e;
+        public static final int account_name=0x7f090061;
+        public static final int account_wx_no=0x7f090063;
+        public static final int action0=0x7f090084;
         public static final int action_bar=0x7f090041;
         public static final int action_bar_activity_content=0x7f090003;
         public static final int action_bar_container=0x7f090040;
@@ -2069,25 +2213,34 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f090022;
         public static final int action_bar_title=0x7f090021;
         public static final int action_context_bar=0x7f090042;
-        public static final int action_divider=0x7f090075;
+        public static final int action_divider=0x7f090088;
         public static final int action_menu_divider=0x7f090005;
         public static final int action_menu_presenter=0x7f090006;
         public static final int action_mode_bar=0x7f09003e;
         public static final int action_mode_bar_stub=0x7f09003d;
         public static final int action_mode_close_button=0x7f090023;
-        public static final int action_settings=0x7f09007f;
+        public static final int action_settings=0x7f090091;
         public static final int activity_chooser_view_content=0x7f090024;
         public static final int alertTitle=0x7f090030;
         public static final int always=0x7f090019;
-        public static final int authentication_information=0x7f090062;
+        public static final int authentication_information=0x7f090068;
         public static final int beginning=0x7f09001e;
+        public static final int bscp_tab_name=0x7f09006a;
+        public static final int bscp_tag_back=0x7f090069;
         public static final int buttonPanel=0x7f09002b;
-        public static final int cancel_action=0x7f090072;
-        public static final int category_tab=0x7f090052;
+        public static final int cancel_action=0x7f090085;
+        public static final int category=0x7f090052;
+        public static final int category_tab=0x7f090054;
         public static final int checkbox=0x7f090039;
-        public static final int childCats_tab_name=0x7f090064;
-        public static final int childCats_tag_back=0x7f090063;
-        public static final int chronometer=0x7f090078;
+        public static final int childCatsListView=0x7f090050;
+        public static final int childCats_account_img=0x7f09007b;
+        public static final int childCats_account_name=0x7f09007c;
+        public static final int childCats_account_notes=0x7f09007f;
+        public static final int childCats_account_wx_no=0x7f09007d;
+        public static final int childCats_score_star=0x7f09007e;
+        public static final int childCats_tab_name=0x7f09006c;
+        public static final int childCats_tag_back=0x7f09006b;
+        public static final int chronometer=0x7f09008b;
         public static final int collapseActionView=0x7f09001a;
         public static final int contentPanel=0x7f090031;
         public static final int custom=0x7f090037;
@@ -2095,34 +2248,40 @@ containing a value of this type.
         public static final int decor_content_parent=0x7f09003f;
         public static final int default_activity_button=0x7f090027;
         public static final int disableHome=0x7f09000d;
+        public static final int donation_tab_name=0x7f090070;
+        public static final int donation_tag_back=0x7f09006f;
         public static final int edit_query=0x7f090043;
         public static final int end=0x7f09001f;
-        public static final int end_padder=0x7f09007d;
+        public static final int end_padder=0x7f090090;
         public static final int expand_activities_button=0x7f090025;
         public static final int expanded_menu=0x7f090038;
-        public static final int function_introduction=0x7f090061;
+        public static final int feedback_editText=0x7f090073;
+        public static final int feedback_tab_name=0x7f090072;
+        public static final int feedback_tag_back=0x7f090071;
+        public static final int freecollect_tab_name=0x7f090075;
+        public static final int freecollect_tag_back=0x7f090074;
+        public static final int function_introduction=0x7f090067;
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f09000e;
-        public static final int hsv=0x7f090065;
         public static final int icon=0x7f090029;
         public static final int ifRoom=0x7f09001b;
         public static final int image=0x7f090026;
-        public static final int image_itemMore=0x7f09006e;
-        public static final int img_likeNone=0x7f090068;
-        public static final int info=0x7f09007c;
-        public static final int like=0x7f09005e;
-        public static final int like_listView=0x7f09006a;
-        public static final int line1=0x7f090076;
-        public static final int line3=0x7f09007a;
+        public static final int image_itemMore=0x7f090081;
+        public static final int img_likeNone=0x7f090076;
+        public static final int info=0x7f09008f;
+        public static final int like=0x7f090064;
+        public static final int like_listView=0x7f090078;
+        public static final int line1=0x7f090089;
+        public static final int line3=0x7f09008d;
         public static final int listMode=0x7f09000a;
         public static final int list_item=0x7f090028;
-        public static final int listview_item=0x7f090050;
-        public static final int media_actions=0x7f090074;
+        public static final int listview_item=0x7f090051;
+        public static final int media_actions=0x7f090087;
         public static final int middle=0x7f090020;
-        public static final int more_listView=0x7f09006c;
+        public static final int more_listView=0x7f09007a;
         public static final int multiply=0x7f090014;
-        public static final int mytabhost=0x7f09006b;
-        public static final int name_itemMore=0x7f09006f;
+        public static final int mytabhost=0x7f090079;
+        public static final int name_itemMore=0x7f090082;
         public static final int never=0x7f09001c;
         public static final int none=0x7f09000f;
         public static final int normal=0x7f09000b;
@@ -2130,9 +2289,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
         public static final int radio=0x7f09003b;
-        public static final int radioGroup=0x7f090066;
-        public static final int radioGroup_title=0x7f09007e;
-        public static final int score_star=0x7f09005c;
+        public static final int score_star=0x7f090062;
         public static final int screen=0x7f090015;
         public static final int scrollIndicatorDown=0x7f090035;
         public static final int scrollIndicatorUp=0x7f090032;
@@ -2157,28 +2314,29 @@ containing a value of this type.
         public static final int src_atop=0x7f090016;
         public static final int src_in=0x7f090017;
         public static final int src_over=0x7f090018;
-        public static final int status_bar_latest_event_content=0x7f090073;
+        public static final int status_bar_latest_event_content=0x7f090086;
         public static final int submit_area=0x7f09004c;
-        public static final int subscribe=0x7f09005f;
-        public static final int subscribe_text=0x7f090060;
+        public static final int subscribe=0x7f090065;
+        public static final int subscribe_text=0x7f090066;
         public static final int tabMode=0x7f09000c;
-        public static final int tab_image=0x7f090053;
-        public static final int tab_line=0x7f090054;
-        public static final int tab_name=0x7f090057;
-        public static final int tag_back=0x7f090059;
-        public static final int tag_itemMore=0x7f090070;
-        public static final int text=0x7f09007b;
-        public static final int text2=0x7f090079;
+        public static final int tab_image=0x7f090055;
+        public static final int tab_line=0x7f090056;
+        public static final int tab_name=0x7f09005d;
+        public static final int tabs=0x7f09006d;
+        public static final int tag_back=0x7f09005f;
+        public static final int tag_itemMore=0x7f090083;
+        public static final int text=0x7f09008e;
+        public static final int text2=0x7f09008c;
         public static final int textSpacerNoButtons=0x7f090034;
-        public static final int text_likeNone=0x7f090069;
-        public static final int time=0x7f090077;
+        public static final int text_likeNone=0x7f090077;
+        public static final int time=0x7f09008a;
         public static final int title=0x7f09002a;
         public static final int title_template=0x7f09002f;
         public static final int topPanel=0x7f09002e;
         public static final int up=0x7f090001;
         public static final int useLogo=0x7f090013;
-        public static final int viewPager=0x7f090067;
-        public static final int wave_line=0x7f090056;
+        public static final int viewPager=0x7f09006e;
+        public static final int wave_line=0x7f090058;
         public static final int withText=0x7f09001d;
         public static final int wrap_content=0x7f090009;
     }
@@ -2244,39 +2402,52 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f030016;
         public static final int abc_search_view=0x7f030017;
         public static final int abc_select_dialog_material=0x7f030018;
-        public static final int account_listview=0x7f030019;
-        public static final int activity_account=0x7f03001a;
-        public static final int activity_account_detail=0x7f03001b;
-        public static final int activity_child_cats=0x7f03001c;
-        public static final int activity_like=0x7f03001d;
-        public static final int activity_main=0x7f03001e;
-        public static final int activity_more=0x7f03001f;
-        public static final int modle_account=0x7f030020;
-        public static final int more_item=0x7f030021;
-        public static final int more_item_text=0x7f030022;
-        public static final int notification_media_action=0x7f030023;
-        public static final int notification_media_cancel_action=0x7f030024;
-        public static final int notification_template_big_media=0x7f030025;
-        public static final int notification_template_big_media_narrow=0x7f030026;
-        public static final int notification_template_lines=0x7f030027;
-        public static final int notification_template_media=0x7f030028;
-        public static final int notification_template_part_chronometer=0x7f030029;
-        public static final int notification_template_part_time=0x7f03002a;
-        public static final int radio_group=0x7f03002b;
-        public static final int select_dialog_item_material=0x7f03002c;
-        public static final int select_dialog_multichoice_material=0x7f03002d;
-        public static final int select_dialog_singlechoice_material=0x7f03002e;
-        public static final int support_simple_spinner_dropdown_item=0x7f03002f;
-        public static final int tab_layout=0x7f030030;
+        public static final int account_fragment=0x7f030019;
+        public static final int account_listview=0x7f03001a;
+        public static final int activity_about=0x7f03001b;
+        public static final int activity_about_us=0x7f03001c;
+        public static final int activity_account=0x7f03001d;
+        public static final int activity_account_detail=0x7f03001e;
+        public static final int activity_business_cooperation=0x7f03001f;
+        public static final int activity_child_cats=0x7f030020;
+        public static final int activity_donation=0x7f030021;
+        public static final int activity_feed_back=0x7f030022;
+        public static final int activity_free_collect=0x7f030023;
+        public static final int activity_like=0x7f030024;
+        public static final int activity_main=0x7f030025;
+        public static final int activity_more=0x7f030026;
+        public static final int childcats_account_listview=0x7f030027;
+        public static final int modle_account=0x7f030028;
+        public static final int more_item=0x7f030029;
+        public static final int more_item_text=0x7f03002a;
+        public static final int notification_media_action=0x7f03002b;
+        public static final int notification_media_cancel_action=0x7f03002c;
+        public static final int notification_template_big_media=0x7f03002d;
+        public static final int notification_template_big_media_narrow=0x7f03002e;
+        public static final int notification_template_lines=0x7f03002f;
+        public static final int notification_template_media=0x7f030030;
+        public static final int notification_template_part_chronometer=0x7f030031;
+        public static final int notification_template_part_time=0x7f030032;
+        public static final int select_dialog_item_material=0x7f030033;
+        public static final int select_dialog_multichoice_material=0x7f030034;
+        public static final int select_dialog_singlechoice_material=0x7f030035;
+        public static final int support_simple_spinner_dropdown_item=0x7f030036;
+        public static final int tab_layout=0x7f030037;
     }
     public static final class menu {
-        public static final int account=0x7f0c0000;
-        public static final int account_detail=0x7f0c0001;
-        public static final int child_cats=0x7f0c0002;
-        public static final int group=0x7f0c0003;
-        public static final int like=0x7f0c0004;
-        public static final int main=0x7f0c0005;
-        public static final int more=0x7f0c0006;
+        public static final int about=0x7f0c0000;
+        public static final int about_us=0x7f0c0001;
+        public static final int account=0x7f0c0002;
+        public static final int account_detail=0x7f0c0003;
+        public static final int business_cooperation=0x7f0c0004;
+        public static final int child_cats=0x7f0c0005;
+        public static final int donation=0x7f0c0006;
+        public static final int feed_back=0x7f0c0007;
+        public static final int free_collect=0x7f0c0008;
+        public static final int group=0x7f0c0009;
+        public static final int like=0x7f0c000a;
+        public static final int main=0x7f0c000b;
+        public static final int more=0x7f0c000c;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -2354,9 +2525,15 @@ containing a value of this type.
          [CHAR LIMIT=4] 
          */
         public static final int status_bar_notification_info_overflow=0x7f0a0011;
+        public static final int title_activity_about=0x7f0a0022;
+        public static final int title_activity_about_us=0x7f0a001e;
         public static final int title_activity_account=0x7f0a001a;
         public static final int title_activity_account_detail=0x7f0a001b;
+        public static final int title_activity_business_cooperation=0x7f0a001f;
         public static final int title_activity_child_cats=0x7f0a001c;
+        public static final int title_activity_donation=0x7f0a0020;
+        public static final int title_activity_feed_back=0x7f0a0021;
+        public static final int title_activity_free_collect=0x7f0a001d;
         public static final int title_activity_group=0x7f0a0019;
         public static final int title_activity_like=0x7f0a0017;
         public static final int title_activity_more=0x7f0a0018;
@@ -6450,6 +6627,275 @@ containing a value of this type.
           @attr name com.caibo.weidu:preserveIconSpacing
         */
         public static final int MenuView_preserveIconSpacing = 7;
+        /** Attributes that can be used with a PagerSlidingTabStrip.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_mySelectedTabTextColor com.caibo.weidu:mySelectedTabTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_mySelectedTabTextSize com.caibo.weidu:mySelectedTabTextSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_myTabTextColor com.caibo.weidu:myTabTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_myTabTextSize com.caibo.weidu:myTabTextSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsDividerColor com.caibo.weidu:pstsDividerColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsDividerPadding com.caibo.weidu:pstsDividerPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsIndicatorColor com.caibo.weidu:pstsIndicatorColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsIndicatorHeight com.caibo.weidu:pstsIndicatorHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsScrollOffset com.caibo.weidu:pstsScrollOffset}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsShouldExpand com.caibo.weidu:pstsShouldExpand}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsTabBackground com.caibo.weidu:pstsTabBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsTabPaddingLeftRight com.caibo.weidu:pstsTabPaddingLeftRight}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsTextAllCaps com.caibo.weidu:pstsTextAllCaps}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsUnderlineColor com.caibo.weidu:pstsUnderlineColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PagerSlidingTabStrip_pstsUnderlineHeight com.caibo.weidu:pstsUnderlineHeight}</code></td><td></td></tr>
+           </table>
+           @see #PagerSlidingTabStrip_mySelectedTabTextColor
+           @see #PagerSlidingTabStrip_mySelectedTabTextSize
+           @see #PagerSlidingTabStrip_myTabTextColor
+           @see #PagerSlidingTabStrip_myTabTextSize
+           @see #PagerSlidingTabStrip_pstsDividerColor
+           @see #PagerSlidingTabStrip_pstsDividerPadding
+           @see #PagerSlidingTabStrip_pstsIndicatorColor
+           @see #PagerSlidingTabStrip_pstsIndicatorHeight
+           @see #PagerSlidingTabStrip_pstsScrollOffset
+           @see #PagerSlidingTabStrip_pstsShouldExpand
+           @see #PagerSlidingTabStrip_pstsTabBackground
+           @see #PagerSlidingTabStrip_pstsTabPaddingLeftRight
+           @see #PagerSlidingTabStrip_pstsTextAllCaps
+           @see #PagerSlidingTabStrip_pstsUnderlineColor
+           @see #PagerSlidingTabStrip_pstsUnderlineHeight
+         */
+        public static final int[] PagerSlidingTabStrip = {
+            0x7f0100d1, 0x7f0100d2, 0x7f0100d3, 0x7f0100d4,
+            0x7f0100d5, 0x7f0100d6, 0x7f0100d7, 0x7f0100d8,
+            0x7f0100d9, 0x7f0100da, 0x7f0100db, 0x7f0100dc,
+            0x7f0100dd, 0x7f0100de, 0x7f0100df
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#mySelectedTabTextColor}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:mySelectedTabTextColor
+        */
+        public static final int PagerSlidingTabStrip_mySelectedTabTextColor = 14;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#mySelectedTabTextSize}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:mySelectedTabTextSize
+        */
+        public static final int PagerSlidingTabStrip_mySelectedTabTextSize = 13;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#myTabTextColor}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:myTabTextColor
+        */
+        public static final int PagerSlidingTabStrip_myTabTextColor = 12;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#myTabTextSize}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:myTabTextSize
+        */
+        public static final int PagerSlidingTabStrip_myTabTextSize = 11;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsDividerColor}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsDividerColor
+        */
+        public static final int PagerSlidingTabStrip_pstsDividerColor = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsDividerPadding}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsDividerPadding
+        */
+        public static final int PagerSlidingTabStrip_pstsDividerPadding = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsIndicatorColor}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsIndicatorColor
+        */
+        public static final int PagerSlidingTabStrip_pstsIndicatorColor = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsIndicatorHeight}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsIndicatorHeight
+        */
+        public static final int PagerSlidingTabStrip_pstsIndicatorHeight = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsScrollOffset}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsScrollOffset
+        */
+        public static final int PagerSlidingTabStrip_pstsScrollOffset = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsShouldExpand}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsShouldExpand
+        */
+        public static final int PagerSlidingTabStrip_pstsShouldExpand = 9;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsTabBackground}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.caibo.weidu:pstsTabBackground
+        */
+        public static final int PagerSlidingTabStrip_pstsTabBackground = 8;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsTabPaddingLeftRight}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsTabPaddingLeftRight
+        */
+        public static final int PagerSlidingTabStrip_pstsTabPaddingLeftRight = 6;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsTextAllCaps}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsTextAllCaps
+        */
+        public static final int PagerSlidingTabStrip_pstsTextAllCaps = 10;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsUnderlineColor}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsUnderlineColor
+        */
+        public static final int PagerSlidingTabStrip_pstsUnderlineColor = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.caibo.weidu.R.attr#pstsUnderlineHeight}
+          attribute's value can be found in the {@link #PagerSlidingTabStrip} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.caibo.weidu:pstsUnderlineHeight
+        */
+        public static final int PagerSlidingTabStrip_pstsUnderlineHeight = 4;
         /** Attributes that can be used with a PopupWindow.
            <p>Includes the following attributes:</p>
            <table>
