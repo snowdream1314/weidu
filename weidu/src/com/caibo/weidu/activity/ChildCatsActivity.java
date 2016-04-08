@@ -3,17 +3,25 @@ package com.caibo.weidu.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.Account;
 import com.caibo.weidu.modle.AccountFragment;
 import com.caibo.weidu.modle.PagerSlidingTabStrip;
 import com.caibo.weidu.modle.myPagerAdapter;
+import com.caibo.weidu.util.MyAsyncTask;
+import com.caibo.weidu.util.onDataFinishedListener;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +41,11 @@ public class ChildCatsActivity extends FragmentActivity {
 	private ArrayList<Fragment> fragments;
 	private ArrayList<String> titles;
 	private ArrayList<Account> accounts;
+	private String baseUrl, childCatsId, session;
+	private JSONArray jsonAccounts; 
+	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
+	private int accountScore;
+	private String title;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +54,19 @@ public class ChildCatsActivity extends FragmentActivity {
 		setContentView(R.layout.activity_child_cats);
 		
 		try {
+			SharedPreferences pref = getSharedPreferences("registerData", MODE_PRIVATE);
+			String userData = pref.getString("userData", "");
+			JSONObject jsonObject = new JSONObject(userData);
+			session = jsonObject.getJSONObject("data").getString("session");
+//			Log.i("session", session);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
 			childCatsTabName = (TextView) findViewById(R.id.childCats_tab_name);
 			childCatsTagBack = (ImageView) findViewById(R.id.childCats_tag_back);
-			ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+//			ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
 			
 			Intent intent = getIntent();
 			childCatsTabName.setText(intent.getStringExtra("category_name"));
@@ -58,37 +81,76 @@ public class ChildCatsActivity extends FragmentActivity {
 				}
 			});
 			
-			initAccounts();
+//			initAccounts();
 		
-			fragments = new ArrayList<Fragment>();
+//			fragments = new ArrayList<Fragment>();
 			titles = new ArrayList<String>();
 			for (int i = 0; i < arrayListForChildcats.size(); i++) {
 //				Log.i("title", arrayListForChildcats.get(i).get("childCat_name").toString());
-				titles.add(arrayListForChildcats.get(i).get("childCat_name").toString());
-				fragment = new AccountFragment(accounts, ChildCatsActivity.this);
-				fragments.add(fragment);
+				title = arrayListForChildcats.get(i).get("childCat_name").toString();
+				titles.add(title);
+				childCatsId = arrayListForChildcats.get(i).get("childCat_id").toString();
+				initAccounts(title, childCatsId);
+//				Log.i("accounts", accounts.toString());
+//				fragment = new AccountFragment(accounts, ChildCatsActivity.this);
+//				fragments.add(fragment);
 			}
 			
-			pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
-			pager.setCurrentItem(0);
-			tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-			tabs.setViewPager(pager);
+//			pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
+//			pager.setCurrentItem(0);
+//			tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+//			tabs.setViewPager(pager);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void initAccounts() {
-		accounts = new ArrayList<Account>();
-//		Account apple = new Account("苹果", "apple", "这是一个苹果", R.drawable.account_default, R.drawable.three_stars);
-//		accounts.add(apple);
-//		
-//		Account bn = new Account("香蕉", "apple", "这是一个香蕉", R.drawable.wx_icon, R.drawable.three_stars);
-//		accounts.add(bn);
-//		
-//		Account bn2 = new Account("菠萝", "apple", "这是一个菠萝", R.drawable.account_default, R.drawable.three_stars);
-//		accounts.add(bn2);
+	private void initAccounts(String title, String childCatsId) {
+		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+		fragments = new ArrayList<Fragment>();
+		baseUrl = "http://wx.xiyiyi.com/Mobile//Account/accounts?appcode=wxh&v=1&devicetype=android&deviceid=864572010615121&wxhsession=" + session + "&ac_id=" + childCatsId + "&p=1";
+//		Log.i("baseUrl", baseUrl);
+//		accounts = new ArrayList<Account>();
+		
+		try {
+			MyAsyncTask mTask = new MyAsyncTask(baseUrl);
+			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
+				@Override
+				public void onDataSuccessfully(Object data) {
+					ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+					String account_data = data.toString();
+					try {
+//					Log.i("account_data", account_data);
+						accounts = new ArrayList<Account>();
+						JSONObject jsonObject = new JSONObject(account_data);
+						jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
+						for (int i = 0; i < jsonAccounts.length(); i++) {
+							accountName = jsonAccounts.getJSONObject(i).getString("a_name");
+							accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
+							accountId = jsonAccounts.getJSONObject(i).getString("a_id");
+							accountLogoLink = jsonAccounts.getJSONObject(i).getString("a_logo");
+							accountDesc = jsonAccounts.getJSONObject(i).getString("a_desc");
+							accountValidReason = jsonAccounts.getJSONObject(i).getString("a_valid_reason");
+							accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
+							Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
+							accounts.add(account);
+						}
+						fragment = new AccountFragment(accounts, ChildCatsActivity.this);
+						fragments.add(fragment);
+						pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
+						pager.setCurrentItem(0);
+						tabs.setViewPager(pager);
+//						Log.i("accounts", accounts.toString());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mTask.execute("string");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

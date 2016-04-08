@@ -46,13 +46,13 @@ public class MainActivity extends ActivityGroup {
 		//зЂВс
 		TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
 		imei = tm.getDeviceId();
-		Log.i("imei", imei);
+//		Log.i("imei", imei);
 		editor.putString("imei", imei);
 		editor.commit();
 		
 		try {
 			registUrl = "http://wx.xiyiyi.com/Mobile//UserAuth/registerUser?appcode=wxh&v=1.0&devicetype=android&deviceid=" + imei;
-			Log.i("registUrl", registUrl);
+//			Log.i("registUrl", registUrl);
 			MyAsyncTask mTask = new MyAsyncTask(registUrl);
 			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
 				@Override
@@ -60,7 +60,7 @@ public class MainActivity extends ActivityGroup {
 					editor.putString("userData", data.toString());
 					editor.commit();
 					session = data.toString();
-					Log.i("session", session);
+//					Log.i("session", session);
 				}
 			});
 			mTask.execute("string");

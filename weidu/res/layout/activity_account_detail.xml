@@ -7,6 +7,7 @@
     <LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:background="#f7f7f7"
 	    android:orientation="vertical">
 	    
         <!-- 标题栏 -->
@@ -38,21 +39,25 @@
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:paddingTop="25dp"
+	        android:paddingBottom="25dp"
+	        android:background="#ffffff"
 	        android:orientation="horizontal">
 	        
 	        <ImageView 
 	            android:id="@+id/account_img"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
+	            android:layout_width="80dp"
+        		android:layout_height="80dp"
 	            android:layout_gravity="center"
-	            android:paddingLeft="15dp"
-	            android:layout_margin="15dp"/>
+	            android:gravity="center"
+	            android:layout_marginLeft="30dp"/>
 	        
 	        <LinearLayout 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_marginTop="15dp"
-	            android:layout_marginBottom="15dp"
+	            android:layout_marginLeft="20dp"
+	            android:layout_marginTop="10dp"
+	            android:layout_marginBottom="10dp"
 	            android:layout_gravity="center"
 	            android:orientation="vertical">
 		        
@@ -67,8 +72,8 @@
 	                android:id="@+id/score_star"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:layout_marginTop="3dp"
-	                android:background="@drawable/three_stars" />
+	                android:paddingLeft="3dp"
+	                android:layout_marginTop="3dp" />
 	            
 	            <LinearLayout 
 	                android:layout_width="wrap_content"
@@ -86,6 +91,8 @@
 	                    android:id="@+id/account_wx_no"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
+	                    android:singleLine="false"
+	                    android:maxLines="2"
 	                    android:textSize="16sp" />
 	                
 	            </LinearLayout>
@@ -97,13 +104,13 @@
 	    <ImageView
 		    android:layout_width="match_parent"
 		    android:layout_height="1dp"
-		    android:layout_marginTop="10dp"
 		    android:background="#ebebeb" />
 	    
 	    <!-- 喜欢和订阅 -->
 	    <LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="#ffffff"
 	        android:paddingTop="10dp"
 	        android:paddingBottom="10dp"
 	        android:orientation="horizontal">
@@ -177,6 +184,7 @@
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="#ffffff"
 	        android:orientation="vertical">
 	        
 	        <LinearLayout 
@@ -214,8 +222,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:padding="15dp"
-                android:text="功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textColor="#696969" />
 	        
 	    </LinearLayout>
 	    
@@ -229,7 +237,8 @@
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	         android:paddingTop="10dp"
+	        android:background="#ffffff"
+	        android:paddingTop="10dp"
 	        android:orientation="vertical">
 	        
 	        <LinearLayout 
@@ -266,22 +275,32 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:layout_marginLeft="5dp"
-                android:text="功能介绍功能介绍功能介绍功能介绍功能介绍功能介绍介绍功能介绍功能介绍功能介绍功能介绍功能介绍"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textColor="#696969"/>
 	        
 	    </LinearLayout>
 	    
-	    <RelativeLayout 
+	    <LinearLayout 
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content">
+	        android:layout_height="wrap_content"
+	        android:background="#f7f7f7"
+	        android:orientation="horizontal">
 		    <TextView 
-	              android:layout_width="match_parent"
-	              android:layout_height="wrap_content"
-	              android:padding="15dp"
-	              android:text="网址"
-	              android:textColor="#000000"
-	              android:textSize="18sp"/>
-	    </RelativeLayout>
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dp"
+	            android:padding="15dp"
+	            android:text="网址:"
+	            android:textColor="#696969"
+	            android:textSize="18sp"/>
+		    <TextView 
+		        android:id="@+id/account_url"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:padding="15dp"
+	            android:textColor="#696969"
+	            android:textSize="18sp"/>
+	    </LinearLayout>
 	    
 	</LinearLayout>
 

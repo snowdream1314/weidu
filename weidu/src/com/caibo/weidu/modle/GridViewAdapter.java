@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.caibo.weidu.R;
 import com.caibo.weidu.activity.AccountDetailActivity;
-import com.caibo.weidu.activity.MainActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
@@ -103,6 +102,7 @@ public class GridViewAdapter extends BaseAdapter {
 				intent.putExtra("account_name", holder.account_name.getText());
 				intent.putExtra("account_img", holder.account_image.getDrawingCache());
 				intent.putExtra("a_wx_no", hashMap.get("a_wx_no").toString());
+				intent.putExtra("a_id", hashMap.get("a_id").toString());
 				this.mContext.startActivity(intent);
 			}
 		}

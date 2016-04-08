@@ -1,13 +1,20 @@
 package com.caibo.weidu.activity;
 
+import org.json.JSONObject;
+
 import com.caibo.weidu.R;
+import com.caibo.weidu.util.MyAsyncTask;
+import com.caibo.weidu.util.onDataFinishedListener;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,16 +24,34 @@ import android.widget.TextView;
 
 public class AccountDetailActivity extends Activity {
 	
-	private ImageView accountImg, like, subscribe, tagBack;
-	private TextView tabName, accountName, accountWxNo, subscribeText;
+	private ImageView accountImg, like, subscribe, tagBack, scoreStar;
+	private TextView tabName, accountName, accountWxNo, subscribeText, functionIntroduction, authenticationInformation, accountUrl;
 	private boolean from_childCatsActivity = false;
 	
+	private String baseUrl, requestUrl, session;
+	private String account_id, account_name, account_wx_no, account_desc, account_valid_reason, account_url, account_message;
+	private  int account_score;
+	private static String  account_logo_link;
+	
+	//使用image-loader包加载图片
+	DisplayImageOptions options; //DisplayImageOptions是用于设置图片显示的类
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account_detail);
 		
+		options = new DisplayImageOptions.Builder()
+				.showStubImage(R.drawable.account_image)	// 设置图片下载期间显示的图片
+				.showImageForEmptyUri(R.drawable.account_image)		// 设置图片Uri为空或是错误的时候显示的图片  
+				.showImageOnFail(R.drawable.account_image)		// 设置图片加载或解码过程中发生错误显示的图片
+				.cacheInMemory(true)		 // 设置下载的图片是否缓存在内存中
+				.cacheOnDisc(true)		// 设置下载的图片是否缓存在SD卡中
+				.displayer(new RoundedBitmapDisplayer(80))	// 设置成圆角图片
+				.build();	// 创建配置过得DisplayImageOption对象  
+		
 		accountImg = (ImageView) findViewById(R.id.account_img);
+		scoreStar = (ImageView) findViewById(R.id.score_star);
 		like = (ImageView) findViewById(R.id.like);
 		subscribe = (ImageView) findViewById(R.id.subscribe);
 		tagBack = (ImageView) findViewById(R.id.tag_back);
@@ -34,6 +59,10 @@ public class AccountDetailActivity extends Activity {
 		accountName = (TextView) findViewById(R.id.account_name);
 		accountWxNo = (TextView) findViewById(R.id.account_wx_no);
 		subscribeText = (TextView) findViewById(R.id.subscribe_text);
+		functionIntroduction = (TextView) findViewById(R.id.function_introduction);
+		authenticationInformation = (TextView) findViewById(R.id.authentication_information);
+		accountUrl = (TextView) findViewById(R.id.account_url);
+		
 		Intent intent = getIntent();
 		from_childCatsActivity = intent.getBooleanExtra("from_childCatsActivity", false);
 		
@@ -41,14 +70,8 @@ public class AccountDetailActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				finish();
-//				if (from_childCatsActivity) {
-//					Intent intent_childcats = new Intent(AccountDetailActivity.this, ChildCatsActivity.class);
-//					startActivity(intent_childcats);
-//				}
-//				else {
-					Intent intent_main = new Intent(AccountDetailActivity.this, MainActivity.class);
-					startActivity(intent_main);
-//				}
+				Intent intent_main = new Intent(AccountDetailActivity.this, MainActivity.class);
+				startActivity(intent_main);
 			}
 		});
 		
@@ -67,22 +90,88 @@ public class AccountDetailActivity extends Activity {
 			}
 		});
 		
-//		if (intent != null && from_childCatsActivity) {
-//			tabName.setText(getIntent().getStringExtra("account_name"));
-//			accountName.setText(getIntent().getStringExtra("account_name"));
-//			accountWxNo.setText(getIntent().getStringExtra("a_wx_no"));
-//		}
-		if (intent != null && intent.getParcelableExtra("account_img") != null) {
-//			if (from_childCatsActivity)
-			Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("account_img");
-			Matrix matrix = new Matrix();//放大图片
-			matrix.postScale(1.2f, 1.2f);
-			Bitmap bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-			accountImg.setImageBitmap(bm);
+		if (intent != null) {
 			
-			tabName.setText(getIntent().getStringExtra("account_name"));
-			accountName.setText(getIntent().getStringExtra("account_name"));
-			accountWxNo.setText(getIntent().getStringExtra("a_wx_no"));
+			account_id = getIntent().getStringExtra("a_id");
+//			Log.i("account_id", account_id);
+			
+			try {
+				SharedPreferences pref = getSharedPreferences("registerData", MODE_PRIVATE);
+				String userData = pref.getString("userData", "");
+				JSONObject jsonObject = new JSONObject(userData);
+				session = jsonObject.getJSONObject("data").getString("session");
+//				Log.i("session", session);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				baseUrl = "http://wx.xiyiyi.com/Mobile/Account/accountDetail?appcode=wxh&v=1&devicetype=android&deviceid=864572010615121&format=clientdetailview_v1&wxhsession=" + session + "&a_id=" + account_id;
+				MyAsyncTask mTask = new MyAsyncTask(baseUrl);
+				mTask.setOnDataFinishedListener(new onDataFinishedListener() {
+					@Override
+					public void onDataSuccessfully(Object data) {
+						String account_data = data.toString();
+						try {
+							Log.i("account_data", account_data);
+							JSONObject jsonObject = new JSONObject(account_data);
+							account_name = jsonObject.getJSONObject("data").getString("a_name");
+							account_logo_link = jsonObject.getJSONObject("data").getString("a_logo");
+							account_wx_no = jsonObject.getJSONObject("data").getString("a_wx_no");
+							account_desc = jsonObject.getJSONObject("data").getString("a_desc");
+							account_valid_reason = jsonObject.getJSONObject("data").getString("a_valid_reason");
+							account_url = jsonObject.getJSONObject("data").getString("a_url");
+							account_message = jsonObject.getString("message");
+							account_score = Integer.valueOf(jsonObject.getJSONObject("data").getString("a_rank"));
+							
+							tabName.setText(account_name);
+							accountName.setText(account_name);
+							accountWxNo.setText(account_wx_no);
+							if (account_desc.length() != 0) {
+								functionIntroduction.setText(account_desc);
+							} else {
+								functionIntroduction.setText("该公众号暂无介绍");
+							}
+							if (account_valid_reason.length() != 0) {
+								authenticationInformation.setText(account_valid_reason);
+							} else {
+								authenticationInformation.setText("该公众号暂无认证信息");
+							}
+							
+							accountUrl.setText(account_url);
+							switch (account_score) {
+							case 1:
+								scoreStar.setImageResource(R.drawable.star_1);
+								break;
+							case 2:
+								scoreStar.setImageResource(R.drawable.star_2);
+								break;
+							case 3:
+								scoreStar.setImageResource(R.drawable.star_3);
+								break;
+							case 4:
+								scoreStar.setImageResource(R.drawable.star_4);
+								break;
+							case 5:
+								scoreStar.setImageResource(R.drawable.star_5);
+								break;
+							default:
+								break;
+							}
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						Log.i("account_logo_link", account_logo_link);
+						//图片加载
+						ImageLoader.getInstance().displayImage(account_logo_link, accountImg, options);
+					}
+				});
+				mTask.execute("string");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

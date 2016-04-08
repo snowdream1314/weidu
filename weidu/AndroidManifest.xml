@@ -44,11 +44,13 @@
         </activity>
         <activity
             android:name=".activity.AccountDetailActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_account_detail" >
         </activity>
         <activity
             android:name=".activity.ChildCatsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_child_cats" >
         </activity>
         <activity

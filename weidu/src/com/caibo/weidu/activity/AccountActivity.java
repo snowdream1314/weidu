@@ -76,6 +76,7 @@ public class AccountActivity extends Activity {
 						//分类
 						categoryHashMap = new HashMap<String, Object>();
 						categoryHashMap.put("category_name", appJsonDatas.getJSONObject(i).getString("ac_name"));
+						categoryHashMap.put("category_id", appJsonDatas.getJSONObject(i).getString("ac_id"));
 						categoryList.add(categoryHashMap);
 						
 						//分类下的公众号
@@ -88,6 +89,7 @@ public class AccountActivity extends Activity {
 							accountHashMap.put("account_name", recommendAccounts.getJSONObject(j).getString("a_name"));
 							accountHashMap.put("a_logo_link", recommendAccounts.getJSONObject(j).getString("a_logo"));
 							accountHashMap.put("a_wx_no", recommendAccounts.getJSONObject(j).getString("a_name"));
+							accountHashMap.put("a_id", recommendAccounts.getJSONObject(j).getString("a_id"));
 							arrayListForEveryGridView.add(accountHashMap);
 						}
 						
