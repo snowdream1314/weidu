@@ -1,7 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView 
+    android:layout_width="match_parent" xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
+    android:scrollbars="none"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f7f7f7"
     tools:context="com.caibo.weidu.activity.AccountDetailActivity" >
 
     <LinearLayout 
@@ -149,6 +155,7 @@
 	        
 	        <!-- 订阅 -->
 	        <LinearLayout 
+	            android:id="@+id/subscribe_layout"
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -160,7 +167,7 @@
 	                android:id="@+id/subscribe"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:background="@drawable/subscribe_normal"/>
+	                android:background="@drawable/subscribe_selector"/>
 	            
 	            <TextView 
 	                android:id="@+id/subscribe_text"
@@ -281,6 +288,7 @@
 	    </LinearLayout>
 	    
 	    <LinearLayout 
+	        android:id="@+id/accountdetail_accounturl_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:background="#f7f7f7"
@@ -305,3 +313,5 @@
 	</LinearLayout>
 
 </RelativeLayout>
+
+</ScrollView>

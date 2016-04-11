@@ -16,5 +16,6 @@
     <string name="title_activity_donation">DonationActivity</string>
     <string name="title_activity_feed_back">FeedBackActivity</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_subscribe">SubscribeActivity</string>
 
 </resources>

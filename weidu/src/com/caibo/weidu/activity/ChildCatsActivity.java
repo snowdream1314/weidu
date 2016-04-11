@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,12 +45,26 @@ public class ChildCatsActivity extends FragmentActivity {
 	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
 	private int accountScore;
 	private String title;
+	private ImageView childCatsScoreStar;
+	private TextView childCatsAccountWxNo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_child_cats);
+		
+		childCatsScoreStar = (ImageView) findViewById(R.id.childCats_score_star);
+		childCatsAccountWxNo = (TextView) findViewById(R.id.childCats_account_wx_no);
+		
+//		try {
+//			if (childCatsAccountWxNo.getText().length() > 11) {
+//				Log.i("childCatsAccountWxNo", childCatsAccountWxNo.getText().toString());
+//				childCatsScoreStar.setVisibility(View.GONE);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		try {
 			SharedPreferences pref = getSharedPreferences("registerData", MODE_PRIVATE);
@@ -121,7 +134,8 @@ public class ChildCatsActivity extends FragmentActivity {
 					ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
 					String account_data = data.toString();
 					try {
-//					Log.i("account_data", account_data);
+						
+//						Log.i("account_data", account_data);
 						accounts = new ArrayList<Account>();
 						JSONObject jsonObject = new JSONObject(account_data);
 						jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
@@ -136,12 +150,13 @@ public class ChildCatsActivity extends FragmentActivity {
 							Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
 							accounts.add(account);
 						}
+//						Log.i("i", Integer.toString(accounts.size()));
+//						Log.i("accounts", accounts.toString());
 						fragment = new AccountFragment(accounts, ChildCatsActivity.this);
 						fragments.add(fragment);
 						pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
 						pager.setCurrentItem(0);
 						tabs.setViewPager(pager);
-//						Log.i("accounts", accounts.toString());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

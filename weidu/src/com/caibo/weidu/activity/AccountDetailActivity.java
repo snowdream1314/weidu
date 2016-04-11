@@ -3,6 +3,7 @@ package com.caibo.weidu.activity;
 import org.json.JSONObject;
 
 import com.caibo.weidu.R;
+import com.caibo.weidu.SubscribeActivity;
 import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.onDataFinishedListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -10,9 +11,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,7 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AccountDetailActivity extends Activity {
 	
@@ -32,6 +35,8 @@ public class AccountDetailActivity extends Activity {
 	private String account_id, account_name, account_wx_no, account_desc, account_valid_reason, account_url, account_message;
 	private  int account_score;
 	private static String  account_logo_link;
+	
+	private LinearLayout subscribeLayout, accountUrlLayout;
 	
 	//使用image-loader包加载图片
 	DisplayImageOptions options; //DisplayImageOptions是用于设置图片显示的类
@@ -63,30 +68,77 @@ public class AccountDetailActivity extends Activity {
 		authenticationInformation = (TextView) findViewById(R.id.authentication_information);
 		accountUrl = (TextView) findViewById(R.id.account_url);
 		
+		
+		subscribeLayout = (LinearLayout) findViewById(R.id.subscribe_layout);
+		accountUrlLayout = (LinearLayout) findViewById(R.id.accountdetail_accounturl_layout);
+		
+		subscribe.setTag(R.drawable.subscribe_normal);
+		like.setTag(R.drawable.like_normal);
+		
 		Intent intent = getIntent();
 		from_childCatsActivity = intent.getBooleanExtra("from_childCatsActivity", false);
 		
 		tagBack.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				finish();
-				Intent intent_main = new Intent(AccountDetailActivity.this, MainActivity.class);
-				startActivity(intent_main);
+				AccountDetailActivity.this.finish();
 			}
 		});
 		
 		like.setOnClickListener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
-				like.setImageResource(R.drawable.like_select);
+				Integer integer = (Integer) like.getTag();
+				integer = integer == null ? 0 : integer;
+				switch(integer) {
+				case R.drawable.like_normal:
+					like.setImageResource(R.drawable.like_select);
+					like.setTag(R.drawable.like_select);
+					break;
+				case R.drawable.like_select:
+					like.setImageResource(R.drawable.like_normal);
+					like.setTag(R.drawable.like_normal);
+					break;
+				default:
+					like.setImageResource(R.drawable.like_normal);
+					like.setTag(R.drawable.like_normal);
+					break;
+				}
 			}
 		});
 		
-		subscribe.setOnClickListener(new OnClickListener() {
+		subscribeLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				subscribe.setImageResource(R.drawable.subscribe_select);
-				subscribeText.setTextColor(Color.parseColor("#00bc44"));
+				//复制到系统剪贴板
+				ClipboardManager cm = (ClipboardManager) getSystemService(AccountDetailActivity.CLIPBOARD_SERVICE);
+				cm.setText(accountWxNo.getText());
+				Toast.makeText(AccountDetailActivity.this, accountWxNo.getText() + "已经复制到系统剪贴板", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(AccountDetailActivity.this, SubscribeActivity.class);
+				intent.putExtra("account_wx_name", accountWxNo.getText());
+				startActivity(intent);
+//				Integer integer = (Integer) subscribe.getTag();
+//				integer = integer == null ? 0 : integer;
+//				switch(integer) {
+//				case R.drawable.subscribe_normal:
+//					subscribe.setImageResource(R.drawable.subscribe_select);
+//					subscribeText.setTextColor(Color.parseColor("#00bc44"));
+//					subscribe.setTag(R.drawable.subscribe_select);
+//					Intent intent = new Intent(AccountDetailActivity.this, SubscribeActivity.class);
+//					startActivity(intent);
+//					break;
+//				case R.drawable.subscribe_select:
+//					subscribe.setImageResource(R.drawable.subscribe_normal);
+//					subscribeText.setTextColor(Color.parseColor("#717171"));
+//					subscribe.setTag(R.drawable.subscribe_normal);
+//					break;
+//				default:
+//					subscribe.setImageResource(R.drawable.subscribe_normal);
+//					subscribeText.setTextColor(Color.parseColor("#717171"));
+//					subscribe.setTag(R.drawable.subscribe_normal);
+//					break;
+//				}
 			}
 		});
 		
@@ -115,6 +167,32 @@ public class AccountDetailActivity extends Activity {
 						try {
 							Log.i("account_data", account_data);
 							JSONObject jsonObject = new JSONObject(account_data);
+							String message = jsonObject.getString("message");
+//							Log.i("message", jsonObject.getString("message"));
+//							Log.i("data", jsonObject.getJSONObject("data").isNull("a_name"));
+//							if (jsonObject.getJSONObject("data").isNull("a_name")) {
+//								AlertDialog.Builder dialog = new AlertDialog.Builder(AccountDetailActivity.this);
+//								dialog.setTitle("崩溃了");
+//								dialog.setMessage("崩溃了");
+//								dialog.setCancelable(false);
+//								dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//									
+//									@Override
+//									public void onClick(DialogInterface dialog, int which) {
+//										// TODO Auto-generated method stub
+//										Intent intent = new Intent(AccountDetailActivity.this, MainActivity.class);
+//										startActivity(intent);
+//									}
+//								});
+//								dialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//									
+//									@Override
+//									public void onClick(DialogInterface dialog, int which) {
+//										// TODO Auto-generated method stub
+//										
+//									}
+//								});
+//							}
 							account_name = jsonObject.getJSONObject("data").getString("a_name");
 							account_logo_link = jsonObject.getJSONObject("data").getString("a_logo");
 							account_wx_no = jsonObject.getJSONObject("data").getString("a_wx_no");
@@ -123,7 +201,6 @@ public class AccountDetailActivity extends Activity {
 							account_url = jsonObject.getJSONObject("data").getString("a_url");
 							account_message = jsonObject.getString("message");
 							account_score = Integer.valueOf(jsonObject.getJSONObject("data").getString("a_rank"));
-							
 							tabName.setText(account_name);
 							accountName.setText(account_name);
 							accountWxNo.setText(account_wx_no);
@@ -136,6 +213,9 @@ public class AccountDetailActivity extends Activity {
 								authenticationInformation.setText(account_valid_reason);
 							} else {
 								authenticationInformation.setText("该公众号暂无认证信息");
+							}
+							if (account_url.length() == 0) {
+								accountUrlLayout.setVisibility(View.GONE);
 							}
 							
 							accountUrl.setText(account_url);
@@ -159,12 +239,13 @@ public class AccountDetailActivity extends Activity {
 								break;
 							}
 							
+							Log.i("account_logo_link", account_logo_link);
+							//图片加载
+							ImageLoader.getInstance().displayImage(account_logo_link, accountImg, options);
+							
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						Log.i("account_logo_link", account_logo_link);
-						//图片加载
-						ImageLoader.getInstance().displayImage(account_logo_link, accountImg, options);
 					}
 				});
 				mTask.execute("string");

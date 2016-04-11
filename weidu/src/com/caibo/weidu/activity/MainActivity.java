@@ -30,6 +30,7 @@ public class MainActivity extends ActivityGroup {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		SharedPreferences pref = getSharedPreferences("registerData", MODE_PRIVATE);
 		final SharedPreferences.Editor editor = getSharedPreferences("registerData", MODE_PRIVATE).edit();
 		
 		this.tabHost = (TabHost) findViewById(R.id.mytabhost);
@@ -43,29 +44,31 @@ public class MainActivity extends ActivityGroup {
 		tabTag = intent.getIntExtra("tabTag", 0);
 		tabHost.setCurrentTab(tabTag);
 		
-		//зЂВс
-		TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
-		imei = tm.getDeviceId();
+		if (pref.getString("userData", "") == "") {
+			//зЂВс
+			TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+			imei = tm.getDeviceId();
 //		Log.i("imei", imei);
-		editor.putString("imei", imei);
-		editor.commit();
-		
-		try {
-			registUrl = "http://wx.xiyiyi.com/Mobile//UserAuth/registerUser?appcode=wxh&v=1.0&devicetype=android&deviceid=" + imei;
+			editor.putString("imei", imei);
+			editor.commit();
+			
+			try {
+				registUrl = "http://wx.xiyiyi.com/Mobile//UserAuth/registerUser?appcode=wxh&v=1.0&devicetype=android&deviceid=" + imei;
 //			Log.i("registUrl", registUrl);
-			MyAsyncTask mTask = new MyAsyncTask(registUrl);
-			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
-				@Override
-				public void onDataSuccessfully(Object data) {
-					editor.putString("userData", data.toString());
-					editor.commit();
-					session = data.toString();
+				MyAsyncTask mTask = new MyAsyncTask(registUrl);
+				mTask.setOnDataFinishedListener(new onDataFinishedListener() {
+					@Override
+					public void onDataSuccessfully(Object data) {
+						editor.putString("userData", data.toString());
+						editor.commit();
+						session = data.toString();
 //					Log.i("session", session);
-				}
-			});
-			mTask.execute("string");
-		} catch (Exception e) {
-			e.printStackTrace();
+					}
+				});
+				mTask.execute("string");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}

@@ -70,8 +70,6 @@
 		    android:layout_marginLeft="15dp"
 		    android:layout_marginBottom="15dp"
 		    android:layout_marginRight="10dp"
-		    android:verticalSpacing="10dp"
-		    android:horizontalSpacing="2dp"
 		    android:layout_gravity="center"
 		    android:gravity="center"
 		    android:listSelector="#00000000"	

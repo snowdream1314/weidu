@@ -10,8 +10,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingBottom="5dp"/>
+        android:gravity="center"/>
     
     <!-- android:maxLines="2" 
         android:maxWidth="50dp"
