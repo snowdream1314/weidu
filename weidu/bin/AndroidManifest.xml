@@ -78,7 +78,7 @@
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name=".SubscribeActivity"
+            android:name="com.caibo.weidu.activity.SubscribeActivity"
             android:label="@string/title_activity_subscribe" >
         </activity>
     </application>

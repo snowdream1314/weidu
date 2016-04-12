@@ -1,0 +1,243 @@
+<ScrollView 
+    android:layout_width="match_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#f3f3f3"
+    tools:context="com.caibo.weidu.activity.ChildCatsActivity"  >
+
+    <!-- 标题栏 -->
+	<RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#30d94c">
+        
+	    <ImageView 
+	        android:id="@+id/freecollect_tag_back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/tag_back"
+	        android:layout_gravity="center"
+	        android:gravity="center"
+	        android:paddingTop="10dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginTop="5dp"/>
+        <TextView 
+            android:id="@+id/freecollect_tab_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="免费收录"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+        <TextView 
+            android:id="@+id/freecollect_tab_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:text="提交"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+    
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+	    android:paddingLeft="10dp"
+	    android:text="公众号信息"
+	    android:textColor="#797979"
+	    android:textSize="16sp" />
+	
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="20dp"
+	    android:orientation="vertical"
+	    android:background="#ffffff">
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="5dp"
+	        android:text="公众号"
+	        android:textColor="#3e3e3e"
+	        android:textSize="16sp" />
+	    <EditText 
+		    android:id="@+id/freecollect_wxcount"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:layout_gravity="center"
+		    android:hint="请输入公众号"
+		    android:paddingLeft="5dp"
+		    android:textColorHint="#c8c8c8"
+		    android:maxLines="2"
+		    android:background="@drawable/rectangle"/>
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginBottom="5dp"
+	        android:text="描述"
+	        android:textColor="#3e3e3e"
+	        android:textSize="16sp" />
+	    <EditText 
+		    android:id="@+id/freecollect_wxcount_describe"
+		    android:layout_width="match_parent"
+		    android:layout_height="100dp"
+		    android:gravity="top"
+		    android:hint="请输入公众号描述"
+		    android:paddingLeft="5dp"
+		    android:paddingTop="10dp"
+		    android:textColorHint="#c8c8c8"
+		    android:maxLines="5"
+		    android:background="@drawable/rectangle"/>
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="5dp"
+	        android:text="请正确填写公众号信息"
+	        android:textColor="#aac4b3" />
+	    
+	</LinearLayout>
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+	    android:paddingLeft="10dp"
+	    android:text="维护者信息"
+	    android:textColor="#797979"
+	    android:textSize="16sp" />
+    
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="20dp"
+	    android:orientation="vertical"
+	    android:background="#ffffff">
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+	        
+	        <ImageView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/author_wxaccount"/>
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="5dp"
+		        android:layout_marginTop="6dp"
+		        android:gravity="center"
+		        android:text="私人微信号"
+		        android:textColor="#3e3e3e"
+		        android:textSize="16sp" />
+		    
+	    </LinearLayout>
+	    
+	    <EditText 
+		    android:id="@+id/freecollect_author_acount"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:layout_gravity="center"
+		    android:hint="(可选)请输入私人微信号"
+		    android:paddingLeft="5dp"
+		    android:textColorHint="#c8c8c8"
+		    android:maxLines="2"/>
+	    
+	     <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:orientation="horizontal">
+	        
+	        <ImageView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/author_qqaccount"/>
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="5dp"
+		        android:layout_marginTop="6dp"
+		        android:gravity="center"
+		        android:text="私人QQ号"
+		        android:textColor="#3e3e3e"
+		        android:textSize="16sp" />
+		    
+	    </LinearLayout>
+	    
+	    <EditText 
+		    android:id="@+id/freecollect_author_qqacount"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:layout_gravity="center"
+		    android:hint="(可选)请输入私人QQ号"
+		    android:paddingLeft="5dp"
+		    android:textColorHint="#c8c8c8"
+		    android:maxLines="2"/>
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:orientation="horizontal">
+	        
+	        <ImageView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/author_email"/>
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="5dp"
+		        android:layout_marginTop="6dp"
+		        android:gravity="center"
+		        android:text="邮箱"
+		        android:textColor="#3e3e3e"
+		        android:textSize="16sp" />
+		    
+	    </LinearLayout>
+	    
+	    <EditText 
+		    android:id="@+id/freecollect_author_email"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:layout_gravity="center"
+		    android:hint="(可选)请输入邮箱地址"
+		    android:paddingLeft="5dp"
+		    android:textColorHint="#c8c8c8"
+		    android:maxLines="2"/>
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:text="如果你是此公众号的维护者，建议填写准确的信息，确保我们能联系上您"
+	        android:textColor="#aac4b3"
+	        android:textSize="14sp"/>
+	    
+	    <Button 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/rectangle_button"
+		    android:layout_marginTop="20dp"
+		    android:text="提交"
+		    android:textColor="#ffffff"
+		    android:textSize="18sp"/>
+	    
+	</LinearLayout>
+	
+</LinearLayout>
+</ScrollView>
