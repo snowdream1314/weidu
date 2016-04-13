@@ -1,6 +1,5 @@
 package com.caibo.weidu.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import org.json.JSONArray;

@@ -31,7 +31,6 @@
            <RelativeLayout 
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_marginRight="15dp"
                android:layout_marginLeft="3dp"
                android:layout_marginTop="5dp"
                android:orientation="horizontal">
@@ -52,8 +51,10 @@
 		           android:id="@+id/childCats_score_star"
 		           android:layout_width="wrap_content"
 		           android:layout_height="wrap_content"
+		           android:layout_marginRight="15dp"
 		           android:layout_alignParentRight="true"
 		           android:layout_gravity="center" />
+	           
            </RelativeLayout>
            
        <!--  android:ellipsize="end" 内容过长在末尾加省略号 -->
@@ -69,5 +70,5 @@
            android:textSize="16sp" />
        
    </LinearLayout>
-
+   
 </LinearLayout>

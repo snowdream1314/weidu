@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.Account;
 import com.caibo.weidu.modle.AccountAdapter;
+import com.caibo.weidu.modle.AccountAdapterWithDelete;
 import com.caibo.weidu.util.InitUrls;
 import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.SaveDataInPref;
@@ -31,9 +32,9 @@ import android.widget.TextView;
 
 public class LikeActivity extends Activity {
 	
-	private String favoriteListUrl, session, deviceId, pageNum;
+	private String favoriteListUrl, session, deviceId;
 	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
-	private int accountScore;
+	private int accountScore, pageNum;
 	private InitUrls initUrls = new InitUrls();
 	private Account account;
 	private ArrayList<Account> accounts;
@@ -88,6 +89,8 @@ public class LikeActivity extends Activity {
 					accounts = new ArrayList<Account>();
 					JSONObject jsonObject = new JSONObject(data.toString());
 					JSONArray jsonFavAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
+					pageNum = jsonObject.getJSONObject("data").getInt("page");
+					Log.i("total_page", Integer.toString(pageNum));
 					if (jsonFavAccounts.length() != 0) {
 						for (int i = 0; i < jsonFavAccounts.length(); i++) {
 							accountName = jsonFavAccounts.getJSONObject(i).getString("a_name");
@@ -102,7 +105,7 @@ public class LikeActivity extends Activity {
 						}
 						likeNoneLayout.setVisibility(View.GONE);
 						likeTabName.setText("ÊÕ²Ø");
-						AccountAdapter adapter = new AccountAdapter(LikeActivity.this, R.layout.childcats_account_listview, accounts);
+						AccountAdapterWithDelete adapter = new AccountAdapterWithDelete(LikeActivity.this, R.layout.like_account_listview, accounts, session, deviceId);
 						favListView.setAdapter(adapter);
 						favListView.setOnItemClickListener(new OnItemClickListener() {
 							@Override
@@ -113,6 +116,7 @@ public class LikeActivity extends Activity {
 								startActivity(intent);
 							}
 						});
+						Log.i("account_num", Integer.toString(accounts.size()));
 					}
 					
 				} catch (Exception e) {

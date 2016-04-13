@@ -52,6 +52,10 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		accountNotes.setText(account.getNotes());
 		accountWxno.setText(account.getWxno());
 		accountName.setText(account.getName());
+		//微信号过长则隐藏星级
+		if (account.getWxno().length() > 8) {
+			accountScoreImage.setVisibility(View.GONE);
+		}
 		
 		switch (account.getScoreImageId()) {
 		case 1:

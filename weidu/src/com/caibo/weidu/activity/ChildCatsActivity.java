@@ -66,15 +66,6 @@ public class ChildCatsActivity extends FragmentActivity {
 		deviceId = saveDataInPref.GetData("imei", "");
 		
 		try {
-			Log.i("childCatsAccountWxNo", childCatsAccountWxNo.getText().toString());
-			if (childCatsAccountWxNo.getText().length() > 11) {
-				childCatsScoreStar.setVisibility(View.GONE);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
 			childCatsTabName = (TextView) findViewById(R.id.childCats_tab_name);
 			childCatsTagBack = (ImageView) findViewById(R.id.childCats_tag_back);
 //			ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
@@ -146,6 +137,7 @@ public class ChildCatsActivity extends FragmentActivity {
 							accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
 							Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
 							accounts.add(account);
+							
 						}
 //						Log.i("i", Integer.toString(accounts.size()));
 //						Log.i("accounts", accounts.toString());
@@ -154,6 +146,15 @@ public class ChildCatsActivity extends FragmentActivity {
 						pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
 						pager.setCurrentItem(0);
 						tabs.setViewPager(pager);
+						
+//						try {
+//							Log.i("childCatsAccountWxNo", childCatsAccountWxNo.getText().toString());
+//							if (childCatsAccountWxNo.getText().length() > 11) {
+//								childCatsScoreStar.setVisibility(View.GONE);
+//							}
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

@@ -3,6 +3,7 @@ package com.caibo.weidu.util;
 
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class MyAsyncTask extends AsyncTask<String, Integer, Object> {
 	
@@ -28,19 +29,27 @@ public class MyAsyncTask extends AsyncTask<String, Integer, Object> {
 	//doInBackground方法内部执行后台任务,不可在此方法内修改UI
 	@Override 
 	protected Object doInBackground(String... address) {
-		try {
-			if (address[0] == "string") {
-				appDatas = okHttp.getAppData(url);
+		for (int i = 0; i < 3; i++) {
+			
+			try {
+				if (address[0] == "string") {
+					appDatas = okHttp.getAppData(url);
+				}
+				else if (address[0] == "bitmap") {
+					appDatas = okHttp.getBitmap(url);
+				}
+				Log.i("MyappDatas", appDatas.toString());
+				if (appDatas.toString().length() == 0) {
+					continue;
+				}
+				return appDatas;
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
 			}
-			else if (address[0] == "bitmap") {
-				appDatas = okHttp.getBitmap(url);
-			}
-			return appDatas;
-//			Log.i("MyappDatas", appDatas);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
 		}
+		return null;
+		
 	}
 	
 	 //onProgressUpdate方法用于更新进度信息
