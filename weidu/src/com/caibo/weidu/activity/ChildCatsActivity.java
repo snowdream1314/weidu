@@ -45,7 +45,7 @@ public class ChildCatsActivity extends FragmentActivity {
 	private String accountsUrl, childCatsId, session, deviceId;
 	private JSONArray jsonAccounts; 
 	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
-	private int accountScore;
+	private int accountScore, pageNum;
 	private String title;
 	private ImageView childCatsScoreStar;
 	private TextView childCatsAccountWxNo;
@@ -108,11 +108,11 @@ public class ChildCatsActivity extends FragmentActivity {
 		}
 	}
 	
-	private void initAccounts(String title, String childCatsId) {
+	private void initAccounts(String title, final String childCatsId) {
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		fragments = new ArrayList<Fragment>();
-		
-		accountsUrl = initUrls.InitAccountsUrl(session, deviceId, childCatsId, "1");
+		pageNum = 1;
+		accountsUrl = initUrls.InitAccountsUrl(session, deviceId, childCatsId, Integer.toString(pageNum));
 		
 		try {
 			MyAsyncTask mTask = new MyAsyncTask(accountsUrl);
@@ -122,7 +122,6 @@ public class ChildCatsActivity extends FragmentActivity {
 					ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
 					String account_data = data.toString();
 					try {
-						
 //						Log.i("account_data", account_data);
 						accounts = new ArrayList<Account>();
 						JSONObject jsonObject = new JSONObject(account_data);
@@ -141,20 +140,12 @@ public class ChildCatsActivity extends FragmentActivity {
 						}
 //						Log.i("i", Integer.toString(accounts.size()));
 //						Log.i("accounts", accounts.toString());
-						fragment = new AccountFragment(accounts, ChildCatsActivity.this);
+						fragment = new AccountFragment(accounts, ChildCatsActivity.this, session, deviceId, childCatsId, pageNum);
 						fragments.add(fragment);
 						pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
 						pager.setCurrentItem(0);
 						tabs.setViewPager(pager);
 						
-//						try {
-//							Log.i("childCatsAccountWxNo", childCatsAccountWxNo.getText().toString());
-//							if (childCatsAccountWxNo.getText().length() > 11) {
-//								childCatsScoreStar.setVisibility(View.GONE);
-//							}
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

@@ -8,7 +8,11 @@ import org.json.JSONObject;
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.Account;
 import com.caibo.weidu.modle.AccountAdapter;
-import com.caibo.weidu.modle.AccountAdapterWithDelete;
+import com.caibo.weidu.modle.SwipeMenu;
+import com.caibo.weidu.modle.SwipeMenuCreator;
+import com.caibo.weidu.modle.SwipeMenuItem;
+import com.caibo.weidu.modle.SwipeMenuListView;
+import com.caibo.weidu.modle.SwipeMenuListView.OnMenuItemClickListener;
 import com.caibo.weidu.util.InitUrls;
 import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.SaveDataInPref;
@@ -17,30 +21,39 @@ import com.caibo.weidu.util.onDataFinishedListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AbsListView.OnScrollListener;
 
 public class LikeActivity extends Activity {
 	
-	private String favoriteListUrl, session, deviceId;
+	private String favoriteListUrl, session, deviceId, removeFavUrl, loadMoreUrl;
 	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
-	private int accountScore, pageNum;
+	private int accountScore, totalAccounts, pageNum;
+	private int loadPageNum = 1;
 	private InitUrls initUrls = new InitUrls();
 	private Account account;
 	private ArrayList<Account> accounts;
 	private LinearLayout likeNoneLayout;
-	private ListView favListView;
+	private SwipeMenuListView favListView;
 	private TextView likeTabName;
+	private int flag = 1;
 	
 	private SwipeRefreshLayout refreshLayout;
 	
@@ -51,7 +64,7 @@ public class LikeActivity extends Activity {
 		setContentView(R.layout.activity_like);
 		
 		likeNoneLayout = (LinearLayout) findViewById(R.id.likenone_layout);
-		favListView = (ListView) findViewById(R.id.like_listView);
+		favListView = (SwipeMenuListView) findViewById(R.id.like_listView);
 		likeTabName = (TextView) findViewById(R.id.like_tabname);
 		refreshLayout = (SwipeRefreshLayout) findViewById(R.id.like_SwipeRefreshLayout);
 		
@@ -73,6 +86,7 @@ public class LikeActivity extends Activity {
 			@Override
 			public void onRefresh() {
 				// TODO Auto-generated method stub
+				Log.i("favoriteListUrl", favoriteListUrl);
 				excuteTask(favoriteListUrl);
 				refreshLayout.setRefreshing(false);
 			}
@@ -84,14 +98,17 @@ public class LikeActivity extends Activity {
 		mTask.setOnDataFinishedListener(new onDataFinishedListener() {
 			@Override
 			public void onDataSuccessfully(Object data) {
-				Log.i("favoriteListUrl", data.toString());
+//				Log.i("favoriteListUrl", data.toString());
 				try {
 					accounts = new ArrayList<Account>();
 					JSONObject jsonObject = new JSONObject(data.toString());
 					JSONArray jsonFavAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
 					pageNum = jsonObject.getJSONObject("data").getInt("page");
+					totalAccounts = jsonObject.getJSONObject("data").getInt("total_count");
 					Log.i("total_page", Integer.toString(pageNum));
 					if (jsonFavAccounts.length() != 0) {
+						likeNoneLayout.setVisibility(View.GONE);
+						likeTabName.setText("收藏");
 						for (int i = 0; i < jsonFavAccounts.length(); i++) {
 							accountName = jsonFavAccounts.getJSONObject(i).getString("a_name");
 							accountWxNo = jsonFavAccounts.getJSONObject(i).getString("a_wx_no");
@@ -103,9 +120,9 @@ public class LikeActivity extends Activity {
 							Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
 							accounts.add(account);
 						}
-						likeNoneLayout.setVisibility(View.GONE);
-						likeTabName.setText("收藏");
-						AccountAdapterWithDelete adapter = new AccountAdapterWithDelete(LikeActivity.this, R.layout.like_account_listview, accounts, session, deviceId);
+//						final AccountAdapterWithDelete adapter = new AccountAdapterWithDelete(LikeActivity.this, R.layout.like_account_listview, accounts, session, deviceId);
+						final AccountAdapter adapter = new AccountAdapter(LikeActivity.this, R.layout.childcats_account_listview, accounts);
+						
 						favListView.setAdapter(adapter);
 						favListView.setOnItemClickListener(new OnItemClickListener() {
 							@Override
@@ -116,7 +133,118 @@ public class LikeActivity extends Activity {
 								startActivity(intent);
 							}
 						});
+						
+						//滑动删除
+						SwipeMenuCreator creator = new SwipeMenuCreator() {
+							@Override
+							public void create(SwipeMenu menu) {
+								SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
+								deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+						                0x3F, 0x25)));
+								deleteItem.setIcon(R.drawable.like_delete_icon);
+								deleteItem.setWidth(235);
+								menu.addMenuItem(deleteItem);
+							}
+						};
+						favListView.setMenuCreator(creator);
+						favListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+						favListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+							@Override
+							public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
+								//取消收藏
+								accountId = accounts.get(position).getAccountId();
+								removeFavUrl = initUrls.InitRemoveFavoriteUrl(session, deviceId, accountId);
+								MyAsyncTask mTaskRev = new MyAsyncTask(removeFavUrl);
+								mTaskRev.setOnDataFinishedListener(new onDataFinishedListener() {
+									@Override
+									public void onDataSuccessfully(Object data) {
+										Log.i("remove_data", data.toString());
+										accounts.remove(position);
+										adapter.notifyDataSetChanged();
+									}
+								});
+								mTaskRev.execute("string");
+								return false;
+							}
+						});
+						
+						
+						final LinearLayout footerLayout = InitFooterLayout();
+						favListView.setOnScrollListener(new OnScrollListener() {
+							@Override
+							public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+								if (firstVisibleItem + visibleItemCount == totalItemCount) {
+									Log.i("onScroll", "onScroll");
+								}
+							}
+							
+							@Override
+							public void onScrollStateChanged(AbsListView view, int scrollState) {
+								switch (scrollState) {
+								case OnScrollListener.SCROLL_STATE_IDLE:
+									Log.i("flag", Integer.toString(flag));
+									//判断滚动到底部
+									if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
+										
+//										flag = 1;
+										if (flag == 1 && totalAccounts > 20) {
+											favListView.addFooterView(footerLayout);
+											flag = 0;
+											loadPageNum += 1;
+											loadMoreUrl = initUrls.InitFavoriteListUrl(session, deviceId, Integer.toString(loadPageNum));
+											Log.i("loadPageNum", Integer.toString(loadPageNum));
+											try {
+												MyAsyncTask mTask = new MyAsyncTask(loadMoreUrl);
+												mTask.setOnDataFinishedListener(new onDataFinishedListener() {
+													@Override
+													public void onDataSuccessfully(Object data) {
+														try {
+															Log.i("data", data.toString());
+															JSONObject jsonObject = new JSONObject(data.toString());
+															if (jsonObject.getJSONObject("data").isNull("accounts")) {
+																Toast.makeText(LikeActivity.this, "没有更多的啦！", Toast.LENGTH_SHORT).show();
+																loadPageNum -= 1;
+															}
+															else {
+																JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
+																for (int i = 0; i < jsonAccounts.length(); i++) {
+																	accountName = jsonAccounts.getJSONObject(i).getString("a_name");
+																	accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
+																	accountId = jsonAccounts.getJSONObject(i).getString("a_id");
+																	accountLogoLink = jsonAccounts.getJSONObject(i).getString("a_logo");
+																	accountDesc = jsonAccounts.getJSONObject(i).getString("a_desc");
+																	accountValidReason = jsonAccounts.getJSONObject(i).getString("a_valid_reason");
+																	accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
+																	Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
+																	accounts.add(account);
+																	Log.i("accounts", Integer.toString(accounts.size()));
+																}
+																adapter.notifyDataSetChanged();
+															}
+															favListView.removeFooterView(footerLayout);
+															flag = 1;
+															
+														} catch (Exception e) {
+															e.printStackTrace();
+														}
+														
+													}
+												});
+												mTask.execute("string");
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
+										}
+									}
+									break;
+								}
+							}
+						});
+						
 						Log.i("account_num", Integer.toString(accounts.size()));
+					} else {
+						likeNoneLayout.setVisibility(View.VISIBLE);
+						likeTabName.setText("喜欢");
 					}
 					
 				} catch (Exception e) {
@@ -125,6 +253,40 @@ public class LikeActivity extends Activity {
 			}
 		});
 		mTask.execute("string");
+	}
+	
+	private LinearLayout InitFooterLayout() {
+		LayoutParams mLayoutParams = new LinearLayout.LayoutParams(  
+	            LinearLayout.LayoutParams.WRAP_CONTENT,  
+	            LinearLayout.LayoutParams.WRAP_CONTENT); 
+		
+		LayoutParams FFlayoutParams = new LinearLayout.LayoutParams(  
+	            LinearLayout.LayoutParams.MATCH_PARENT,  
+	            LinearLayout.LayoutParams.MATCH_PARENT);
+		
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.HORIZONTAL);
+		ProgressBar progressBar = new ProgressBar(this);
+		// 进度条显示位置  
+        progressBar.setPadding(0, 0, 15, 0); 
+        // 把进度条加入到layout中 
+		layout.addView(progressBar, mLayoutParams);  
+        // 文本内容  
+        TextView textView = new TextView(this);  
+        textView.setText("加载中...");  
+        textView.setGravity(Gravity.CENTER_VERTICAL);  
+        // 把文本加入到layout中  
+        layout.addView(textView, FFlayoutParams); 
+        // 设置layout的重力方向，即对齐方式是  
+        layout.setGravity(Gravity.CENTER); 
+        
+        // 设置ListView的页脚layout  
+        LinearLayout loadingLayout = new LinearLayout(this);  
+        loadingLayout.addView(layout, mLayoutParams);  
+        loadingLayout.setGravity(Gravity.CENTER); 
+        
+        return loadingLayout;
+		
 	}
 	
 	@Override

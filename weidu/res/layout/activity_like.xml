@@ -53,14 +53,12 @@
 		    android:layout_height="match_parent"
 		    android:orientation="vertical">
 		    
-	   	    <!-- android:longClickable="true" 使手势监听生效  -->
-		    <ListView 
+		    <com.caibo.weidu.modle.SwipeMenuListView 
 		        android:id="@+id/like_listView"
 		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:longClickable="true">
-		    </ListView>
+		        android:layout_height="match_parent" />
 		    
 		</android.support.v4.widget.SwipeRefreshLayout>
+		
 	</LinearLayout>
 </RelativeLayout>
