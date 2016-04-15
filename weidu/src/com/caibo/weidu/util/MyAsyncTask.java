@@ -38,8 +38,8 @@ public class MyAsyncTask extends AsyncTask<String, Integer, Object> {
 				else if (address[0] == "bitmap") {
 					appDatas = okHttp.getBitmap(url);
 				}
-				Log.i("MyappDatas", appDatas.toString());
-				if (appDatas.toString().length() == 0) {
+//				Log.i("MyappDatas", appDatas.toString());
+				if (appDatas.toString().length() == 0 || appDatas.equals(null)) {
 					continue;
 				}
 				return appDatas;

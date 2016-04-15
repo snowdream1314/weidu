@@ -59,6 +59,8 @@ public class ChildCatsActivity extends FragmentActivity {
 		
 		childCatsScoreStar = (ImageView) findViewById(R.id.childCats_score_star);
 		childCatsAccountWxNo = (TextView) findViewById(R.id.childCats_account_wx_no);
+		ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		
 		SharedPreferences pref = getSharedPreferences("registerData", MODE_PRIVATE);
 		final SaveDataInPref saveDataInPref = new SaveDataInPref(pref);
@@ -83,79 +85,61 @@ public class ChildCatsActivity extends FragmentActivity {
 				}
 			});
 			
-//			initAccounts();
-		
-//			fragments = new ArrayList<Fragment>();
-			titles = new ArrayList<String>();
-			for (int i = 0; i < arrayListForChildcats.size(); i++) {
-//				Log.i("title", arrayListForChildcats.get(i).get("childCat_name").toString());
-				title = arrayListForChildcats.get(i).get("childCat_name").toString();
-				titles.add(title);
-				childCatsId = arrayListForChildcats.get(i).get("childCat_id").toString();
-				initAccounts(title, childCatsId);
-//				Log.i("accounts", accounts.toString());
-//				fragment = new AccountFragment(accounts, ChildCatsActivity.this);
-//				fragments.add(fragment);
-			}
-			
-//			pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
-//			pager.setCurrentItem(0);
-//			tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-//			tabs.setViewPager(pager);
+			pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), ChildCatsActivity.this, arrayListForChildcats, session, deviceId));
+			pager.setCurrentItem(0);
+			tabs.setViewPager(pager);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void initAccounts(String title, final String childCatsId) {
-		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		fragments = new ArrayList<Fragment>();
-		pageNum = 1;
-		accountsUrl = initUrls.InitAccountsUrl(session, deviceId, childCatsId, Integer.toString(pageNum));
-		
-		try {
-			MyAsyncTask mTask = new MyAsyncTask(accountsUrl);
-			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
-				@Override
-				public void onDataSuccessfully(Object data) {
-					ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-					String account_data = data.toString();
-					try {
+//	private void initAccounts(final String childCatsId) {
+//		final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+//		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+//		fragments = new ArrayList<Fragment>();
+//		pageNum = 1;
+//		accountsUrl = initUrls.InitAccountsUrl(session, deviceId, childCatsId, Integer.toString(pageNum));
+//		
+//		try {
+//			MyAsyncTask mTask = new MyAsyncTask(accountsUrl);
+//			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
+//				@Override
+//				public void onDataSuccessfully(Object data) {
+//					String account_data = data.toString();
+//					try {
 //						Log.i("account_data", account_data);
-						accounts = new ArrayList<Account>();
-						JSONObject jsonObject = new JSONObject(account_data);
-						jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
-						for (int i = 0; i < jsonAccounts.length(); i++) {
-							accountName = jsonAccounts.getJSONObject(i).getString("a_name");
-							accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
-							accountId = jsonAccounts.getJSONObject(i).getString("a_id");
-							accountLogoLink = jsonAccounts.getJSONObject(i).getString("a_logo");
-							accountDesc = jsonAccounts.getJSONObject(i).getString("a_desc");
-							accountValidReason = jsonAccounts.getJSONObject(i).getString("a_valid_reason");
-							accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
-							Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
-							accounts.add(account);
-							
-						}
-//						Log.i("i", Integer.toString(accounts.size()));
-//						Log.i("accounts", accounts.toString());
-						fragment = new AccountFragment(accounts, ChildCatsActivity.this, session, deviceId, childCatsId, pageNum);
-						fragments.add(fragment);
-						pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), fragments, titles));
-						pager.setCurrentItem(0);
-						tabs.setViewPager(pager);
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
-			mTask.execute("string");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//						accounts = new ArrayList<Account>();
+//						JSONObject jsonObject = new JSONObject(account_data);
+//						jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
+//						for (int i = 0; i < jsonAccounts.length(); i++) {
+//							accountName = jsonAccounts.getJSONObject(i).getString("a_name");
+//							accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
+//							accountId = jsonAccounts.getJSONObject(i).getString("a_id");
+//							accountLogoLink = jsonAccounts.getJSONObject(i).getString("a_logo");
+//							accountDesc = jsonAccounts.getJSONObject(i).getString("a_desc");
+//							accountValidReason = jsonAccounts.getJSONObject(i).getString("a_valid_reason");
+//							accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
+//							Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
+//							accounts.add(account);
+//						}
+//						Log.i("accounts size", Integer.toString(accounts.size()));
+////						Log.i("accounts", accounts.toString());
+////						fragment = new AccountFragment(accounts, ChildCatsActivity.this, session, deviceId, childCatsId, pageNum);
+////						pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), ChildCatsActivity.this, titles, arrayListForChildcats, session, deviceId));
+////						pager.setCurrentItem(0);
+////						tabs.setViewPager(pager);
+//						
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			});
+//			mTask.execute("string");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@Override
 	public void onBackPressed() {

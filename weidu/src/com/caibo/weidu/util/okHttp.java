@@ -18,8 +18,15 @@ public class okHttp {
 		DES des = new DES();
 		try {
 			Request request = new Request.Builder().url(address).build();
-			Response response = client.newCall(request).execute();
-			return des.decrypt(response.body().string());
+			for (int i = 0; i < 3; i++) {
+				Response response = client.newCall(request).execute();
+				if (response.isSuccessful()) {
+					return des.decrypt(response.body().string());
+				} else {
+					continue;
+				}
+			}
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

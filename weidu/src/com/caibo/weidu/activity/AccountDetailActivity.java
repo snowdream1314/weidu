@@ -1,5 +1,8 @@
 package com.caibo.weidu.activity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONObject;
 
 import com.caibo.weidu.R;
@@ -163,65 +166,70 @@ public class AccountDetailActivity extends Activity {
 					@Override
 					public void onDataSuccessfully(Object data) {
 						String account_data = data.toString();
+
 						try {
 							Log.i("account_data", account_data);
 							JSONObject jsonObject = new JSONObject(account_data);
 							String message = jsonObject.getString("message");
-//							Log.i("message", jsonObject.getString("message"));
-//							Log.i("data", jsonObject.getJSONObject("data").isNull("a_name"));
-							account_name = jsonObject.getJSONObject("data").getString("a_name");
-							account_logo_link = jsonObject.getJSONObject("data").getString("a_logo");
-							account_wx_no = jsonObject.getJSONObject("data").getString("a_wx_no");
-							account_desc = jsonObject.getJSONObject("data").getString("a_desc");
-							account_valid_reason = jsonObject.getJSONObject("data").getString("a_valid_reason");
-							account_url = jsonObject.getJSONObject("data").getString("a_url");
-							account_message = jsonObject.getString("message");
-							account_score = Integer.valueOf(jsonObject.getJSONObject("data").getString("a_rank"));
-							a_favorited = jsonObject.getJSONObject("data").getInt("a_favorited");
-							tabName.setText(account_name);
-							accountName.setText(account_name);
-							accountWxNo.setText(account_wx_no);
-							if (a_favorited == 1) {
-								like.setImageResource(R.drawable.like_select);
-							}
-							if (account_desc.length() != 0) {
-								functionIntroduction.setText(account_desc);
+							Log.i("message", message);
+							if (jsonObject.getInt("code") == 0) {
+								Toast.makeText(AccountDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+								finish();
 							} else {
-								functionIntroduction.setText("该公众号暂无介绍");
+								account_name = jsonObject.getJSONObject("data").getString("a_name");
+								account_logo_link = jsonObject.getJSONObject("data").getString("a_logo");
+								account_wx_no = jsonObject.getJSONObject("data").getString("a_wx_no");
+								account_desc = jsonObject.getJSONObject("data").getString("a_desc");
+								account_valid_reason = jsonObject.getJSONObject("data").getString("a_valid_reason");
+								account_url = jsonObject.getJSONObject("data").getString("a_url");
+								account_message = jsonObject.getString("message");
+								account_score = Integer.valueOf(jsonObject.getJSONObject("data").getString("a_rank"));
+								a_favorited = jsonObject.getJSONObject("data").getInt("a_favorited");
+								tabName.setText(account_name);
+								accountName.setText(account_name);
+								accountWxNo.setText(account_wx_no);
+								if (a_favorited == 1) {
+									like.setImageResource(R.drawable.like_select);
+								}
+								if (account_desc.length() != 0) {
+									functionIntroduction.setText(account_desc);
+								} else {
+									functionIntroduction.setText("该公众号暂无介绍");
+								}
+								if (account_valid_reason.length() != 0) {
+									authenticationInformation.setText(account_valid_reason);
+								} else {
+									authenticationInformation.setText("该公众号暂无认证信息");
+								}
+								if (account_url.length() == 0) {
+									accountUrlLayout.setVisibility(View.GONE);
+								}
+								
+								accountUrl.setText(account_url);
+								switch (account_score) {
+								case 1:
+									scoreStar.setImageResource(R.drawable.star_1);
+									break;
+								case 2:
+									scoreStar.setImageResource(R.drawable.star_2);
+									break;
+								case 3:
+									scoreStar.setImageResource(R.drawable.star_3);
+									break;
+								case 4:
+									scoreStar.setImageResource(R.drawable.star_4);
+									break;
+								case 5:
+									scoreStar.setImageResource(R.drawable.star_5);
+									break;
+								default:
+									break;
+								}
+								
+								Log.i("account_logo_link", account_logo_link);
+								//图片加载
+								ImageLoader.getInstance().displayImage(account_logo_link, accountImg, options);
 							}
-							if (account_valid_reason.length() != 0) {
-								authenticationInformation.setText(account_valid_reason);
-							} else {
-								authenticationInformation.setText("该公众号暂无认证信息");
-							}
-							if (account_url.length() == 0) {
-								accountUrlLayout.setVisibility(View.GONE);
-							}
-							
-							accountUrl.setText(account_url);
-							switch (account_score) {
-							case 1:
-								scoreStar.setImageResource(R.drawable.star_1);
-								break;
-							case 2:
-								scoreStar.setImageResource(R.drawable.star_2);
-								break;
-							case 3:
-								scoreStar.setImageResource(R.drawable.star_3);
-								break;
-							case 4:
-								scoreStar.setImageResource(R.drawable.star_4);
-								break;
-							case 5:
-								scoreStar.setImageResource(R.drawable.star_5);
-								break;
-							default:
-								break;
-							}
-							
-							Log.i("account_logo_link", account_logo_link);
-							//图片加载
-							ImageLoader.getInstance().displayImage(account_logo_link, accountImg, options);
 							
 						} catch (Exception e) {
 							e.printStackTrace();

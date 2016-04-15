@@ -45,8 +45,8 @@ public class LikeActivity extends Activity {
 	
 	private String favoriteListUrl, session, deviceId, removeFavUrl, loadMoreUrl;
 	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
-	private int accountScore, totalAccounts, pageNum;
-	private int loadPageNum = 1;
+	private int accountScore, totalAccounts, totalPageCount;
+	private int  pageNum = 1;
 	private InitUrls initUrls = new InitUrls();
 	private Account account;
 	private ArrayList<Account> accounts;
@@ -105,7 +105,10 @@ public class LikeActivity extends Activity {
 					JSONArray jsonFavAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
 					pageNum = jsonObject.getJSONObject("data").getInt("page");
 					totalAccounts = jsonObject.getJSONObject("data").getInt("total_count");
-					Log.i("total_page", Integer.toString(pageNum));
+					totalPageCount = totalAccounts/20 + 1;
+					Log.i("page now", Integer.toString(pageNum));
+					Log.i("totalAccounts", Integer.toString(totalAccounts));
+					Log.i("totalPageCount", Integer.toString(totalPageCount));
 					if (jsonFavAccounts.length() != 0) {
 						likeNoneLayout.setVisibility(View.GONE);
 						likeTabName.setText("收藏");
@@ -168,7 +171,7 @@ public class LikeActivity extends Activity {
 							}
 						});
 						
-						
+						//滚动到底部加载更多
 						final LinearLayout footerLayout = InitFooterLayout();
 						favListView.setOnScrollListener(new OnScrollListener() {
 							@Override
@@ -182,17 +185,16 @@ public class LikeActivity extends Activity {
 							public void onScrollStateChanged(AbsListView view, int scrollState) {
 								switch (scrollState) {
 								case OnScrollListener.SCROLL_STATE_IDLE:
-									Log.i("flag", Integer.toString(flag));
 									//判断滚动到底部
 									if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
+										Log.i("flag", Integer.toString(flag));
 										
-//										flag = 1;
-										if (flag == 1 && totalAccounts > 20) {
+										if (pageNum < totalPageCount && totalAccounts > 20) {
 											favListView.addFooterView(footerLayout);
-											flag = 0;
-											loadPageNum += 1;
-											loadMoreUrl = initUrls.InitFavoriteListUrl(session, deviceId, Integer.toString(loadPageNum));
-											Log.i("loadPageNum", Integer.toString(loadPageNum));
+//											flag = 0;
+											pageNum += 1;
+											loadMoreUrl = initUrls.InitFavoriteListUrl(session, deviceId, Integer.toString(pageNum));
+											Log.i("loadMoreUrl", loadMoreUrl);
 											try {
 												MyAsyncTask mTask = new MyAsyncTask(loadMoreUrl);
 												mTask.setOnDataFinishedListener(new onDataFinishedListener() {
@@ -201,12 +203,14 @@ public class LikeActivity extends Activity {
 														try {
 															Log.i("data", data.toString());
 															JSONObject jsonObject = new JSONObject(data.toString());
-															if (jsonObject.getJSONObject("data").isNull("accounts")) {
+															totalAccounts = jsonObject.getJSONObject("data").getInt("total_count");
+															totalPageCount = totalAccounts/20 + 1;
+															if (jsonObject.getJSONObject("data").isNull("favorite_accounts")) {
 																Toast.makeText(LikeActivity.this, "没有更多的啦！", Toast.LENGTH_SHORT).show();
-																loadPageNum -= 1;
+//																loadPageNum -= 1;
 															}
 															else {
-																JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
+																JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
 																for (int i = 0; i < jsonAccounts.length(); i++) {
 																	accountName = jsonAccounts.getJSONObject(i).getString("a_name");
 																	accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
@@ -217,12 +221,12 @@ public class LikeActivity extends Activity {
 																	accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
 																	Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
 																	accounts.add(account);
-																	Log.i("accounts", Integer.toString(accounts.size()));
+																	Log.i("accounts size", Integer.toString(accounts.size()));
 																}
 																adapter.notifyDataSetChanged();
 															}
 															favListView.removeFooterView(footerLayout);
-															flag = 1;
+//															flag = 1;
 															
 														} catch (Exception e) {
 															e.printStackTrace();
@@ -231,10 +235,15 @@ public class LikeActivity extends Activity {
 													}
 												});
 												mTask.execute("string");
+												
 											} catch (Exception e) {
 												e.printStackTrace();
 											}
+											
+										} else {
+											Toast.makeText(LikeActivity.this, "没有更多的啦！", Toast.LENGTH_SHORT).show();
 										}
+//										favListView.removeFooterView(footerLayout);
 									}
 									break;
 								}
@@ -288,6 +297,11 @@ public class LikeActivity extends Activity {
         return loadingLayout;
 		
 	}
+	
+//	@Override
+//	public void onStart() {
+//		excuteTask(favoriteListUrl);
+//	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

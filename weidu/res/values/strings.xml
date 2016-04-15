@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">weidu</string>
+    <string name="app_name">微读</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_like">LikeActivity</string>
@@ -17,5 +17,6 @@
     <string name="title_activity_feed_back">FeedBackActivity</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_subscribe">SubscribeActivity</string>
+    <string name="title_activity_child_cats_test">ChildCatsTestActivity</string>
 
 </resources>
