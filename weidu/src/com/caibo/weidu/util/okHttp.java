@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -15,6 +16,7 @@ public class okHttp {
 	
 	public static String getAppData(String address) {
 		OkHttpClient  client = new OkHttpClient();
+//		Log.i("connectTimeout", Integer.toString(client.connectTimeoutMillis()));
 		DES des = new DES();
 		try {
 			Request request = new Request.Builder().url(address).build();

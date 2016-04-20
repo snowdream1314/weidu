@@ -1,7 +1,6 @@
 package com.caibo.weidu.modle;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -103,7 +102,7 @@ public class SwipeMenuListView extends ListView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        //鍦ㄦ嫤鎴澶勭悊锛屽湪婊戝姩璁剧疆浜嗙偣鍑讳簨浠剁殑鍦版柟涔熻兘swip锛岀偣鍑绘椂鍙堜笉鑳藉奖鍝嶅師鏉ョ殑鐐瑰嚮浜嬩欢
+        //閸︺劍瀚ら幋顏勵槱婢跺嫮鎮婇敍灞芥躬濠婃垵濮╃拋鍓х枂娴滃棛鍋ｉ崙璁崇皑娴犲墎娈戦崷鐗堟煙娑旂喕鍏榮wip閿涘瞼鍋ｉ崙缁樻閸欏牅绗夐懗钘夊閸濆秴甯弶銉ф畱閻愮懓鍤禍瀣╂
         int action = ev.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -114,16 +113,16 @@ public class SwipeMenuListView extends ListView {
                 mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
                 View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
-                //鍙湪绌虹殑鏃跺�欒祴鍊� 浠ュ厤姣忔瑙︽懜閮借祴鍊硷紝浼氭湁澶氫釜open鐘舵��
+                //閸欘亜婀粚铏规畱閺冭泛锟芥瑨绁撮崐锟� 娴犮儱鍘ゅВ蹇旑偧鐟欙附鎳滈柈鍊熺ゴ閸婄》绱濇导姘箒婢舵矮閲渙pen閻樿埖锟斤拷
                 if (view instanceof SwipeMenuLayout) {
-                    //濡傛灉鏈夋墦寮�浜� 灏辨嫤鎴�.
+                    //婵″倹鐏夐張澶嬪ⅵ瀵拷娴滐拷 鐏忚鲸瀚ら幋锟�.
                     if (mTouchView != null && mTouchView.isOpen() && !inRangeOfView(mTouchView.getMenuView(), ev)) {
                         return true;
                     }
                     mTouchView = (SwipeMenuLayout) view;
                     mTouchView.setSwipeDirection(mDirection);
                 }
-                //濡傛灉鎽稿湪鍙﹀涓獀iew
+                //婵″倹鐏夐幗绋挎躬閸欙箑顦绘稉鐛�iew
                 if (mTouchView != null && mTouchView.isOpen() && view != mTouchView) {
                     handled = true;
                 }
@@ -136,7 +135,7 @@ public class SwipeMenuListView extends ListView {
                 float dy = Math.abs((ev.getY() - mDownY));
                 float dx = Math.abs((ev.getX() - mDownX));
                 if (Math.abs(dy) > MAX_Y || Math.abs(dx) > MAX_X) {
-                    //姣忔鎷︽埅鐨刣own閮芥妸瑙︽懜鐘舵�佽缃垚浜員OUCH_STATE_NONE 鍙湁杩斿洖true鎵嶄細璧皁nTouchEvent 鎵�浠ュ啓鍦ㄨ繖閲屽氨澶熶簡
+                    //濮ｅ繑顐奸幏锔藉焻閻ㄥ垼own闁姤濡哥憴锔芥嚋閻樿埖锟戒浇顔曠純顔藉灇娴滃摗OUCH_STATE_NONE 閸欘亝婀佹潻鏂挎礀true閹靛秳绱扮挧鐨乶TouchEvent 閹碉拷娴犮儱鍟撻崷銊ㄧ箹闁插苯姘ㄦ径鐔剁啊
                     if (mTouchState == TOUCH_STATE_NONE) {
                         if (Math.abs(dy) > MAX_Y) {
                             mTouchState = TOUCH_STATE_Y;
@@ -152,14 +151,16 @@ public class SwipeMenuListView extends ListView {
         }
         return super.onInterceptTouchEvent(ev);
     }
-
+    
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+//    	Log.i("onTouchEvent", "onTouchEvent");
         if (ev.getAction() != MotionEvent.ACTION_DOWN && mTouchView == null)
             return super.onTouchEvent(ev);
         int action = ev.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+//            	Log.i("ACTION_DOWN", "ACTION_DOWN");
                 int oldPos = mTouchPosition;
                 mDownX = ev.getX();
                 mDownY = ev.getY();
@@ -198,16 +199,19 @@ public class SwipeMenuListView extends ListView {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                //鏈変簺鍙兘鏈塰eader,瑕佸噺鍘籬eader鍐嶅垽鏂�
+//            	Log.i("ACTION_MOVE", "ACTION_MOVE");
+                //閺堝绨洪崣顖濆厴閺堝“eader,鐟曚礁鍣洪崢绫琫ader閸愬秴鍨介弬锟�
                 mTouchPosition = pointToPosition((int) ev.getX(), (int) ev.getY()) - getHeaderViewsCount();
-                //濡傛灉婊戝姩浜嗕竴涓嬫病瀹屽叏灞曠幇锛屽氨鏀跺洖鍘伙紝杩欐椂鍊檓TouchView宸茬粡璧嬪�硷紝鍐嶆粦鍔ㄥ彟澶栦竴涓笉鍙互swip鐨剉iew
-                //浼氬鑷磎TouchView swip 銆� 鎵�浠ヨ鐢ㄤ綅缃垽鏂槸鍚︽粦鍔ㄧ殑鏄竴涓獀iew
+                //婵″倹鐏夊鎴濆З娴滃棔绔存稉瀣梾鐎瑰苯鍙忕仦鏇犲箛閿涘苯姘ㄩ弨璺烘礀閸樹紮绱濇潻娆愭閸婃獡TouchView瀹歌尙绮＄挧瀣拷纭风礉閸愬秵绮﹂崝銊ュ綗婢舵牔绔存稉顏冪瑝閸欘垯浜抯wip閻ㄥ墘iew
+                //娴兼艾顕遍懛纾嶵ouchView swip 閵嗭拷 閹碉拷娴犮儴顩﹂悽銊ょ秴缂冾喖鍨介弬顓熸Ц閸氾附绮﹂崝銊ф畱閺勵垯绔存稉鐛�iew
                 if (!mTouchView.getSwipEnable() || mTouchPosition != mTouchView.getPosition()) {
                     break;
                 }
                 float dy = Math.abs((ev.getY() - mDownY));
                 float dx = Math.abs((ev.getX() - mDownX));
                 if (mTouchState == TOUCH_STATE_X) {
+//                	Log.i("mTouchState", "TOUCH_STATE_X");
+                	getParent().requestDisallowInterceptTouchEvent(false);
                     if (mTouchView != null) {
                         mTouchView.onSwipe(ev);
                     }
@@ -218,6 +222,7 @@ public class SwipeMenuListView extends ListView {
                 } else if (mTouchState == TOUCH_STATE_NONE) {
                     if (Math.abs(dy) > MAX_Y) {
                         mTouchState = TOUCH_STATE_Y;
+                        getParent().requestDisallowInterceptTouchEvent(true);
                     } else if (dx > MAX_X) {
                         mTouchState = TOUCH_STATE_X;
                         if (mOnSwipeListener != null) {
@@ -227,6 +232,7 @@ public class SwipeMenuListView extends ListView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+//            	Log.i("ACTION_UP", "ACTION_UP");
                 if (mTouchState == TOUCH_STATE_X) {
                     if (mTouchView != null) {
                         boolean isBeforeOpen = mTouchView.isOpen();
@@ -321,7 +327,7 @@ public class SwipeMenuListView extends ListView {
     }
 
     /**
-     * 鍒ゆ柇鐐瑰嚮浜嬩欢鏄惁鍦ㄦ煇涓獀iew鍐�
+     * 閸掋倖鏌囬悙鐟板毊娴滃娆㈤弰顖氭儊閸︺劍鐓囨稉鐛�iew閸愶拷
      *
      * @param view
      * @param ev

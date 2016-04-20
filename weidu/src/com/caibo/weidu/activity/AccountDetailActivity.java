@@ -1,8 +1,5 @@
 package com.caibo.weidu.activity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONObject;
 
 import com.caibo.weidu.R;
@@ -32,8 +29,9 @@ import android.widget.Toast;
 public class AccountDetailActivity extends Activity {
 	
 	private ImageView accountImg, like, subscribe, tagBack, scoreStar;
-	private TextView tabName, accountName, accountWxNo, subscribeText, functionIntroduction, authenticationInformation, accountUrl;
+	private TextView tabName, accountName, accountWxNo, subscribeText, functionIntroduction, authenticationInformation, accountUrl, progressbarText;
 	private boolean from_childCatsActivity = false;
+	private boolean from_likeActivity = false;
 	
 	private String accountDetailUrl, addFavoriteUrl, removeFavUrl, session, deviceId;
 	private String account_id, account_name, account_wx_no, account_desc, account_valid_reason, account_url, account_message;
@@ -42,7 +40,11 @@ public class AccountDetailActivity extends Activity {
 	
 	private InitUrls initUrls = new InitUrls();
 	
-	private LinearLayout subscribeLayout, accountUrlLayout, likeLayout;
+	private LinearLayout subscribeLayout, accountUrlLayout, likeLayout, progressbarLayout;
+	
+	private int flag;
+	private int position;
+	private static final int resultCode = 2;
 	
 	//使用image-loader包加载图片
 	DisplayImageOptions options; //DisplayImageOptions是用于设置图片显示的类
@@ -78,21 +80,32 @@ public class AccountDetailActivity extends Activity {
 		functionIntroduction = (TextView) findViewById(R.id.function_introduction);
 		authenticationInformation = (TextView) findViewById(R.id.authentication_information);
 		accountUrl = (TextView) findViewById(R.id.account_url);
+		progressbarText = (TextView) findViewById(R.id.progressbar_text);
 		
 		likeLayout = (LinearLayout) findViewById(R.id.like_layout);
 		subscribeLayout = (LinearLayout) findViewById(R.id.subscribe_layout);
 		accountUrlLayout = (LinearLayout) findViewById(R.id.accountdetail_accounturl_layout);
+		progressbarLayout = (LinearLayout) findViewById(R.id.accountdetail_progressbar_layout);
+		
+		progressbarLayout.setVisibility(View.GONE);
 		
 		subscribe.setTag(R.drawable.subscribe_normal);
-		like.setTag(R.drawable.like_normal);
 		
 		Intent intent = getIntent();
 		from_childCatsActivity = intent.getBooleanExtra("from_childCatsActivity", false);
+		from_likeActivity = intent.getBooleanExtra("from_likeActivity", false);
 		account_id = getIntent().getStringExtra("a_id");
+		position = getIntent().getIntExtra("position", 0);
 		
 		tagBack.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (from_likeActivity) {
+					Intent intent = new Intent(AccountDetailActivity.this, LikeActivity.class);
+					intent.putExtra("flag", flag);
+					intent.putExtra("position", position);
+					setResult(resultCode, intent);
+				}
 				AccountDetailActivity.this.finish();
 			}
 		});
@@ -105,36 +118,56 @@ public class AccountDetailActivity extends Activity {
 				integer = integer == null ? 0 : integer;
 				switch(integer) {
 				case R.drawable.like_normal:
-					like.setImageResource(R.drawable.like_select);
-					like.setTag(R.drawable.like_select);
-					
+					progressbarLayout.setVisibility(View.VISIBLE);
+					progressbarText.setText("收藏中...");
 					addFavoriteUrl = initUrls.InitAddFavoriteUrl(session, deviceId, account_id);
 					MyAsyncTask mTask = new MyAsyncTask(addFavoriteUrl);
 					mTask.setOnDataFinishedListener(new onDataFinishedListener() {
 						@Override
 						public void onDataSuccessfully(Object data) {
+							progressbarLayout.setVisibility(View.GONE);
 							Log.i("data", data.toString());
+							try {
+								JSONObject jsonObject = new JSONObject(data.toString());
+								Toast.makeText(AccountDetailActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+								if (jsonObject.getInt("code") == 1) {
+									like.setImageResource(R.drawable.like_select);
+									like.setTag(R.drawable.like_select);
+									flag = 1;
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 					});
 					mTask.execute("string");
 					break;
 				case R.drawable.like_select:
-					like.setImageResource(R.drawable.like_normal);
-					like.setTag(R.drawable.like_normal);
-					
+					progressbarLayout.setVisibility(View.VISIBLE);
+					progressbarText.setText("取消收藏中...");
 					removeFavUrl = initUrls.InitRemoveFavoriteUrl(session, deviceId, account_id);
 					MyAsyncTask mTaskRev = new MyAsyncTask(removeFavUrl);
 					mTaskRev.setOnDataFinishedListener(new onDataFinishedListener() {
 						@Override
 						public void onDataSuccessfully(Object data) {
+							progressbarLayout.setVisibility(View.GONE);
 							Log.i("remove_data", data.toString());
+							try {
+								JSONObject jsonObject = new JSONObject(data.toString());
+								Toast.makeText(AccountDetailActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+								if (jsonObject.getInt("code") == 1) {
+									like.setImageResource(R.drawable.like_normal);
+									like.setTag(R.drawable.like_normal);
+									flag = 0;
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 					});
 					mTaskRev.execute("string");
 					break;
 				default:
-					like.setImageResource(R.drawable.like_normal);
-					like.setTag(R.drawable.like_normal);
 					break;
 				}
 			}
@@ -190,6 +223,12 @@ public class AccountDetailActivity extends Activity {
 								accountWxNo.setText(account_wx_no);
 								if (a_favorited == 1) {
 									like.setImageResource(R.drawable.like_select);
+									like.setTag(R.drawable.like_select);
+									flag = 1;
+								} else {
+									like.setImageResource(R.drawable.like_normal);
+									like.setTag(R.drawable.like_normal);
+									flag = 0;
 								}
 								if (account_desc.length() != 0) {
 									functionIntroduction.setText(account_desc);
@@ -246,7 +285,14 @@ public class AccountDetailActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		finish();
+		if (from_likeActivity) {
+			Intent intent = new Intent(AccountDetailActivity.this, LikeActivity.class);
+			intent.putExtra("flag", flag);
+			intent.putExtra("position", position);
+			setResult(resultCode, intent);
+		}
+		AccountDetailActivity.this.finish();
+//		finish();
 	}
 
 	@Override

@@ -2,27 +2,16 @@ package com.caibo.weidu.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.caibo.weidu.R;
-import com.caibo.weidu.modle.Account;
-import com.caibo.weidu.modle.AccountFragment;
 import com.caibo.weidu.modle.PagerSlidingTabStrip;
 import com.caibo.weidu.modle.myPagerAdapter;
-import com.caibo.weidu.util.InitUrls;
-import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.SaveDataInPref;
-import com.caibo.weidu.util.onDataFinishedListener;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,21 +24,11 @@ public class ChildCatsActivity extends FragmentActivity {
 	
 	private TextView childCatsTabName;
 	private ImageView childCatsTagBack;
-	private Fragment fragment;
+//	private Fragment fragment;
 	private PagerSlidingTabStrip tabs;
 	
 	private ArrayList<HashMap<String, Object>> arrayListForChildcats;
-	private ArrayList<Fragment> fragments;
-	private ArrayList<String> titles;
-	private ArrayList<Account> accounts;
-	private String accountsUrl, childCatsId, session, deviceId;
-	private JSONArray jsonAccounts; 
-	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
-	private int accountScore, pageNum;
-	private String title;
-	private ImageView childCatsScoreStar;
-	private TextView childCatsAccountWxNo;
-	private InitUrls initUrls = new InitUrls();
+	private String session, deviceId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +36,17 @@ public class ChildCatsActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_child_cats);
 		
-		childCatsScoreStar = (ImageView) findViewById(R.id.childCats_score_star);
-		childCatsAccountWxNo = (TextView) findViewById(R.id.childCats_account_wx_no);
 		ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		
 		SharedPreferences pref = getSharedPreferences("registerData", MODE_PRIVATE);
-		final SaveDataInPref saveDataInPref = new SaveDataInPref(pref);
+		SaveDataInPref saveDataInPref = new SaveDataInPref(pref);
 		session = saveDataInPref.GetSession("userData", "");
 		deviceId = saveDataInPref.GetData("imei", "");
 		
 		try {
 			childCatsTabName = (TextView) findViewById(R.id.childCats_tab_name);
 			childCatsTagBack = (ImageView) findViewById(R.id.childCats_tag_back);
-//			ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
 			
 			Intent intent = getIntent();
 			childCatsTabName.setText(intent.getStringExtra("category_name"));
@@ -85,6 +61,7 @@ public class ChildCatsActivity extends FragmentActivity {
 				}
 			});
 			
+//			pager.setOffscreenPageLimit(1);
 			pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), ChildCatsActivity.this, arrayListForChildcats, session, deviceId));
 			pager.setCurrentItem(0);
 			tabs.setViewPager(pager);
@@ -94,52 +71,6 @@ public class ChildCatsActivity extends FragmentActivity {
 		}
 	}
 	
-//	private void initAccounts(final String childCatsId) {
-//		final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-//		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-//		fragments = new ArrayList<Fragment>();
-//		pageNum = 1;
-//		accountsUrl = initUrls.InitAccountsUrl(session, deviceId, childCatsId, Integer.toString(pageNum));
-//		
-//		try {
-//			MyAsyncTask mTask = new MyAsyncTask(accountsUrl);
-//			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
-//				@Override
-//				public void onDataSuccessfully(Object data) {
-//					String account_data = data.toString();
-//					try {
-//						Log.i("account_data", account_data);
-//						accounts = new ArrayList<Account>();
-//						JSONObject jsonObject = new JSONObject(account_data);
-//						jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
-//						for (int i = 0; i < jsonAccounts.length(); i++) {
-//							accountName = jsonAccounts.getJSONObject(i).getString("a_name");
-//							accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
-//							accountId = jsonAccounts.getJSONObject(i).getString("a_id");
-//							accountLogoLink = jsonAccounts.getJSONObject(i).getString("a_logo");
-//							accountDesc = jsonAccounts.getJSONObject(i).getString("a_desc");
-//							accountValidReason = jsonAccounts.getJSONObject(i).getString("a_valid_reason");
-//							accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
-//							Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
-//							accounts.add(account);
-//						}
-//						Log.i("accounts size", Integer.toString(accounts.size()));
-////						Log.i("accounts", accounts.toString());
-////						fragment = new AccountFragment(accounts, ChildCatsActivity.this, session, deviceId, childCatsId, pageNum);
-////						pager.setAdapter(new myPagerAdapter(getSupportFragmentManager(), ChildCatsActivity.this, titles, arrayListForChildcats, session, deviceId));
-////						pager.setCurrentItem(0);
-////						tabs.setViewPager(pager);
-//						
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			});
-//			mTask.execute("string");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 	
 	@Override
 	public void onBackPressed() {

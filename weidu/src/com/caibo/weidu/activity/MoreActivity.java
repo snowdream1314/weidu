@@ -2,6 +2,7 @@ package com.caibo.weidu.activity;
 
 import java.util.ArrayList;
 
+import com.caibo.weidu.MoreWebContentActivity;
 import com.caibo.weidu.R;
 import com.caibo.weidu.modle.MoreItem;
 import com.caibo.weidu.modle.MoreItemAdapter;
@@ -46,31 +47,35 @@ public class MoreActivity extends Activity {
 						itemName = ((MoreItem) (msg.obj)).getItemName();
 						if (itemName.equals("免费收录")) {
 							Intent intent = new Intent(MoreActivity.this, FreeCollectActivity.class);
+							intent.putExtra("url", "http://wx.xiyiyi.com/Mobile/Account/submit");
 							startActivity(intent);
 						}
 						else if (itemName.equals("关于我们")) {
 							Intent intent = new Intent(MoreActivity.this, AboutUsActivity.class);
+							intent.putExtra("url", "http://wx.xiyiyi.com/Mobile/About/aboutus");
 							startActivity(intent);
 						}
 						else if (itemName.equals("商务合作")) {
 							Intent intent = new Intent(MoreActivity.this, BusinessCooperationActivity.class);
+							intent.putExtra("url", "http://wx.xiyiyi.com/Mobile/About/business");
 							startActivity(intent);
 						}
-						else if (itemName.equals("给我点爱")) {
-							Intent intent = new Intent(MoreActivity.this, DonationActivity.class);
-							startActivity(intent);
-						}
+//						else if (itemName.equals("给我点爱")) {
+//							Intent intent = new Intent(MoreActivity.this, DonationActivity.class);
+//							startActivity(intent);
+//						}
 						else if (itemName.equals("意见反馈")) {
 							Intent intent = new Intent(MoreActivity.this, FeedBackActivity.class);
+							intent.putExtra("url", "http://wx.xiyiyi.com/Mobile/Feedback/index");
 							startActivity(intent);
 						}
 					}
-					else {
-						if (moreItemList.get(arg2).obj.toString().equals("关于")) {
-							Intent intent = new Intent(MoreActivity.this, AboutActivity.class);
-							startActivity(intent);
-						}
-					}
+//					else {
+//						if (moreItemList.get(arg2).obj.toString().equals("关于")) {
+//							Intent intent = new Intent(MoreActivity.this, AboutActivity.class);
+//							startActivity(intent);
+//						}
+//					}
 				}
 			});
 			

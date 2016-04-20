@@ -9,12 +9,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.ImageView;
 
 public class BusinessCooperationActivity extends Activity {
 	
 	private ImageView bscpTagBack;
 	private int tabTag = 2;
+	private WebView webView;
+	private String url;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +34,12 @@ public class BusinessCooperationActivity extends Activity {
 				finish();
 			}
 		});
+		
+		webView  = (WebView) findViewById(R.id.business_webview);
+		
+		Intent intent  = getIntent();
+		url = intent.getStringExtra("url");
+		webView.loadUrl(url);
 	}
 
 	@Override

@@ -26,20 +26,22 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
 
 public class LikeActivity extends Activity {
 	
@@ -53,9 +55,15 @@ public class LikeActivity extends Activity {
 	private LinearLayout likeNoneLayout;
 	private SwipeMenuListView favListView;
 	private TextView likeTabName;
-	private int flag = 1;
+	private int flag = 0;
+	private int accountPosition;
+	private float mDownX;
+    private float mDownY;
 	
-	private SwipeRefreshLayout refreshLayout;
+	private SwipeRefreshLayout refreshLayout, likenoneRefresh;
+	private AccountAdapter mAdapter;
+	
+	private static final int code = 2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +75,15 @@ public class LikeActivity extends Activity {
 		favListView = (SwipeMenuListView) findViewById(R.id.like_listView);
 		likeTabName = (TextView) findViewById(R.id.like_tabname);
 		refreshLayout = (SwipeRefreshLayout) findViewById(R.id.like_SwipeRefreshLayout);
+		likenoneRefresh = (SwipeRefreshLayout) findViewById(R.id.likenone_SwipeRefreshLayout);
 		
 		SharedPreferences pref = getSharedPreferences("registerData", MODE_PRIVATE);
 		SaveDataInPref saveDataInPref = new SaveDataInPref(pref);
 		session = saveDataInPref.GetSession("userData", "");
 		deviceId = saveDataInPref.GetData("imei", "");
 		favoriteListUrl = initUrls.InitFavoriteListUrl(session, deviceId, "1");
+		
+//		favListView.setVisibility(View.GONE);
 		
 		excuteTask(favoriteListUrl);
 		
@@ -90,7 +101,24 @@ public class LikeActivity extends Activity {
 				excuteTask(favoriteListUrl);
 				refreshLayout.setRefreshing(false);
 			}
+			
 		});
+		
+		likenoneRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
+				android.R.color.holo_red_light,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light);
+		likenoneRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+		
+		@Override
+		public void onRefresh() {
+		// TODO Auto-generated method stub
+		Log.i("favoriteListUrl", favoriteListUrl);
+		excuteTask(favoriteListUrl);
+		likenoneRefresh.setRefreshing(false);
+		}
+		});
+		
 	}
 	
 	private void excuteTask(String url) {
@@ -110,8 +138,10 @@ public class LikeActivity extends Activity {
 					Log.i("totalAccounts", Integer.toString(totalAccounts));
 					Log.i("totalPageCount", Integer.toString(totalPageCount));
 					if (jsonFavAccounts.length() != 0) {
-						likeNoneLayout.setVisibility(View.GONE);
-						likeTabName.setText("收藏");
+						likenoneRefresh.setVisibility(View.GONE);
+//						likeNoneLayout.setVisibility(View.GONE);
+//						favListView.setVisibility(View.VISIBLE);
+//						likeTabName.setText("收藏");
 						for (int i = 0; i < jsonFavAccounts.length(); i++) {
 							accountName = jsonFavAccounts.getJSONObject(i).getString("a_name");
 							accountWxNo = jsonFavAccounts.getJSONObject(i).getString("a_wx_no");
@@ -125,6 +155,7 @@ public class LikeActivity extends Activity {
 						}
 //						final AccountAdapterWithDelete adapter = new AccountAdapterWithDelete(LikeActivity.this, R.layout.like_account_listview, accounts, session, deviceId);
 						final AccountAdapter adapter = new AccountAdapter(LikeActivity.this, R.layout.childcats_account_listview, accounts);
+						mAdapter = adapter;
 						
 						favListView.setAdapter(adapter);
 						favListView.setOnItemClickListener(new OnItemClickListener() {
@@ -133,8 +164,42 @@ public class LikeActivity extends Activity {
 								Account account = accounts.get(arg2);
 								Intent intent = new Intent(LikeActivity.this, AccountDetailActivity.class);
 								intent.putExtra("a_id", account.getAccountId());
-								startActivity(intent);
+								intent.putExtra("from_likeActivity", true);
+								intent.putExtra("position", arg2);
+								startActivityForResult(intent, 1);
 							}
+						});
+						favListView.setOnTouchListener(new OnTouchListener() {
+							@Override
+						    public boolean onTouch(View arg0, MotionEvent ev) {
+//						    	Log.i("onTouchEvent", "onTouchEvent");
+						    	int action = ev.getAction();
+						    	switch (action) {
+						    	case MotionEvent.ACTION_DOWN:
+						    		mDownX = ev.getX();
+					                mDownY = ev.getY();
+						    		break;
+						    	case MotionEvent.ACTION_MOVE:
+						    		Log.i("ACTION_MOVE", "ACTION_MOVE");
+						    		float dy = Math.abs((ev.getY() - mDownY));
+					                float dx = Math.abs((ev.getX() - mDownX));
+					                if (Math.abs(dy) > dp2px(5) && Math.abs(dx) < dp2px(5)) {
+					                	refreshLayout.setEnabled(true);
+					                } else {
+					                	refreshLayout.setEnabled(false);
+					                }
+						    		break;
+						    	case MotionEvent.ACTION_UP:
+						    		Log.i("ACTION_UP", "ACTION_UP");
+						    		refreshLayout.setEnabled(true);
+						    		break;
+						    	case MotionEvent.ACTION_CANCEL:
+						    		Log.i("ACTION_CANCEL", "ACTION_CANCEL");
+						    		refreshLayout.setEnabled(true);
+						    		break;
+						    	}
+						    	return false;
+						    }
 						});
 						
 						//滑动删除
@@ -144,13 +209,15 @@ public class LikeActivity extends Activity {
 								SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
 								deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
 						                0x3F, 0x25)));
+								deleteItem.setWidth(dp2px(120));
 								deleteItem.setIcon(R.drawable.like_delete_icon);
-								deleteItem.setWidth(235);
 								menu.addMenuItem(deleteItem);
 							}
+							
 						};
+						
 						favListView.setMenuCreator(creator);
-						favListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+//						favListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 						favListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 							@Override
 							public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
@@ -164,6 +231,10 @@ public class LikeActivity extends Activity {
 										Log.i("remove_data", data.toString());
 										accounts.remove(position);
 										adapter.notifyDataSetChanged();
+										if (accounts.size() == 0) {
+//											likeNoneLayout.setVisibility(View.VISIBLE);
+											likenoneRefresh.setVisibility(View.VISIBLE);
+										}
 									}
 								});
 								mTaskRev.execute("string");
@@ -177,7 +248,7 @@ public class LikeActivity extends Activity {
 							@Override
 							public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 								if (firstVisibleItem + visibleItemCount == totalItemCount) {
-									Log.i("onScroll", "onScroll");
+//									Log.i("onScroll", "onScroll");
 								}
 							}
 							
@@ -187,7 +258,6 @@ public class LikeActivity extends Activity {
 								case OnScrollListener.SCROLL_STATE_IDLE:
 									//判断滚动到底部
 									if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
-										Log.i("flag", Integer.toString(flag));
 										
 										if (pageNum < totalPageCount && totalAccounts > 20) {
 											favListView.addFooterView(footerLayout);
@@ -205,11 +275,11 @@ public class LikeActivity extends Activity {
 															JSONObject jsonObject = new JSONObject(data.toString());
 															totalAccounts = jsonObject.getJSONObject("data").getInt("total_count");
 															totalPageCount = totalAccounts/20 + 1;
-															if (jsonObject.getJSONObject("data").isNull("favorite_accounts")) {
-																Toast.makeText(LikeActivity.this, "没有更多的啦！", Toast.LENGTH_SHORT).show();
+															if (!jsonObject.getJSONObject("data").isNull("favorite_accounts")) {
+//																Toast.makeText(LikeActivity.this, "没有更多的啦！", Toast.LENGTH_SHORT).show();
 //																loadPageNum -= 1;
-															}
-															else {
+//															}
+//															else {
 																JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
 																for (int i = 0; i < jsonAccounts.length(); i++) {
 																	accountName = jsonAccounts.getJSONObject(i).getString("a_name");
@@ -240,10 +310,7 @@ public class LikeActivity extends Activity {
 												e.printStackTrace();
 											}
 											
-										} else {
-											Toast.makeText(LikeActivity.this, "没有更多的啦！", Toast.LENGTH_SHORT).show();
-										}
-//										favListView.removeFooterView(footerLayout);
+										} 
 									}
 									break;
 								}
@@ -251,9 +318,12 @@ public class LikeActivity extends Activity {
 						});
 						
 						Log.i("account_num", Integer.toString(accounts.size()));
-					} else {
-						likeNoneLayout.setVisibility(View.VISIBLE);
-						likeTabName.setText("喜欢");
+					} 
+					else {
+//						likeNoneLayout.setVisibility(View.VISIBLE);
+						likenoneRefresh.setVisibility(View.VISIBLE);
+//						favListView.setVisibility(View.GONE);
+//						likeTabName.setText("喜欢");
 					}
 					
 				} catch (Exception e) {
@@ -262,6 +332,11 @@ public class LikeActivity extends Activity {
 			}
 		});
 		mTask.execute("string");
+	}
+	
+	private int dp2px(int dp) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+				getResources().getDisplayMetrics());
 	}
 	
 	private LinearLayout InitFooterLayout() {
@@ -298,11 +373,6 @@ public class LikeActivity extends Activity {
 		
 	}
 	
-//	@Override
-//	public void onStart() {
-//		excuteTask(favoriteListUrl);
-//	}
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -320,5 +390,32 @@ public class LikeActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i("onActivityResult", "success");
+		// TODO Auto-generated method stub
+//		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == code) {
+			try {
+				flag = data.getExtras().getInt("flag");
+				Log.i("flag", Integer.toString(flag));
+				Log.i("position", Integer.toString(data.getExtras().getInt("position")));
+				if (flag == 0) {
+					accountPosition = data.getExtras().getInt("position");
+					accounts.remove(accountPosition);
+					mAdapter.notifyDataSetChanged();
+					if (accounts.size() == 0) {
+						likenoneRefresh.setVisibility(View.VISIBLE);
+//						likeNoneLayout.setVisibility(View.VISIBLE);
+//						favListView.setVisibility(View.GONE);
+					}
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

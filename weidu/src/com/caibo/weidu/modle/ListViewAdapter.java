@@ -119,17 +119,17 @@ public class ListViewAdapter extends BaseAdapter {
 				holder.gridView.setAdapter(gridViewAdapter);
 				
 				//设置点击事件
-				try {
-					holder.gridView.setOnItemClickListener(new OnItemClickListener() {
-						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-							gridViewAdapter.clearSelection(position);
-							gridViewAdapter.notifyDataSetChanged();
-						}
-					});
-				} catch (Exception e) {
-					e.printStackTrace();
-					Log.e("gridView", e.toString());
-				}
+//				try {
+//					holder.gridView.setOnItemClickListener(new OnItemClickListener() {
+//						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//							gridViewAdapter.clearSelection(position);
+//							gridViewAdapter.notifyDataSetChanged();
+//						}
+//					});
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					Log.e("gridView", e.toString());
+//				}
 			}
 		}
 		return convertView;

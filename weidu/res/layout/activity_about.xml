@@ -22,9 +22,8 @@
 		        android:background="@drawable/tag_back"
 		        android:layout_gravity="center"
 		        android:gravity="center"
-		        android:paddingTop="10dp"
 		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="5dp"/>
+		        android:layout_marginTop="10dp"/>
 	        <TextView 
 	            android:id="@+id/about_tab_name"
 	            android:layout_width="wrap_content"

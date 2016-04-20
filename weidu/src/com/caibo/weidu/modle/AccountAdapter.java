@@ -61,12 +61,13 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		if (accounts != null) {
 			Account account = accounts.get(position);
 			holder.accountNotes.setText(account.getNotes());
-			holder.accountWxno.setText(account.getWxno());
-			holder.accountName.setText(account.getName());
 			//微信号过长则隐藏星级
-			if (account.getWxno().length() > 8) {
-//				holder.accountScoreImage.setVisibility(View.GONE);
+			if (account.getWxno().length() > 10) {
+				holder.accountWxno.setText(account.getWxno().subSequence(0, 6) + "...");
+			} else {
+				holder.accountWxno.setText(account.getWxno());
 			}
+			holder.accountName.setText(account.getName());
 			
 			switch (account.getScoreImageId()) {
 			case 1:

@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,7 +49,10 @@ public class ChildCatsFragment extends Fragment {
 	private InitUrls initUrls = new InitUrls();
 	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
 	private LinearLayout footerLayout;
-	private Fragment fragment;
+	private SwipeRefreshLayout refreshLayout;
+	
+	private boolean hasLoadedOnce = false;
+	protected boolean isVisible;
 	
 	public ChildCatsFragment(Context context, String childCatsId, String session, String deviceId) {
 		this.mContext = context;
@@ -57,15 +61,50 @@ public class ChildCatsFragment extends Fragment {
 		this.deviceId = deviceId;
 	}
 	
+	//判断是否可见
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (getUserVisibleHint()) {
+			isVisible = true;
+//			onVisible();
+		} else {
+			isVisible = false;
+//			onInvisible();
+		}
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.account_fragment, container, false);
 		footerLayout = InitFooterLayout();
-//		LinearLayout listViewFooter = (LinearLayout) inflater.inflate(R.layout.listview_footer, container, false);
 		listView = (ListView) fragmentView.findViewById(R.id.childCatsListView);
+		refreshLayout = (SwipeRefreshLayout) fragmentView.findViewById(R.id.childCats_SwipeRefreshLayout);
 		
 		accountsUrl = initUrls.InitAccountsUrl(session, deviceId, childCatsId, Integer.toString(pageNum));
 		
+		//下拉刷新
+		refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+											android.R.color.holo_red_light,
+											android.R.color.holo_green_light,
+											android.R.color.holo_orange_light);
+		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				// TODO Auto-generated method stub
+				Log.i("favoriteListUrl", accountsUrl);
+				excuteTask(accountsUrl);
+				refreshLayout.setRefreshing(false);
+			}
+		});
+		
+		excuteTask(accountsUrl);
+		
+		return fragmentView;
+	}
+	
+	private void excuteTask(String url) {
 		try {
 			MyAsyncTask mTask = new MyAsyncTask(accountsUrl);
 			mTask.setOnDataFinishedListener(new onDataFinishedListener() {
@@ -82,9 +121,10 @@ public class ChildCatsFragment extends Fragment {
 						Log.i("page now", Integer.toString(pageNum));
 						Log.i("totalAccounts", Integer.toString(totalAccounts));
 						Log.i("totalPageCount", Integer.toString(totalPageCount));
-						if (jsonObject.getJSONObject("data").getString("total_count").equals("0")) {
-							Toast.makeText(mContext, "该分类下暂时没有公众号！", Toast.LENGTH_SHORT).show();
-						} else {
+						if (!jsonObject.getJSONObject("data").getString("total_count").equals("0")) {
+//							Toast.makeText(mContext, "该分类下暂时没有公众号！", Toast.LENGTH_SHORT).show();
+//							hasLoadedOnce = false;
+//						} else {
 							JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
 							for (int i = 0; i < jsonAccounts.length(); i++) {
 								accountName = jsonAccounts.getJSONObject(i).getString("a_name");
@@ -110,14 +150,14 @@ public class ChildCatsFragment extends Fragment {
 									startActivity(intent);
 								}
 							});
-							
+							hasLoadedOnce = true;
 							//滚动到底部加载更多
 							final LinearLayout footerLayout = InitFooterLayout();
 							listView.setOnScrollListener(new OnScrollListener() {
 								@Override
 								public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 									if (firstVisibleItem + visibleItemCount == totalItemCount) {
-										Log.i("onScroll", "onScroll");
+//										Log.i("onScroll", "onScroll");
 									}
 								}
 								
@@ -145,11 +185,11 @@ public class ChildCatsFragment extends Fragment {
 																JSONObject jsonObject = new JSONObject(data.toString());
 																totalAccounts = jsonObject.getJSONObject("data").getInt("total_count");
 																totalPageCount = totalAccounts/20 + 1;
-																if (jsonObject.getJSONObject("data").isNull("favorite_accounts")) {
-																	Toast.makeText(mContext, "没有更多的啦！", Toast.LENGTH_SHORT).show();
+																if (!jsonObject.getJSONObject("data").isNull("favorite_accounts")) {
+//																	Toast.makeText(mContext, "没有更多的啦！", Toast.LENGTH_SHORT).show();
 //																	loadPageNum -= 1;
-																}
-																else {
+//																}
+//																else {
 																	JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
 																	for (int i = 0; i < jsonAccounts.length(); i++) {
 																		accountName = jsonAccounts.getJSONObject(i).getString("a_name");
@@ -180,9 +220,10 @@ public class ChildCatsFragment extends Fragment {
 													e.printStackTrace();
 												}
 												
-											} else {
-												Toast.makeText(mContext, "没有更多的啦！", Toast.LENGTH_SHORT).show();
-											}
+											} 
+//											else {
+//												Toast.makeText(mContext, "没有更多的啦！", Toast.LENGTH_SHORT).show();
+//											}
 //											listView.removeFooterView(footerLayout);
 										}
 										break;
@@ -201,8 +242,6 @@ public class ChildCatsFragment extends Fragment {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return fragmentView;
 	}
 	
 	private LinearLayout InitFooterLayout() {

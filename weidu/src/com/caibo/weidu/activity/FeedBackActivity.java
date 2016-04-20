@@ -5,16 +5,23 @@ import com.caibo.weidu.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class FeedBackActivity extends Activity {
 	
 	private ImageView feedbackTagBack;
 	private int tabTag = 2;
+	private WebView webView;
+	private String url;
+	private Button submit;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,28 @@ public class FeedBackActivity extends Activity {
 				finish();
 			}
 		});
+		
+		webView  = (WebView) findViewById(R.id.feedback_webview);
+		webView.getSettings().setJavaScriptEnabled(true);  
+		
+		Intent intent  = getIntent();
+		url = intent.getStringExtra("url");
+		
+		submit = (Button) findViewById(R.id.feedback_submit);
+		submit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						webView.loadUrl("javascript:submitForm();");
+						Log.i("feedback_submit", "submit");
+					}
+				});
+			}
+		});
+		webView.loadUrl(url);
+		
 	}
 
 	@Override
