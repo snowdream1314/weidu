@@ -1,36 +1,33 @@
 package com.caibo.weidu.util;
 
-
-
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class MyAsyncTask extends AsyncTask<String, Integer, Object> {
-	
+
 	private Object appDatas;
 	private String url;
-	
+
 	onDataFinishedListener onDataFinishedListener;
-	
+
 	public MyAsyncTask(String address) {
 		this.url = address;
 	}
-	
+
 	public void setOnDataFinishedListener(onDataFinishedListener onDataFinishedListener) {
 		this.onDataFinishedListener = onDataFinishedListener;
 	}
-	
-	//onPreExecute方法用于在执行后台任务前做一些UI操作  
+
+	//onPreExecute鏂规硶鐢ㄤ簬鍦ㄦ墽琛屽悗鍙颁换鍔″墠鍋氫竴浜沀I鎿嶄綔
 	@Override
 	protected void onPreExecute() {
-		
+
 	}
-	
-	//doInBackground方法内部执行后台任务,不可在此方法内修改UI
-	@Override 
+
+	//doInBackground鏂规硶鍐呴儴鎵ц鍚庡彴浠诲姟,涓嶅彲鍦ㄦ鏂规硶鍐呬慨鏀筓I
+	@Override
 	protected Object doInBackground(String... address) {
 		for (int i = 0; i < 3; i++) {
-			
+
 			try {
 				if (address[0] == "string") {
 					appDatas = okHttp.getAppData(url);
@@ -49,21 +46,22 @@ public class MyAsyncTask extends AsyncTask<String, Integer, Object> {
 			}
 		}
 		return null;
-		
+
 	}
-	
-	 //onProgressUpdate方法用于更新进度信息
+
+	//onProgressUpdate鏂规硶鐢ㄤ簬鏇存柊杩涘害淇℃伅
 	@Override
 	protected void onProgressUpdate(Integer... progress) {
-		
+
 	}
-	
-	//onPostExecute方法用于在执行完后台任务后更新UI,显示结果
+
+	//onPostExecute鏂规硶鐢ㄤ簬鍦ㄦ墽琛屽畬鍚庡彴浠诲姟鍚庢洿鏂癠I,鏄剧ず缁撴灉
 	@Override
 	protected void onPostExecute(Object result) {
-		
+
 		if (result != null) {
 			onDataFinishedListener.onDataSuccessfully(result);
 		}
 	}
 }
+

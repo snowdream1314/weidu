@@ -11,8 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class myPagerAdapter extends FragmentPagerAdapter {
 	
 	private ArrayList<HashMap<String, Object>> arrayListForChildcats;
-//	private ArrayList<Fragment> fragments;
-//	private ArrayList<String> titles;
 	private String session, deviceId;
 	private ChildCatsFragment childCatsFragment;
 	private Context mContext;
@@ -40,8 +38,8 @@ public class myPagerAdapter extends FragmentPagerAdapter {
 	
 	@Override
 	public Fragment getItem(int position) {
-		//生成新的fragment
-		childCatsFragment = new ChildCatsFragment(mContext, arrayListForChildcats.get(position).get("childCat_id").toString(), session, deviceId);
+		//鐢熸垚鏂扮殑fragment
+		childCatsFragment = ChildCatsFragment.instance(mContext, arrayListForChildcats.get(position).get("childCat_id").toString(), session, deviceId);
 		return childCatsFragment;
 	}
 	

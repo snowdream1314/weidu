@@ -6,10 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.caibo.weidu.R;
+import com.caibo.weidu.bean.Account;
+import com.caibo.weidu.main.account.AccountDetailActivity;
 import com.caibo.weidu.util.InitUrls;
 import com.caibo.weidu.util.MyAsyncTask;
 import com.caibo.weidu.util.onDataFinishedListener;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ChildCatsFragment extends Fragment {
-	
+
 	private ListView listView;
 	private ArrayList<Account> accountList;
 	private Context mContext;
@@ -42,20 +43,23 @@ public class ChildCatsFragment extends Fragment {
 	private String accountsUrl, loadMoreUrl;
 	private InitUrls initUrls = new InitUrls();
 	private String accountName, accountWxNo, accountLogoLink, accountDesc, accountValidReason, accountId;
-	private LinearLayout footerLayout;
 	private SwipeRefreshLayout refreshLayout;
-	
-	private boolean hasLoadedOnce = false;
+    private LinearLayout footerLayout;
+
+    private boolean hasLoadedOnce = false;
 	protected boolean isVisible;
-	
-	public ChildCatsFragment(Context context, String childCatsId, String session, String deviceId) {
-		this.mContext = context;
-		this.childCatsId = childCatsId;
-		this.session = session;
-		this.deviceId = deviceId;
-	}
-	
-	//�ж��Ƿ�ɼ�
+
+	public static ChildCatsFragment instance(Context context, String childCatsId, String session, String deviceId) {
+        ChildCatsFragment fragment = new ChildCatsFragment();
+        fragment.mContext = context;
+        fragment.session = session;
+        fragment.childCatsId = childCatsId;
+        fragment.deviceId = deviceId;
+
+        return fragment;
+    }
+
+	//判断是否可见
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
@@ -67,23 +71,23 @@ public class ChildCatsFragment extends Fragment {
 //			onInvisible();
 		}
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.account_fragment, container, false);
 		footerLayout = InitFooterLayout();
 		listView = (ListView) fragmentView.findViewById(R.id.childCatsListView);
 		refreshLayout = (SwipeRefreshLayout) fragmentView.findViewById(R.id.childCats_SwipeRefreshLayout);
-		
+
 		accountsUrl = initUrls.InitAccountsUrl(session, deviceId, childCatsId, Integer.toString(pageNum));
-		
-		//����ˢ��
+
+		//下拉刷新
 		refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-											android.R.color.holo_red_light,
-											android.R.color.holo_green_light,
-											android.R.color.holo_orange_light);
+				android.R.color.holo_red_light,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light);
 		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-			
+
 			@Override
 			public void onRefresh() {
 				// TODO Auto-generated method stub
@@ -92,12 +96,12 @@ public class ChildCatsFragment extends Fragment {
 				refreshLayout.setRefreshing(false);
 			}
 		});
-		
+
 		excuteTask(accountsUrl);
-		
+
 		return fragmentView;
 	}
-	
+
 	private void excuteTask(String url) {
 		try {
 			MyAsyncTask mTask = new MyAsyncTask(accountsUrl);
@@ -116,7 +120,7 @@ public class ChildCatsFragment extends Fragment {
 						Log.i("totalAccounts", Integer.toString(totalAccounts));
 						Log.i("totalPageCount", Integer.toString(totalPageCount));
 						if (!jsonObject.getJSONObject("data").getString("total_count").equals("0")) {
-//							Toast.makeText(mContext, "�÷�������ʱû�й��ںţ�", Toast.LENGTH_SHORT).show();
+//							Toast.makeText(mContext, "该分类下暂时没有公众号！", Toast.LENGTH_SHORT).show();
 //							hasLoadedOnce = false;
 //						} else {
 							JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("accounts");
@@ -145,7 +149,7 @@ public class ChildCatsFragment extends Fragment {
 								}
 							});
 							hasLoadedOnce = true;
-							//�������ײ����ظ���
+							//滚动到底部加载更多
 							final LinearLayout footerLayout = InitFooterLayout();
 							listView.setOnScrollListener(new OnScrollListener() {
 								@Override
@@ -154,121 +158,121 @@ public class ChildCatsFragment extends Fragment {
 //										Log.i("onScroll", "onScroll");
 									}
 								}
-								
+
 								@Override
 								public void onScrollStateChanged(AbsListView view, int scrollState) {
 									switch (scrollState) {
-									case OnScrollListener.SCROLL_STATE_IDLE:
-										//�жϹ������ײ�
-										if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
-											Log.i("flag", Integer.toString(flag));
-											
-											if (pageNum < totalPageCount && totalAccounts > 20) {
-												listView.addFooterView(footerLayout);
+										case OnScrollListener.SCROLL_STATE_IDLE:
+											//判断滚动到底部
+											if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
+												Log.i("flag", Integer.toString(flag));
+
+												if (pageNum < totalPageCount && totalAccounts > 20) {
+													listView.addFooterView(footerLayout);
 //												flag = 0;
-												pageNum += 1;
-												loadMoreUrl = initUrls.InitFavoriteListUrl(session, deviceId, Integer.toString(pageNum));
-												Log.i("loadMoreUrl", loadMoreUrl);
-												try {
-													MyAsyncTask mTask = new MyAsyncTask(loadMoreUrl);
-													mTask.setOnDataFinishedListener(new onDataFinishedListener() {
-														@Override
-														public void onDataSuccessfully(Object data) {
-															try {
-																Log.i("data", data.toString());
-																JSONObject jsonObject = new JSONObject(data.toString());
-																totalAccounts = jsonObject.getJSONObject("data").getInt("total_count");
-																totalPageCount = totalAccounts/20 + 1;
-																if (!jsonObject.getJSONObject("data").isNull("favorite_accounts")) {
-//																	Toast.makeText(mContext, "û�и��������", Toast.LENGTH_SHORT).show();
+													pageNum += 1;
+													loadMoreUrl = initUrls.InitFavoriteListUrl(session, deviceId, Integer.toString(pageNum));
+													Log.i("loadMoreUrl", loadMoreUrl);
+													try {
+														MyAsyncTask mTask = new MyAsyncTask(loadMoreUrl);
+														mTask.setOnDataFinishedListener(new onDataFinishedListener() {
+															@Override
+															public void onDataSuccessfully(Object data) {
+																try {
+																	Log.i("data", data.toString());
+																	JSONObject jsonObject = new JSONObject(data.toString());
+																	totalAccounts = jsonObject.getJSONObject("data").getInt("total_count");
+																	totalPageCount = totalAccounts/20 + 1;
+																	if (!jsonObject.getJSONObject("data").isNull("favorite_accounts")) {
+//																	Toast.makeText(mContext, "没有更多的啦！", Toast.LENGTH_SHORT).show();
 //																	loadPageNum -= 1;
 //																}
 //																else {
-																	JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
-																	for (int i = 0; i < jsonAccounts.length(); i++) {
-																		accountName = jsonAccounts.getJSONObject(i).getString("a_name");
-																		accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
-																		accountId = jsonAccounts.getJSONObject(i).getString("a_id");
-																		accountLogoLink = jsonAccounts.getJSONObject(i).getString("a_logo");
-																		accountDesc = jsonAccounts.getJSONObject(i).getString("a_desc");
-																		accountValidReason = jsonAccounts.getJSONObject(i).getString("a_valid_reason");
-																		accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
-																		Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
-																		accountList.add(account);
-																		Log.i("accounts size", Integer.toString(accountList.size()));
+																		JSONArray jsonAccounts = jsonObject.getJSONObject("data").getJSONArray("favorite_accounts");
+																		for (int i = 0; i < jsonAccounts.length(); i++) {
+																			accountName = jsonAccounts.getJSONObject(i).getString("a_name");
+																			accountWxNo = jsonAccounts.getJSONObject(i).getString("a_wx_no");
+																			accountId = jsonAccounts.getJSONObject(i).getString("a_id");
+																			accountLogoLink = jsonAccounts.getJSONObject(i).getString("a_logo");
+																			accountDesc = jsonAccounts.getJSONObject(i).getString("a_desc");
+																			accountValidReason = jsonAccounts.getJSONObject(i).getString("a_valid_reason");
+																			accountScore = Integer.valueOf(jsonAccounts.getJSONObject(i).getString("a_rank"));
+																			Account account = new Account(accountName, accountWxNo, accountId, accountDesc, accountLogoLink, accountScore, accountValidReason);
+																			accountList.add(account);
+																			Log.i("accounts size", Integer.toString(accountList.size()));
+																		}
+																		adapter.notifyDataSetChanged();
 																	}
-																	adapter.notifyDataSetChanged();
-																}
-																listView.removeFooterView(footerLayout);
+																	listView.removeFooterView(footerLayout);
 //																flag = 1;
-																
-															} catch (Exception e) {
-																e.printStackTrace();
+
+																} catch (Exception e) {
+																	e.printStackTrace();
+																}
+
 															}
-															
-														}
-													});
-													mTask.execute("string");
-													
-												} catch (Exception e) {
-													e.printStackTrace();
+														});
+														mTask.execute("string");
+
+													} catch (Exception e) {
+														e.printStackTrace();
+													}
+
 												}
-												
-											} 
 //											else {
-//												Toast.makeText(mContext, "û�и��������", Toast.LENGTH_SHORT).show();
+//												Toast.makeText(mContext, "没有更多的啦！", Toast.LENGTH_SHORT).show();
 //											}
 //											listView.removeFooterView(footerLayout);
-										}
-										break;
+											}
+											break;
 									}
 								}
 							});
 						}
-						
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			});
 			mTask.execute("string");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private LinearLayout InitFooterLayout() {
-		LayoutParams mLayoutParams = new LinearLayout.LayoutParams(  
-	            LinearLayout.LayoutParams.WRAP_CONTENT,  
-	            LinearLayout.LayoutParams.WRAP_CONTENT); 
-		
-		LayoutParams FFlayoutParams = new LinearLayout.LayoutParams(  
-	            LinearLayout.LayoutParams.MATCH_PARENT,  
-	            LinearLayout.LayoutParams.MATCH_PARENT);
-		
+		LayoutParams mLayoutParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		LayoutParams FFlayoutParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.MATCH_PARENT);
+
 		LinearLayout layout = new LinearLayout(mContext);
 		layout.setOrientation(LinearLayout.HORIZONTAL);
 		ProgressBar progressBar = new ProgressBar(mContext);
-		// ��������ʾλ��  
-        progressBar.setPadding(0, 0, 15, 0); 
-        // �ѽ��������뵽layout�� 
-		layout.addView(progressBar, mLayoutParams);  
-        // �ı�����  
-        TextView textView = new TextView(mContext);  
-        textView.setText("������...");  
-        textView.setGravity(Gravity.CENTER_VERTICAL);  
-        // ���ı����뵽layout��  
-        layout.addView(textView, FFlayoutParams); 
-        // ����layout���������򣬼����뷽ʽ��  
-        layout.setGravity(Gravity.CENTER); 
-        
-        // ����ListView��ҳ��layout  
-        LinearLayout loadingLayout = new LinearLayout(mContext);  
-        loadingLayout.addView(layout, mLayoutParams);  
-        loadingLayout.setGravity(Gravity.CENTER); 
-        
-        return loadingLayout;
-		
+		// 进度条显示位置
+		progressBar.setPadding(0, 0, 15, 0);
+		// 把进度条加入到layout中
+		layout.addView(progressBar, mLayoutParams);
+		// 文本内容
+		TextView textView = new TextView(mContext);
+		textView.setText("加载中...");
+		textView.setGravity(Gravity.CENTER_VERTICAL);
+		// 把文本加入到layout中
+		layout.addView(textView, FFlayoutParams);
+		// 设置layout的重力方向，即对齐方式是
+		layout.setGravity(Gravity.CENTER);
+
+		// 设置ListView的页脚layout
+		LinearLayout loadingLayout = new LinearLayout(mContext);
+		loadingLayout.addView(layout, mLayoutParams);
+		loadingLayout.setGravity(Gravity.CENTER);
+
+		return loadingLayout;
+
 	}
 }

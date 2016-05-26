@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'Google Inc.:Google APIs:23'
+    compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.caibo.weidu"
         minSdkVersion 11
         targetSdkVersion 21
+        versionCode 2
+        versionName "2.0"
     }
 
     buildTypes {
@@ -23,10 +25,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile files('libs/okhttp-3.2.0.jar')
-    compile files('libs/okhttputils-2_3_8.jar')
-    compile files('libs/okio-1.6.0.jar')
-    compile files('libs/universal-image-loader-1.9.5.jar')
     compile files('C:/Users/CB-Ye/my_workspace/weidu1/libs/okhttp-3.2.0.jar')
     compile files('C:/Users/CB-Ye/my_workspace/weidu1/libs/okhttputils-2_3_8.jar')
     compile files('C:/Users/CB-Ye/my_workspace/weidu1/libs/okio-1.6.0.jar')

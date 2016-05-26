@@ -53,7 +53,7 @@ public class SubscribeActivity extends Activity {
 			}
 		});
 		
-		//�����΢��
+		//点击打开微信
 		subscribeOpenWx.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -1,4 +1,4 @@
-package com.caibo.weidu.modle;
+package com.caibo.weidu.bean;
 
 import java.util.List;
 

@@ -4,13 +4,11 @@ package com.caibo.weidu.util;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.Key;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
-
 import android.util.Base64;
 
 public class DES {
@@ -20,8 +18,8 @@ public class DES {
 	private static byte[] iv1 = { (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78, (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF };
 
 	/**
-	 * ¼ÓÃÜ±àÂëº¯Êı
-	 * 
+	 * åŠ å¯†ç¼–ç å‡½æ•°
+	 *
 	 * @param plainText
 	 * @return
 	 * @throws Exception
@@ -40,15 +38,15 @@ public class DES {
 	}
 
 	/**
-	 * ½âÃÜ±àÂëº¯Êı
-	 * 
+	 * è§£å¯†ç¼–ç å‡½æ•°
+	 *
 	 * @param encryptText
 	 * @return
 	 * @throws Exception
 	 */
 	public byte[] desDecrypt(byte[] encryptText) throws Exception {
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-		// keyµÄ³¤¶È²»ÄÜ¹»Ğ¡ÓÚ8Î»×Ö½Ú
+		// keyçš„é•¿åº¦ä¸èƒ½å¤Ÿå°äº8ä½å­—èŠ‚
 		DESKeySpec dks = new DESKeySpec(DESKey.getBytes("UTF-8"));
 		Key secretKey = keyFactory.generateSecret(dks);
 		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
@@ -59,8 +57,8 @@ public class DES {
 	}
 
 	/**
-	 * ÊµÏÖµ÷ÓÃ¼ÓÃÜ
-	 * 
+	 * å®ç°è°ƒç”¨åŠ å¯†
+	 *
 	 * @param input
 	 * @return
 	 */
@@ -75,8 +73,8 @@ public class DES {
 	}
 
 	/**
-	 * µ÷ÓÃ½âÃÜ
-	 * 
+	 * è°ƒç”¨è§£å¯†
+	 *
 	 * @param input
 	 * @return
 	 * @throws Exception

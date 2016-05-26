@@ -42,17 +42,17 @@ public class MainActivity extends ActivityGroup {
 		
 		this.tabHost = (TabHost) findViewById(R.id.mytabhost);
 		tabHost.setup(this.getLocalActivityManager());
-		
-		tabHost.addTab(tabHost.newTabSpec("���ں�").setIndicator(initView("���ں�", R.drawable.account_selector)).setContent(new Intent(this, AccountActivity.class)));
-		tabHost.addTab(tabHost.newTabSpec("ϲ��").setIndicator(initView("ϲ��", R.drawable.like_selector)).setContent(new Intent(this, LikeActivity.class)));
-		tabHost.addTab(tabHost.newTabSpec("����").setIndicator(initView("����", R.drawable.more_selector)).setContent(new Intent(this, MoreActivity.class)));
-		
+
+		tabHost.addTab(tabHost.newTabSpec("公众号").setIndicator(initView("公众号", R.drawable.account_selector)).setContent(new Intent(this, AccountActivity.class)));
+		tabHost.addTab(tabHost.newTabSpec("喜欢").setIndicator(initView("喜欢", R.drawable.like_selector)).setContent(new Intent(this, LikeActivity.class)));
+		tabHost.addTab(tabHost.newTabSpec("更多").setIndicator(initView("更多", R.drawable.more_selector)).setContent(new Intent(this, MoreActivity.class)));
+
 		Intent intent = getIntent();
 		tabTag = intent.getIntExtra("tabTag", 0);
 		tabHost.setCurrentTab(tabTag);
 		
 		if (pref.getString("userData", "") == "") {
-			//ע��
+			//注册
 			TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
 			imei = tm.getDeviceId();
 			saveDataInPref.SaveData("imei", imei);
@@ -72,7 +72,6 @@ public class MainActivity extends ActivityGroup {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	private View initView(String name, int drawableId) {

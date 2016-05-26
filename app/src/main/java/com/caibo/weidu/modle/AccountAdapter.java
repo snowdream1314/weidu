@@ -3,7 +3,7 @@ package com.caibo.weidu.modle;
 import java.util.ArrayList;
 
 import com.caibo.weidu.R;
-import com.caibo.weidu.modle.GridViewAdapter.ViewHolder;
+import com.caibo.weidu.bean.Account;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
@@ -17,31 +17,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
-	
+
 	private int resourceId;
 	private ArrayList<Account> accounts;
 	private Context mContext;
-	
-	//Ê¹ÓÃimage-loader°ü¼ÓÔØÍ¼Æ¬
-	DisplayImageOptions options; //DisplayImageOptionsÊÇÓÃÓÚÉèÖÃÍ¼Æ¬ÏÔÊ¾µÄÀà
-	
+
+	//ä½¿ç”¨image-loaderåŒ…åŠ è½½å›¾ç‰‡
+	DisplayImageOptions options; //DisplayImageOptionsæ˜¯ç”¨äºè®¾ç½®å›¾ç‰‡æ˜¾ç¤ºçš„ç±»
+
 	public AccountAdapter(Context context, int textViewResourceId, ArrayList<Account> objects) {
 		super(context, textViewResourceId, objects);
 		resourceId = textViewResourceId;
 		this.accounts = objects;
 		this.mContext = context;
-		
-		//Í¼Æ¬¼ÓÔØ
+
+		//å›¾ç‰‡åŠ è½½
 		options = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.account_image)	// ÉèÖÃÍ¼Æ¬ÏÂÔØÆÚ¼äÏÔÊ¾µÄÍ¼Æ¬
-				.showImageForEmptyUri(R.drawable.account_image)		// ÉèÖÃÍ¼Æ¬UriÎª¿Õ»òÊÇ´íÎóµÄÊ±ºòÏÔÊ¾µÄÍ¼Æ¬  
-				.showImageOnFail(R.drawable.account_image)		// ÉèÖÃÍ¼Æ¬¼ÓÔØ»ò½âÂë¹ı³ÌÖĞ·¢Éú´íÎóÏÔÊ¾µÄÍ¼Æ¬
-				.cacheInMemory(true)		 // ÉèÖÃÏÂÔØµÄÍ¼Æ¬ÊÇ·ñ»º´æÔÚÄÚ´æÖĞ
-				.cacheOnDisc(true)		// ÉèÖÃÏÂÔØµÄÍ¼Æ¬ÊÇ·ñ»º´æÔÚSD¿¨ÖĞ
-				.displayer(new RoundedBitmapDisplayer(60))	// ÉèÖÃ³ÉÔ²½ÇÍ¼Æ¬
-				.build();	// ´´½¨ÅäÖÃ¹ıµÃDisplayImageOption¶ÔÏó  
+				.showStubImage(R.drawable.account_image)	// è®¾ç½®å›¾ç‰‡ä¸‹è½½æœŸé—´æ˜¾ç¤ºçš„å›¾ç‰‡
+				.showImageForEmptyUri(R.drawable.account_image)		// è®¾ç½®å›¾ç‰‡Uriä¸ºç©ºæˆ–æ˜¯é”™è¯¯çš„æ—¶å€™æ˜¾ç¤ºçš„å›¾ç‰‡
+				.showImageOnFail(R.drawable.account_image)		// è®¾ç½®å›¾ç‰‡åŠ è½½æˆ–è§£ç è¿‡ç¨‹ä¸­å‘ç”Ÿé”™è¯¯æ˜¾ç¤ºçš„å›¾ç‰‡
+				.cacheInMemory(true)		 // è®¾ç½®ä¸‹è½½çš„å›¾ç‰‡æ˜¯å¦ç¼“å­˜åœ¨å†…å­˜ä¸­
+				.cacheOnDisc(true)		// è®¾ç½®ä¸‹è½½çš„å›¾ç‰‡æ˜¯å¦ç¼“å­˜åœ¨SDå¡ä¸­
+				.displayer(new RoundedBitmapDisplayer(60))	// è®¾ç½®æˆåœ†è§’å›¾ç‰‡
+				.build();	// åˆ›å»ºé…ç½®è¿‡å¾—DisplayImageOptionå¯¹è±¡
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
@@ -57,45 +57,45 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		if (accounts != null) {
 			Account account = accounts.get(position);
 			holder.accountNotes.setText(account.getNotes());
-			//Î¢ĞÅºÅ¹ı³¤ÔòÒş²ØĞÇ¼¶
+			//å¾®ä¿¡å·è¿‡é•¿åˆ™éšè—æ˜Ÿçº§
 			if (account.getWxno().length() > 10) {
 				holder.accountWxno.setText(account.getWxno().subSequence(0, 6) + "...");
 			} else {
 				holder.accountWxno.setText(account.getWxno());
 			}
 			holder.accountName.setText(account.getName());
-			
+
 			switch (account.getScoreImageId()) {
-			case 1:
-				holder.accountScoreImage.setImageResource(R.drawable.star_1);
-				break;
-			case 2:
-				holder.accountScoreImage.setImageResource(R.drawable.star_2);
-				break;
-			case 3:
-				holder.accountScoreImage.setImageResource(R.drawable.star_3);
-				break;
-			case 4:
-				holder.accountScoreImage.setImageResource(R.drawable.star_4);
-				break;
-			case 5:
-				holder.accountScoreImage.setImageResource(R.drawable.star_5);
-				break;
-			default:
-				break;
+				case 1:
+					holder.accountScoreImage.setImageResource(R.drawable.star_1);
+					break;
+				case 2:
+					holder.accountScoreImage.setImageResource(R.drawable.star_2);
+					break;
+				case 3:
+					holder.accountScoreImage.setImageResource(R.drawable.star_3);
+					break;
+				case 4:
+					holder.accountScoreImage.setImageResource(R.drawable.star_4);
+					break;
+				case 5:
+					holder.accountScoreImage.setImageResource(R.drawable.star_5);
+					break;
+				default:
+					break;
 			}
 			ImageLoader imageLoader = ImageLoader.getInstance();
 			imageLoader.displayImage(account.getImageUrl(), holder.accountImage, options);
 		}
-		
+
 		return convertView;
-		
+
 	}
-	
+
 	private class ViewHolder {
 		TextView accountWxno;
 		TextView accountNotes;

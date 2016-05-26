@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import com.caibo.weidu.R;
 import com.caibo.weidu.main.account.ChildCatsActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,7 +23,7 @@ public class ListViewAdapter extends BaseAdapter {
 	private ArrayList<ArrayList<HashMap<String, Object>>> mList, mListForChildCats;
 	private ArrayList<HashMap<String, Object>> categoryList;
 	private Context mContext;
-	
+
 	public ListViewAdapter(ArrayList<ArrayList<HashMap<String, Object>>> mList, ArrayList<ArrayList<HashMap<String, Object>>> mListForChildCats, ArrayList<HashMap<String, Object>> categoryList, Context context) {
 		super();
 		this.mList = mList;
@@ -32,7 +31,7 @@ public class ListViewAdapter extends BaseAdapter {
 		this.categoryList = categoryList;
 		this.mContext = context;
 	}
-	
+
 	@Override
 	public int getCount() {
 		if (mList == null) {
@@ -42,7 +41,7 @@ public class ListViewAdapter extends BaseAdapter {
 			return this.mList.size();
 		}
 	}
-	
+
 	@Override
 	public Object getItem(int position) {
 		if (mList == null) {
@@ -52,7 +51,7 @@ public class ListViewAdapter extends BaseAdapter {
 			return this.mList.get(position);
 		}
 	}
-	
+
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -61,7 +60,7 @@ public class ListViewAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-		
+
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = LayoutInflater.from(this.mContext).inflate(R.layout.account_listview, null, false);
@@ -76,15 +75,15 @@ public class ListViewAdapter extends BaseAdapter {
 		else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		if (this.mList != null) {
-			
+
 			if (holder.account_category != null) {
 				final HashMap<String, Object> hashMap = this.categoryList.get(position);
 				holder.account_category.setText(hashMap.get("category_name").toString());
-				
-				if (holder.account_category.getText().equals("�����Ƽ�")) {
-					holder.category.setClickable(false);//ʹ���ܵ��
+
+				if (holder.account_category.getText().equals("热门推荐")) {
+					holder.category.setClickable(false);//使不能点击
 					holder.wave_line.setVisibility(View.VISIBLE);
 					holder.tab_image.setVisibility(ImageView.GONE);
 					holder.tab_line.setVisibility(View.GONE);
@@ -96,9 +95,9 @@ public class ListViewAdapter extends BaseAdapter {
 					holder.tab_image.setVisibility(ImageView.VISIBLE);
 					holder.tab_line.setVisibility(View.VISIBLE);
 					convertView.setBackgroundColor(Color.parseColor("#f5f5f5"));
-					
+
 					final ArrayList<HashMap<String, Object>> arrayListForChildcats = this.mListForChildCats.get(position);
-					//���õ���¼�
+					//设置点击事件
 					holder.category.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -114,8 +113,8 @@ public class ListViewAdapter extends BaseAdapter {
 				ArrayList<HashMap<String, Object>> arrayListForEveryGridView = this.mList.get(position);
 				final GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arrayListForEveryGridView, holder.account_category.getText().toString());
 				holder.gridView.setAdapter(gridViewAdapter);
-				
-				//���õ���¼�
+
+				//设置点击事件
 //				try {
 //					holder.gridView.setOnItemClickListener(new OnItemClickListener() {
 //						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -131,7 +130,7 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 		return convertView;
 	}
-	
+
 	private class ViewHolder {
 		TextView account_category;
 		GridView gridView;
@@ -140,7 +139,5 @@ public class ListViewAdapter extends BaseAdapter {
 		View wave_line;
 		LinearLayout category;
 	}
-	
-	
-	
 }
+

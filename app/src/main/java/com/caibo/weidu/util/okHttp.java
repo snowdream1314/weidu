@@ -7,13 +7,12 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class okHttp {
-	
+
 	public static String getAppData(String address) {
 		OkHttpClient  client = new OkHttpClient();
 //		Log.i("connectTimeout", Integer.toString(client.connectTimeoutMillis()));
@@ -32,9 +31,9 @@ public class okHttp {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		} 
+		}
 	}
-	
+
 	public static Bitmap getBitmap(String address) {
 		OkHttpClient  client = new OkHttpClient();
 		try {
@@ -42,17 +41,17 @@ public class okHttp {
 			Response response = client.newCall(request).execute();
 			InputStream is = response.body().byteStream();
 			Bitmap bm = BitmapFactory.decodeStream(is);
-			
-			//ͼƬѹ��
+
+			//图片压缩
 //			ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
-			
+
 			return bm;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		} 
+		}
 	}
-	
+
 	public static JSONArray parseDataWithGson(String Data) {
 		try {
 			JSONObject jsonObject = new JSONObject(Data);

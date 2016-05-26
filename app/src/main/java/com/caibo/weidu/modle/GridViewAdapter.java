@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.caibo.weidu.R;
+import com.caibo.weidu.main.account.AccountDetailActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
@@ -22,27 +23,27 @@ public class GridViewAdapter extends BaseAdapter {
 	private Context mContext;
 	private ArrayList<HashMap<String, Object>> mList;
 	private int selectedPosition = -1;
-	
-	//ʹ��image-loader������ͼƬ
-	DisplayImageOptions options; //DisplayImageOptions����������ͼƬ��ʾ����
-	
+
+	//使用image-loader包加载图片
+	DisplayImageOptions options; //DisplayImageOptions是用于设置图片显示的类
+
 	public GridViewAdapter(Context conetxt, ArrayList<HashMap<String, Object>> mList, String account_category) {
 		super();
 		this.mContext = conetxt;
 		this.mList = mList;
-		
-		// ʹ��DisplayImageOptions.Builder()����DisplayImageOptions
+
+		// 使用DisplayImageOptions.Builder()创建DisplayImageOptions
 		options = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.account_image)	// ����ͼƬ�����ڼ���ʾ��ͼƬ
-				.showImageForEmptyUri(R.drawable.account_image)		// ����ͼƬUriΪ�ջ��Ǵ����ʱ����ʾ��ͼƬ  
-				.showImageOnFail(R.drawable.account_image)		// ����ͼƬ���ػ��������з���������ʾ��ͼƬ
-				.cacheInMemory(true)		 // �������ص�ͼƬ�Ƿ񻺴����ڴ���
-				.cacheOnDisc(true)		// �������ص�ͼƬ�Ƿ񻺴���SD����
-				.displayer(new RoundedBitmapDisplayer(60))	// ���ó�Բ��ͼƬ
-				.build();	// �������ù���DisplayImageOption����  
-		
+				.showStubImage(R.drawable.account_image)	// 设置图片下载期间显示的图片
+				.showImageForEmptyUri(R.drawable.account_image)		// 设置图片Uri为空或是错误的时候显示的图片
+				.showImageOnFail(R.drawable.account_image)		// 设置图片加载或解码过程中发生错误显示的图片
+				.cacheInMemory(true)		 // 设置下载的图片是否缓存在内存中
+				.cacheOnDisc(true)		// 设置下载的图片是否缓存在SD卡中
+				.displayer(new RoundedBitmapDisplayer(60))	// 设置成圆角图片
+				.build();	// 创建配置过得DisplayImageOption对象
+
 	}
-	
+
 	@Override
 	public int getCount() {
 		if (mList == null) {
@@ -52,7 +53,7 @@ public class GridViewAdapter extends BaseAdapter {
 			return this.mList.size();
 		}
 	}
-	
+
 	@Override
 	public Object getItem(int position) {
 		if (mList == null) {
@@ -62,20 +63,20 @@ public class GridViewAdapter extends BaseAdapter {
 			return this.mList.get(position);
 		}
 	}
-	
+
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-	
+
 	public void clearSelection(int position) {
 		selectedPosition = position;
 	}
-	
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-		
+
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = LayoutInflater.from(this.mContext).inflate(R.layout.modle_account, null, false);
@@ -86,15 +87,15 @@ public class GridViewAdapter extends BaseAdapter {
 		else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		if (this.mList != null) {
 			final HashMap<String, Object> hashMap = this.mList.get(position);
 			holder.account_name.setText(hashMap.get("account_name").toString());
-			//ͼƬ����
+			//图片加载
 			ImageLoader imageLoader = ImageLoader.getInstance();
 			imageLoader.displayImage(hashMap.get("a_logo_link").toString(), holder.account_image, options);
-			
-			//��Ӧ����¼�
+
+			//响应点击事件
 			holder.account_image.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -103,7 +104,7 @@ public class GridViewAdapter extends BaseAdapter {
 					mContext.startActivity(intent);
 				}
 			});
-			
+
 //			if (selectedPosition == position) {
 ////				holder.account_name.setTextColor(Color.parseColor("#000000"));
 //				Intent intent = new Intent(this.mContext, AccountDetailActivity.class);
@@ -115,11 +116,11 @@ public class GridViewAdapter extends BaseAdapter {
 //				mContext.startActivity(intent);
 //			}
 		}
-		
+
 		return convertView;
-		
+
 	}
-	
+
 	public class ViewHolder {
 		ImageView account_image;
 		TextView account_name;

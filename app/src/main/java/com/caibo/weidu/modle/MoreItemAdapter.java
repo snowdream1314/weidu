@@ -1,13 +1,12 @@
 package com.caibo.weidu.modle;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.caibo.weidu.R;
+import com.caibo.weidu.bean.MoreItem;
 
 import android.content.Context;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

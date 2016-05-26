@@ -69,15 +69,15 @@ public class AccountActivity extends Activity {
 							arrayListForEveryGridView = new ArrayList<HashMap<String, Object>>();
 							arrayListForChildCats = new ArrayList<HashMap<String, Object>>();
 							
-							//����
+							//分类
 							categoryHashMap = new HashMap<String, Object>();
 							categoryHashMap.put("category_name", appJsonDatas.getJSONObject(i).getString("ac_name"));
 							categoryHashMap.put("category_id", appJsonDatas.getJSONObject(i).getString("ac_id"));
 							categoryList.add(categoryHashMap);
 							
-							//�����µĹ��ں�
+							//分类下的公众号
 							recommendAccounts = appJsonDatas.getJSONObject(i).getJSONArray("recommendAccount");
-							//����
+							//子类
 							childCats = appJsonDatas.getJSONObject(i).getJSONArray("childCats");
 							
 							for (int j = 0; j < recommendAccounts.length(); j++) {
@@ -108,15 +108,6 @@ public class AccountActivity extends Activity {
 		});
 		mTask.execute("string");
 	}
-	
-	//��Ļ��ת
-//	@Override
-//	public void onConfigurationChanged(Configuration newConfig) {
-//		super.onConfigurationChanged(newConfig);
-//		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//			setContentView(R.layout.activity_account);
-//		}
-//	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
