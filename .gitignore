@@ -59,3 +59,4 @@ venv
 *.properties
 *.iml
 *.idea
+/.grade
