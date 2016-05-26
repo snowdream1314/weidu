@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context=".main.account.ChildCatsActivity"  >
+
+    <!-- 标题栏 -->
+	<RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#30d94c">
+        
+	    <ImageView 
+	        android:id="@+id/aboutUs_tag_back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/tag_back"
+	        android:layout_gravity="center"
+	        android:gravity="center"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginTop="10dp"/>
+        <TextView 
+            android:id="@+id/aboutUs_tab_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="关于我们"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    
+	<WebView 
+        android:id="@+id/aboutus_webview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"/>
+    
+</LinearLayout>

@@ -1,0 +1,68 @@
+<LinearLayout 
+    android:layout_width="match_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".main.account.ChildCatsActivity"  >
+
+    <!-- 标题栏 -->
+	<RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#30d94c">
+        
+	    <ImageView 
+	        android:id="@+id/freecollect_tag_back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/tag_back"
+	        android:layout_gravity="center"
+	        android:gravity="center"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginTop="10dp"/>
+        <TextView 
+            android:id="@+id/freecollect_tab_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="免费收录"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+        <TextView 
+            android:id="@+id/freecollect_tab_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:text="提交"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+    
+	<!-- <ScrollView 
+	    android:layout_width="match_parent" 
+	    android:layout_height="match_parent"
+	    android:scrollbars="none"> -->
+        
+	<WebView 
+        android:id="@+id/freecollect_webview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
+	
+	<Button 
+	    android:id="@+id/freecollect_submit"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/rectangle_button"
+	    android:layout_marginTop="20dp"
+	    android:layout_marginBottom="10dp"
+	    android:text="提交"
+	    android:textColor="#ffffff"
+	    android:textSize="18sp"/>
+		
+	
+</LinearLayout>
